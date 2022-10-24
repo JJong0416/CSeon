@@ -23,12 +23,16 @@ Vue.use(VueRouter);
 // };
 
 const routes = [
- 
   {
     path: "/",
     name: "MainView",
     component: () => import("@/views/MainView.vue"),
   },
+  {
+    path:"/login",
+    name: "LoginView",
+    component: () => import("@/views/LoginView.vue"),
+  }
   
 ];
 const router = new VueRouter({
