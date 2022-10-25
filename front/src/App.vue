@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <header-component></header-component>
     <router-view />
     <!-- <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
@@ -41,14 +42,15 @@
 </template>
 
 <script>
+import HeaderComponent from "./components/HeaderComponent.vue";
 // import HelloWorld from "./components/HelloWorld";
 
 export default {
   name: "App",
 
-  // components: {
-  //   HelloWorld,
-  // },
+  components: {
+    HeaderComponent,
+  },
 
   data: () => ({
     //
