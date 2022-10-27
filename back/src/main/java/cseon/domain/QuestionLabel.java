@@ -1,5 +1,6 @@
 package cseon.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name="question_label")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionLabel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package cseon.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name = "workbook")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Workbook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +18,5 @@ public class Workbook {
 
     @Column(name = "workbook_name", length = 50, nullable = false)
     private String workbookName;
-//
-//    @OneToOne(mappedBy = "contest_id")
-//    private Contest contestId;
+
 }

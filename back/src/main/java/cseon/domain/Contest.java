@@ -1,6 +1,6 @@
 package cseon.domain;
 
-import cseon.domain.pk.ContestPK;
+import cseon.domain.composite.ContestWorkbookId;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +12,10 @@ import java.time.ZonedDateTime;
 @Getter
 @Table(name = "contest")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(ContestPK.class)
+@IdClass(ContestWorkbookId.class)
 public class Contest {
 
     @Id
-  //  @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contest_id")
     private Long contestId;
 
