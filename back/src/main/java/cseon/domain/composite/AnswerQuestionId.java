@@ -1,5 +1,6 @@
 package cseon.domain.composite;
 
+import cseon.domain.Question;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,5 +10,5 @@ public class AnswerQuestionId implements Serializable {
 
     private Long answerId;
 
-    private Long questionId;
+    private Question questionId;
 }

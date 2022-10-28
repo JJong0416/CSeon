@@ -19,8 +19,9 @@ public class Answer {
     private Long answerId;
 
     @Id
-    @Column(name = "question_id")
-    private Long questionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question questionId;
 
     @Column(name = "answer_content", nullable = false)
     private String answerContent;
