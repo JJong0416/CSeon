@@ -22,6 +22,7 @@ public class AccountBadge {
     @Column(name = "badge_id", nullable = false)
     private Long badgeId;
 
-    @Column(name = "account_id", nullable = false)
-    private Long accountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 }
