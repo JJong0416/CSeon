@@ -5,17 +5,24 @@
         <v-row
           ><a
             href="http://localhost:7070/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth/redirect"
-            ><v-btn
-              color="blue-grey lighten-4"
-              large
-              class="mb-5"
-              style="width: 100%"
-              ><v-avatar size="30" class="mr-3"
-                ><v-img src="@/assets/kakaoLogo.png"></v-img></v-avatar
-              >카카오 로그인</v-btn
-            ></a
-          ></v-row
-        >
+          >
+            ><v-img
+              width="190px"
+              height="45px"
+              src="@/assets/kakao_login_medium_narrow.png"
+            ></v-img></a
+        ></v-row>
+        <v-row>
+          <a
+            href="http://localhost:7070/oauth2/authorization/google?redirect_uri=http://localhost:3000/oauth/redirect"
+          >
+            ><v-img
+              width="190px"
+              height="48px"
+              src="@/assets/btn_google_signin_light_normal_web.png"
+            ></v-img
+          ></a>
+        </v-row>
       </div>
       <!-- <div v-else style="width: 70%">
         <v-row
@@ -71,9 +78,6 @@ export default {
     // },
     login() {
       // 카카오 로그인하는 함수
-      const address =
-        "http://localhost:7070/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth/redirect";
-      window.location.href(address);
       this.logined = true;
     },
   },
