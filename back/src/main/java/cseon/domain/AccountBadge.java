@@ -19,9 +19,9 @@ public class AccountBadge {
     @Column(name = "account_badge_id")
     private Long accountBadgeId;
 
-    @Column(name = "badge_id")
+    @Column(name = "badge_id", nullable = false)
     private Long badgeId;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", nullable = false)
     private Long accountId;
 }

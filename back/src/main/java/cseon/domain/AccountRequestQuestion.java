@@ -19,13 +19,13 @@ public class AccountRequestQuestion {
     @Column(name = "account_request_question_id")
     private Long accountRequestQuestionId;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", nullable = false)
     private String accountId;
 
-    @Column(name = "request_question_title")
+    @Column(name = "request_question_title", nullable = false)
     private String requestQuestionTitle;
 
     @Lob
-    @Column(name = "request_question_exp")
+    @Column(name = "request_question_exp", nullable = false)
     private String requestQuestionExp;
 }
