@@ -19,8 +19,9 @@ public class AccountRequestQuestion {
     @Column(name = "account_request_question_id")
     private Long accountRequestQuestionId;
 
-    @Column(name = "account_id", nullable = false)
-    private String accountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @Column(name = "request_question_title", nullable = false)
     private String requestQuestionTitle;

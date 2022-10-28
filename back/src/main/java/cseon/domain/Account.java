@@ -33,12 +33,4 @@ public class Account {
 
     @Column(name = "using_badge_id")
     private Long usingBadgeId;
-
-    @OneToMany(targetEntity = AccountBadge.class)
-    @JoinColumn(name = "account_badge_id")
-    private Set<AccountBadge> myBadges;
-
-    @OneToMany(targetEntity = AccountRequestQuestion.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_request_question_id")
-    private Set<AccountRequestQuestion> myRequestQuestions;
 }

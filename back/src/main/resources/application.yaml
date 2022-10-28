@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/{DB스키마}?serverTimezone=Asia/Seoul
-    username: {DB 권한자 ID}
-    password: {DB 권한자 Password}
+    url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
+    username: root
+    password: wlxo8053535!
 
   jpa:
     hibernate:
