@@ -35,8 +35,8 @@ spring:
               - profile_image
             client-name: Naver
           google:
-            clientId: 416742949716-pao515mh3u0itqv4givjfp1jg9e16rbv.apps.googleusercontent.com
-            clientSecret: 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
+            clientId:  781981667755-cgfgedid8b69s1lm6d59ts82fe5rvmvt.apps.googleusercontent.com
+            clientSecret: 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
             redirect-uri: "http://localhost:7070/login/oauth2/code/GOOGLE"
             scope:
               - email
