@@ -29,11 +29,25 @@ const routes = [
     component: () => import("@/views/MainView.vue"),
   },
   {
-    path:"/login",
+    path: "/login",
     name: "LoginView",
     component: () => import("@/views/LoginView.vue"),
-  }
-  
+  },
+  {
+    path: "/workbook",
+    name: "WorkbookView",
+    component: () => import("@/views/WorkbookView.vue"),
+  },
+  {
+    path: "/Questions",
+    name: "QuestionsView",
+    component: () => import("@/views/QuestionsView.vue"),
+  },
+  {
+    path: "/competition",
+    name: "CompetitionView",
+    component: () => import("@/views/CompetitionView.vue"),
+  },
 ];
 const router = new VueRouter({
   mode: "history",
