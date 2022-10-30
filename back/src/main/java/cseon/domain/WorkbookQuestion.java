@@ -16,11 +16,11 @@ public class WorkbookQuestion {
     @Column(name = "workbook_question_id")
     private Long workbookQuestionId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "workbook_id", referencedColumnName = "workbook_id")
     private Workbook workbookId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "question_id", referencedColumnName = "question_id")
     private Question questionId;
 }
