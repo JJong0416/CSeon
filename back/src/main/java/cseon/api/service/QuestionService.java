@@ -1,5 +1,6 @@
 package cseon.api.service;
 
+import cseon.api.dto.request.AnswerRequestDto;
 import cseon.api.dto.request.QuestionRequestDto;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.domain.AccountRequestQuestion;
@@ -22,5 +23,9 @@ public class QuestionService {
                 .build();
 
         accountRequestQuestionRepository.save(requestQuestion);
+    }
+    @Transactional
+    public void selectAnswer(AnswerRequestDto answerRequestDto) {
+
     }
 }
