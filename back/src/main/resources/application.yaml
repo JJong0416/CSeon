@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/{DB스키마}?serverTimezone=Asia/Seoul
-    username: {DB 권한자 ID}
-    password: {DB 권한자 Password}
+    url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
+    username: 'root'
+    password: 'Qoguswnd201!'
 
   jpa:
     hibernate:
@@ -19,6 +19,70 @@ spring:
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            clientId: rOMZbZsfVQ3G0SlFYn7g
+            client-secret: _UXmsitDL2
+            clientAuthenticationMethod: post
+            redirect-uri: "http://localhost:7070/login/oauth2/code/NAVER"
+            authorization-grant-type: authorization_code
+            scope:
+              - nickname
+              - email
+              - profile_image
+            client-name: Naver
+          google:
+            clientId:  781981667755-cgfgedid8b69s1lm6d59ts82fe5rvmvt.apps.googleusercontent.com
+            clientSecret: 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
+            redirect-uri: "http://localhost:7070/login/oauth2/code/GOOGLE"
+            scope:
+              - email
+              - profile
+          kakao:
+            clientId: 07b27a66622f4a5bc27dd2768f132e8f
+            clientSecret: 3CchwqbTtHciTATUeGwBXcxGk4Rl47Vg
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            redirectUri: "http://localhost:7070/login/oauth2/code/KAKAO"
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            clientName: Kakao
+        # Provider 설정
+        provider:
+          naver:
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize
+            tokenUri: https://nid.naver.com/oauth2.0/token
+            userInfoUri: https://openapi.naver.com/v1/nid/me
+            userNameAttribute: response
+          kakao:
+            authorizationUri: https://kauth.kakao.com/oauth/authorize
+            tokenUri: https://kauth.kakao.com/oauth/token
+            userInfoUri: https://kapi.kakao.com/v2/user/me
+            userNameAttribute: id
+# cors 설정
+cors:
+  allowed-origins: 'http://localhost:3000'
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: '*'
+  max-age: 3600
+
+# jwt secret key 설정
+jwt.secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
+
+# 토큰 관련 secret Key 및 RedirectUri 설정
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpiry: 180000000000
+    refreshTokenExpiry: 604800000000000
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth/redirect
 
 springdoc:
   swagger-ui:
