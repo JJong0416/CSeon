@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,4 +30,15 @@ public class AccountRequestQuestion {
     @Lob
     @Column(name = "request_question_exp", nullable = false)
     private String requestQuestionExp;
+
+    @Column(name = "request_question_ans", nullable = false)
+    private Integer requestQuestionAns;
+
+    @Builder
+    public AccountRequestQuestion(Account account, String requestQuestionTitle, String requestQuestionExp, Integer requestQuestionAns) {
+        this.account = account;
+        this.requestQuestionTitle = requestQuestionTitle;
+        this.requestQuestionExp = requestQuestionExp;
+        this.requestQuestionAns = requestQuestionAns;
+    }
 }
