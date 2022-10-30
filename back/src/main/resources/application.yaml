@@ -11,7 +11,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql: true
@@ -23,17 +23,6 @@ spring:
     oauth2:
       client:
         registration:
-          naver:
-            clientId: rOMZbZsfVQ3G0SlFYn7g
-            client-secret: _UXmsitDL2
-            clientAuthenticationMethod: post
-            redirect-uri: "http://localhost:7070/login/oauth2/code/NAVER"
-            authorization-grant-type: authorization_code
-            scope:
-              - nickname
-              - email
-              - profile_image
-            client-name: Naver
           google:
             clientId:  781981667755-cgfgedid8b69s1lm6d59ts82fe5rvmvt.apps.googleusercontent.com
             clientSecret: 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
