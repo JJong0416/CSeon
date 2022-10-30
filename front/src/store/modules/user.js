@@ -6,7 +6,7 @@ const userStore = {
   actions: {},
 };
 
-// export default userStore;
+export default userStore;
 
 // import jwt_decode from "jwt-decode";
 // import { login } from "@/api/user.js";
