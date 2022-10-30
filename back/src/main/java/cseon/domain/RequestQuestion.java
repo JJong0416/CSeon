@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "account_request_question")
+@Table(name = "request_question")
 @Getter
-public class AccountRequestQuestion {
+public class RequestQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_request_question_id")
-    private Long accountRequestQuestionId;
+    @Column(name = "request_question_id")
+    private Long requestQuestionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
