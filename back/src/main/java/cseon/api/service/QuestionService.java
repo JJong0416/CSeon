@@ -50,12 +50,11 @@ public class QuestionService {
         // 2. 그 후, Question과 Question_Label 을 Fetch Join을 한다.
         List<Question> questions = questionRepository.findQuestionsByLabelAndKeyword(keyword);
 
-        // 3. questions를 Stream()을 통해 루프를 돌리면서
+        // 3. questions를 Stream()을 통해 루프를 돌리면서 question의 Label에 요청된 label이 있다면
         List<QuestionRes> questionRes = questions.stream()
                 .filter(question -> question.getLabels()
                         .stream()
-                        .anyMatch(questionLabel -> questionLabel.getLabelId() // question의 Label에 요청된 label이 있다면
-                                .equals(findLabel)))
+                        .anyMatch(questionLabel -> questionLabel.getLabelId().equals(findLabel)))
                 .map(question -> QuestionRes.builder() // 새 객체를 만든다.
                         .questionId(question.getQuestionId())
                         .questionExp(question.getQuestionExp())

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter @ToString
+@Getter
 public class QuestionRes {
 
     private final Long questionId;
