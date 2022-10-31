@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {useNavigate} from "react-router-dom"
 
 export default function LoginPage(){
   const navigate = useNavigate();
 
-  const [value, setValue] = useState(0);
+  const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
+  const [value, setValue] = useState(0); // 변하면 재렌더링되는 변수들
 
   const ClickLoginBtn = ()=>{
     navigate("/mainpage");
@@ -20,6 +22,7 @@ export default function LoginPage(){
     <div>
       <button onClick={ClickLoginBtn}>Login Btn</button>
       <button onClick={ClickPlus}>{value}</button>
+      <h2>Token : {token}</h2>
     </div>
   );
 }
