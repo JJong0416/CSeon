@@ -1,8 +1,8 @@
 package cseon.api.repository;
 
-import cseon.domain.RequestQuestion;
+
+import cseon.domain.AccountRequestQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AccountRequestQuestionRepository extends JpaRepository<RequestQuestion, Long> {
-
+public interface AccountRequestQuestionRepository extends JpaRepository<AccountRequestQuestion, Long> {
 }
