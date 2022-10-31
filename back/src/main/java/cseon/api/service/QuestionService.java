@@ -4,7 +4,6 @@ import cseon.api.dto.request.QuestionRequestDto;
 import cseon.api.dto.response.QuestionRes;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.api.repository.LabelRepository;
-import cseon.api.repository.QuestionLabelRepository;
 import cseon.api.repository.QuestionRepository;
 import cseon.domain.AccountRequestQuestion;
 import cseon.domain.Label;
@@ -23,7 +22,6 @@ public class QuestionService {
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
     private final LabelRepository labelRepository;
     private final QuestionRepository questionRepository;
-    private final QuestionLabelRepository questionLabelRepository;
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestDto questionRequestDto) {
@@ -48,16 +46,25 @@ public class QuestionService {
         Label findLabel = labelRepository.findByLabelName(label)
                 .orElseThrow(IllegalArgumentException::new);
 
+
         // 2. 그 후, Question과 Question_Label 을 Fetch Join을 한다.
         List<Question> questions = questionRepository.findQuestionsByLabelAndKeyword(keyword);
 
-        // 3. Stream을 통해 question에 있는 List<Label>을 돌면서, LabelId가 있는지 조회한다.
-        questions.stream()
-                .map(question -> question.getLabels()
+        // 3. questions를 Stream()을 통해 루프를 돌리면서
+        List<QuestionRes> questionRes = questions.stream()
+                .filter(question -> question.getLabels()
                         .stream()
-                        .filter(questionLabel -> questionLabel.getQuestionLabelId()
-                                .equals(findLabel.getLabelId())))
+                        .anyMatch(questionLabel -> questionLabel.getLabelId() // question의 Label에 요청된 label이 있다면
+                                .equals(findLabel)))
+                .map(question -> QuestionRes.builder() // 새 객체를 만든다.
+                        .questionId(question.getQuestionId())
+                        .questionExp(question.getQuestionExp())
+                        .questionTitle(question.getQuestionTitle())
+                        .build())
                 .collect(Collectors.toList());
-        return null;
+
+        questionRes.forEach(System.out::println);
+
+        return questionRes;
     }
 }

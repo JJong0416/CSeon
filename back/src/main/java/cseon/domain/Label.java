@@ -3,12 +3,13 @@ package cseon.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "label")
+@Table(name = "label") @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Label {
 

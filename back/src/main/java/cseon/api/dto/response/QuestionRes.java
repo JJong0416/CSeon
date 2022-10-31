@@ -1,8 +1,10 @@
 package cseon.api.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
-@Getter
+@Getter @ToString
 public class QuestionRes {
 
     private final Long questionId;
@@ -11,6 +13,7 @@ public class QuestionRes {
 
     private final String questionExp;
 
+    @Builder
     public QuestionRes(Long questionId, String questionTitle, String questionExp) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;

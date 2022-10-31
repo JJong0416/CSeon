@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query("SELECT q FROM Question q LEFT JOIN FETCH q.labels where q.questionTitle like concat('%',:keyword,'%')")
+    @Query("SELECT DISTINCT q FROM Question q LEFT JOIN FETCH q.labels where q.questionTitle like concat('%',:keyword,'%')")
     List<Question> findQuestionsByLabelAndKeyword(@Param("keyword") String keyword);
 
 }
