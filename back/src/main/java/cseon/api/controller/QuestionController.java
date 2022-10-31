@@ -27,10 +27,9 @@ public class QuestionController {
     }
 
     @GetMapping("/{label}/{keyword}")
-    public ResponseEntity<QuestionRes> takeQuestionsWithInfo(@PathVariable("label") String label,
-                                                             @PathVariable("keyword") String keyword
+    public ResponseEntity<List<QuestionRes>> takeQuestionsWithInfo(@PathVariable("label") String label,
+                                                                   @PathVariable("keyword") String keyword
     ) {
-        List<QuestionRes> questionRes = questionService.takeQuestionsWithKeywordAndLabel(keyword, label);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(questionService.takeQuestionsWithKeywordAndLabel(keyword, label));
     }
 }
