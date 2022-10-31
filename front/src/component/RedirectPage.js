@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import axios from "axios";
+
 function RedirectPage() {
   const location = useLocation();
   const CODE = location.search.split("=")[1];
   const sendCode = () => {
     axios({
       method: "get",
-      url: `http://localhost:7070/login/kakao/${CODE}`,
+      url: `http://localhost:7070/kakao/${CODE}`,
     })
       .then(function (res) {
         sessionStorage.setItem("token", res.data);
