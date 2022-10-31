@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2 class="text-center">questions 목록</h2>
-    <h2>{{ questions.id }}</h2>
-    <!-- <div class="row">
+    <!-- <div>{{questions.id}}</div> -->
+    <div class="row">
       <div style="text-align: center">
         <select class="col-2 mr-4" v-model="key">
           <option value="all">라벨 선택</option>
@@ -14,7 +14,7 @@
         <button class="btn btn-primary" @click="searchQuestions">검색</button>
       </div>
     </div>
-    <div v-if="searchs.lengh > 0">
+    <div>
       <table class="table table-boardered">
         <colgroup>
           <col width="20%" />
@@ -25,21 +25,20 @@
           <th>제목</th>
         </thead>
         <tbody>
-          <tr v-for="(questions, index) in searchs" :key="questions.id">
+          <!-- <tr v-for="(question, index) in searchs" :key="question.id">
             <td>{{ index + 1 }}</td>
             <td>
               <router-link
                 :to="{
-                  name: 'questionsDetail' /*, query: { id: questions.id }*/,
+                  name: 'questionsDetail' /*, query: { id: question.id }*/,
                 }"
-                >{{ questions.title }}</router-link
+                >{{ question.title }}</router-link
               >
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
-    <div v-else>No List</div> -->
   </div>
 </template>
 

@@ -12,7 +12,6 @@
         ><strong>실시간 대회</strong></v-col
       ><v-col><v-btn>로그아웃</v-btn></v-col></v-row
     > -->
-    <h1>Header</h1>
     <router-link :to="{ name: 'MainView' }"
       ><img src="@/assets/메인로고2.png" width="30%"
     /></router-link>

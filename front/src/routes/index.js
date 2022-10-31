@@ -39,9 +39,21 @@ const routes = [
     component: () => import("@/views/WorkbookView.vue"),
   },
   {
-    path: "/Questions",
+    path: "/questions",
     name: "QuestionsView",
     component: () => import("@/views/QuestionsView.vue"),
+    children: [
+      {
+        path: "questionslist",
+        name: "QuestionsList",
+        component: () => import("@/components/questions/QuestionsList.vue"),
+      },
+      {
+        path: "questionsdetail",
+        name: "QuestionsDetail",
+        component: () => import("@/components/questions/QuestionsDetail.vue"),
+      },
+    ],
   },
   {
     path: "/competition",

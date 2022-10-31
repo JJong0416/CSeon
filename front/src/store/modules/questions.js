@@ -1,9 +1,8 @@
-import axios from "axios";
 
 const questionsStore = {
   namespaced: true,
   state: {
-    questions: [],
+    questions: { id: 1, title: "title1" },
     searchs: [],
   },
   getters: {
@@ -25,7 +24,7 @@ const questionsStore = {
   actions: {
     getQuestions({ commit }, payload) {
       console.log("getQuestions start", payload);
-      commit("setQuestions", [{ id: 1, title: "title1" }]);
+      commit("setQuestions", { id: 1, title: "title1" });
       // axios.get().then().catch();
     },
     getSearchs({ commit }, payload) {
