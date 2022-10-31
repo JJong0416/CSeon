@@ -1,6 +1,4 @@
-
-export default function MainPage(){
-  return (
-    <h2>MainPage</h2>
-  );
+export default function MainPage() {
+  console.log(sessionStorage.getItem("token"));
+  return <h2>MainPage</h2>;
 }
