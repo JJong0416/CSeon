@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,4 +32,11 @@ public class Account {
 
     @Column(name = "using_badge_id")
     private Long usingBadgeId;
+
+    public Account(long l, boolean b, int i, long l1) {
+        this.accountId = l;
+        this.accountRole = b;
+        this.successCount = i;
+        this.usingBadgeId= l1;
+    }
 }
