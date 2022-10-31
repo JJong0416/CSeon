@@ -1,10 +1,10 @@
 package cseon.api.dto.response;
 
+import cseon.domain.Answer;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Getter
 public class QuestionDto {
@@ -19,10 +19,10 @@ public class QuestionDto {
     private final String questionExp;
 
     @NotNull
-    private final List<AnswerDto> answers;
+    private final Answer answers;
 
     @Builder
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, List<AnswerDto> answers) {
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, Answer answers) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
