@@ -5,11 +5,11 @@ import axios from "axios";
 
 function RedirectPage() {
   const location = useLocation();
-  const CODE = location.search.split("=")[1];
+  const CODE = location.search.split("code=")[1];
   const sendCode = () => {
     axios({
       method: "get",
-      url: `http://localhost:7070/kakao/${CODE}`,
+      url: `/api/login/kakao/${CODE}`,
     })
       .then(function (res) {
         sessionStorage.setItem("token", res.data);
@@ -21,8 +21,13 @@ function RedirectPage() {
       });
   };
   useEffect(() => {
-    sendCode();
+    console.log(location.search);
+    console.log(CODE);
   }, []);
-  return <></>;
+  return (
+    <div>
+      <button onClick={sendCode}> btn</button>
+    </div>
+  );
 }
 export default RedirectPage;

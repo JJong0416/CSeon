@@ -4,11 +4,15 @@ import LoginPage from "./component/LoginPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./component/MainPage";
 import RedirectPage from "./component/RedirectPage";
+import Header from "./component/Header";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <div>
+        <Header></Header>
+      </div>
         <Routes>
           <Route exact path="/" element={<LoginPage />}></Route>
           <Route path="/oauth/redirect" element={<RedirectPage />}></Route>
