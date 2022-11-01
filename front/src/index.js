@@ -21,13 +21,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode >
+  // <React.StrictMode > // 개발 모드에서 오류를 잘 잡기 위해 두번씩 렌더링
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );  // 18~
 
 // ReactDOM.render(

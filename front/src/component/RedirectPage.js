@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
 function RedirectPage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const CODE = location.search.split("code=")[1];
   const sendCode = () => {
@@ -11,23 +12,19 @@ function RedirectPage() {
       method: "get",
       url: `/api/login/kakao/${CODE}`,
     })
-      .then(function (res) {
-        sessionStorage.setItem("token", res.data);
+      .then((res) => {
+        sessionStorage.setItem("token", res.data.token);
         console.log(res.data);
-        window.location.replace("/");
+        navigate("/mainpage");
       })
-      .catch(function (err) {
+      .catch((err) => {
         console.error(err);
       });
   };
   useEffect(() => {
-    console.log(location.search);
-    console.log(CODE);
+    console.log("rendering");
+    sendCode();
   }, []);
-  return (
-    <div>
-      <button onClick={sendCode}> btn</button>
-    </div>
-  );
+  return <></>;
 }
 export default RedirectPage;
