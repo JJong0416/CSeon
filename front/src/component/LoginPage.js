@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [value, setValue] = useState(0); // 변하면 재렌더링되는 변수들
 
   const ClickLoginBtn = () => {
+    // navigate("/mainpage");
     window.location.replace(
       "https://kauth.kakao.com/oauth/authorize?client_id=237be15b2e18e8a188bff253550e714c&redirect_uri=http://localhost:3000/oauth/redirect&response_type=code"
     );
