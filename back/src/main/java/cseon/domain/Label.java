@@ -11,12 +11,13 @@ import javax.persistence.*;
 @Table(name="label")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Label {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="label_id")
     private Long labelId;
 
     @Column (name="label_name", nullable = false)
-    private Long labelName;
+    private String labelName;
 
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 @Tag(name="문제집", description = "문제집 관련 api입니다")
 @RestController
-@RequestMapping("/api/workbook")
+@RequestMapping("/v1/api/workbook")
 public class WorkbookController {
     @Autowired
     WorkbookService workbookService;
@@ -32,12 +32,12 @@ public class WorkbookController {
 
     @Operation(summary = "특정 문제집", description = "특정 문제집만 가져오는 메소드입니다.")
     @GetMapping(value = "/{workbookId}")
-    public ResponseEntity<Workbook> getWorkbook(@Parameter @PathVariable("workbookId") Long workbookId){
+    public ResponseEntity<Workbook> getWorkbook(@Parameter @PathVariable("workbookId") int workbookId){
         return ResponseEntity.ok().body(workbookService.getWorkbook(workbookId));
     }
 
     @Operation(summary = "문제집 만들기", description = "문제집을 만드는 메소드입니다.")
-    @GetMapping(value = "")
+    @PostMapping(value = "")
     public ResponseEntity<HttpStatus> newWorkbook(@Parameter @RequestBody WorkbookRequestDto workbookRequestDto) {
         workbookService.createWorkbook(workbookRequestDto);
         return ResponseEntity.ok().build();
@@ -45,8 +45,8 @@ public class WorkbookController {
 
     @Operation(summary = "문제집 수정하기", description = "문제집을 수정하는 메소드입니다.")
     @PatchMapping(value = "")
-    public ResponseEntity<HttpStatus> changeWorkbook(@Parameter @RequestBody WorkbookRequestDto workbookRequestDto){
-        workbookService.
+    public ResponseEntity<HttpStatus> changeWorkbook(@Parameter @RequestBody WorkbookRequestDto workbookRequestDto, int workbookId){
+        workbookService.modifyWorkbook(workbookRequestDto, workbookId);
+        return ResponseEntity.ok().build();
     }
-
 }

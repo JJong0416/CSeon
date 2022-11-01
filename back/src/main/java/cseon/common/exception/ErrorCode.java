@@ -26,6 +26,8 @@ public enum ErrorCode {
     //409 CONFLICT : 이미 존재하는 정보
     ID_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),
     LIST_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 추가되어있습니다."),
+    WORKBOOK_NAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "중복되는 문제집 이름입니다."),
+
 
     //500 INTERNAL_SERVER_ERROR: 내부 서버 오류
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다.");

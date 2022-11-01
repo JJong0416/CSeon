@@ -15,4 +15,7 @@ public class WorkbookRequestDto {
 
     @Schema(description = "사용자 좋아요 목록 소설 식별자", example = "2")
     private String workbookName;
+
+    @Schema(description = "유저 식별자", example = "1")
+    private Long workbookCreatedBy;
 }
