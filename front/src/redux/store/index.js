@@ -16,6 +16,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import storageSession from "redux-persist/lib/storage/session";
 
 import userInfoReducer from "../UserInfo";
 // import channelListReducer from "../ChannelList";
@@ -26,7 +27,8 @@ import userInfoReducer from "../UserInfo";
 const persistConfig = {
   key: "root",
   version: 1,
-  storage,
+  // storage: storage,  // local storage
+  storage: storageSession  // session storage
 };
 
 const rootReducer = combineReducers({

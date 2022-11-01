@@ -19,6 +19,8 @@ function RedirectPage() {
       })
       .catch((err) => {
         console.error(err);
+        alert("kakao login 실패");
+        navigate("/");
       });
   };
   useEffect(() => {
