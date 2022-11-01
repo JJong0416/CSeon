@@ -1,5 +1,6 @@
 package cseon.api.controller;
 
+import cseon.api.dto.response.AccountDetailsRes;
 import cseon.api.service.AccountService;
 import cseon.domain.Account;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,8 +21,7 @@ public class AccountDetailController {
 
     // TODO: 2022-11-01 JWT 로그인 기능 완성 시, Account 계정으로 넣기
     @GetMapping
-    public ResponseEntity<HttpStatus> showMyPage(){
-        accountService.takeMyPage();
-        return null;
+    public ResponseEntity<AccountDetailsRes> showMyPage(){
+        return ResponseEntity.ok(accountService.takeMyPage());
     }
 }
