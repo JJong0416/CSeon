@@ -2,6 +2,7 @@ package cseon.api.controller;
 
 import cseon.api.dto.layer.RequestQuestionDto;
 import cseon.api.dto.request.QuestionRequestDto;
+import cseon.api.dto.response.QuestionDto;
 import cseon.api.service.AdminService;
 import cseon.common.utils.DtoResponse;
 import cseon.common.utils.MessageResponse;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/v1/api/admin")
 @Tag(name = "Admin Function", description = "관리자 관련 API")
 public class AdminController {
 
@@ -27,7 +28,7 @@ public class AdminController {
      */
     @GetMapping("/request")
     public ResponseEntity<?> getRequestQuestionList(){
-        List<RequestQuestionDto> res = adminService.getRequestQuestionList();
+        List<QuestionDto> res = adminService.getRequestQuestionList();
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, "Success", res));
     }
 
@@ -37,17 +38,17 @@ public class AdminController {
      */
     @GetMapping("/request/{requestQuestionId}")
     public ResponseEntity<?> getRequestQuestion(@PathVariable("requestQuestionId") Long requestQuestionId){
-        RequestQuestionDto res = adminService.getRequestQuestion(requestQuestionId);
+        QuestionDto res = adminService.getRequestQuestion(requestQuestionId);
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, "Success", res));
     }
 
     /**
-     * 요청 문제 등록 허가
-     * @param requestQusetionId
+     * 문제 등록 허가
+     * @param questionDto
      */
-    @PostMapping("/request/{requestQuestionId}")
-    public ResponseEntity<?> allowQuestion(@PathVariable("requestQuestionId") Long requestQusetionId, @RequestBody QuestionRequestDto questionRequestDto){
-        boolean res = adminService.allowQuestion(requestQusetionId, questionRequestDto);
+    @PostMapping("/request")
+    public ResponseEntity<?> allowQuestion(@RequestBody QuestionRequestDto questionRequestDto){
+        boolean res = adminService.allowQuestion(questionRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? "Success" : "Fail"));
     }
 

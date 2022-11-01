@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/question")
+@RequestMapping("/v1/api/question")
 @Tag(name = "Question", description = "문제 관련 API")
 public class QuestionController {
 

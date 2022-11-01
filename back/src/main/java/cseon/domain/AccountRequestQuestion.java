@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "request_question")
+@Table(name = "account_request_question")
 @Getter
-public class RequestQuestion {
+public class AccountRequestQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +31,10 @@ public class RequestQuestion {
     @Column(name = "request_question_exp", nullable = false)
     private String requestQuestionExp;
 
-    @Column(name = "request_question_ans", nullable = false)
-    private Integer requestQuestionAns;
-
     @Builder
-    public AccountRequestQuestion(Account account, String requestQuestionTitle, String requestQuestionExp, Integer requestQuestionAns) {
+    public AccountRequestQuestion(Account account, String requestQuestionTitle, String requestQuestionExp) {
         this.account = account;
         this.requestQuestionTitle = requestQuestionTitle;
         this.requestQuestionExp = requestQuestionExp;
-        this.requestQuestionAns = requestQuestionAns;
     }
 }

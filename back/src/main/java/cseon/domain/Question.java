@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,15 @@ public class Question {
     @Column(name="question_exp", length = 200, nullable = false)
     private String questionExp;
 
+    @Builder
+    public Question(String questionTitle, String questionExp){
+        this.questionTitle = questionTitle;
+        this.questionExp = questionExp;
+    }
+
+    public Question(Long questionId, String questionTitle, String questionExp){
+        this.questionId = questionId;
+        this.questionTitle = questionTitle;
+        this.questionExp = questionExp;
+    }
 }

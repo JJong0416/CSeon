@@ -15,18 +15,29 @@ public class QuestionDto {
     @NotNull
     private final String questionTitle;
 
-    @NotNull
-    private final String questionExp;
+    private String questionExp;
 
-    @NotNull
-    private final Answer answers;
+    private AnswerDto answerDto;
 
-    @Builder
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, Answer answers) {
+    private Long accountId;
+
+    public QuestionDto(Long questionId, String questionTitle, Long accountId){
+        this.questionId = questionId;
+        this.questionTitle = questionTitle;
+        this.accountId = accountId;
+    }
+
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerDto answerDto) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
-        this.answers = answers;
+        this.answerDto= answerDto;
+    }
+
+    @Builder
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerDto answerDto, Long accountId){
+        this(questionId, questionTitle, questionExp, answerDto);
+        this.accountId = accountId;
     }
 }
 

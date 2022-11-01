@@ -1,6 +1,7 @@
 package cseon.api.service;
 
 import cseon.api.dto.request.QuestionRequestDto;
+import cseon.api.dto.response.AnswerDto;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.api.repository.AnswerRepository;
@@ -22,7 +23,10 @@ public class QuestionService {
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestDto questionRequestDto) {
-        AccountRequestQuestion requestQuestion = AccountRequestQuestion.builder().requestQuestionTitle(questionRequestDto.getQuestionTitle()).requestQuestionExp(questionRequestDto.getQuestionTitle()).requestQuestionAns(questionRequestDto.getQuestionAnswer()).build();
+        AccountRequestQuestion requestQuestion = AccountRequestQuestion.builder()
+                .requestQuestionTitle(questionRequestDto.getQuestionTitle())
+                .requestQuestionExp(questionRequestDto.getQuestionTitle())
+                .build();
 
         accountRequestQuestionRepository.save(requestQuestion);
     }
@@ -31,26 +35,16 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow(() -> {
             throw new NullPointerException("해당 문제가 존재하지 않습니다.");
         });
-//        List<AnswerDto> answers = answerRepository.findAllByQuestionId(question)
-//                .stream().map(answer -> AnswerDto.builder()
-//                        .answerId(answer.getAnswerId())
-//                        .answerContent(answer.getAnswerContent())
-//                        .answerRight(answer.getAnswerRight())
-//                        .build()).collect(Collectors.toList());
-//        List<String> answerlist = new LinkedList<>();
-//        answerlist.add("1번보기");
-//        answerlist.add("2번보기");
-//        answerlist.add("3번보기");
-//        answerlist.add("4번보기");
-//        answerRepository.insert(Answer.builder()
-//                        .questionId(1L)
-//                        .request(true)
-//                        .answers(answerlist)
-//                        .rightAnswer(2)
-//                        .build());
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, true);
-        return QuestionDto.builder().questionId(question.getQuestionId())
-                .questionTitle(question.getQuestionTitle()).questionExp(question.getQuestionExp())
-                .answers(answer).build();
+
+        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, true)
+                .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
+
+        // answer : to Dto
+        AnswerDto answerDto = AnswerDto.builder()
+                .answers(answer.getAnswers())
+                .rightAnswer(answer.getRightAnswer())
+                .build();
+
+        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerDto);
     }
 }

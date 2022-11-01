@@ -4,21 +4,20 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
+
 @Getter
 public class AnswerDto {
-    @NotNull
-    private final Long answerId;
 
     @NotNull
-    private final String answerContent;
+    private final List<String> answers;
 
     @NotNull
-    private final boolean answerRight;
+    private final Integer rightAnswer;
 
     @Builder
-    public AnswerDto(Long answerId, String answerContent, boolean answerRight) {
-        this.answerId = answerId;
-        this.answerContent = answerContent;
-        this.answerRight = answerRight;
+    public AnswerDto(List<String> answers, Integer rightAnswer) {
+        this.answers = answers;
+        this.rightAnswer = rightAnswer;
     }
 }

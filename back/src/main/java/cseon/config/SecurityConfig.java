@@ -6,11 +6,16 @@ import cseon.common.jwt.JwtAuthenticationEntryPoint;
 import cseon.common.jwt.JwtSecurityConfig;
 import cseon.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,13 +56,8 @@ public class SecurityConfig {
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers("/api/register/**").permitAll()
                 .antMatchers("/api/mission/search/**").permitAll()
-                .antMatchers("/api/email/**").permitAll()
                 .antMatchers("/api/find-pw").permitAll()
-                .antMatchers("/api/mission/hot").permitAll()
-                .antMatchers("/api/mission/new").permitAll()
-                .antMatchers("/api/test").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/mission/{missionNo}").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/mission/{missionNo}/mission-detail").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
