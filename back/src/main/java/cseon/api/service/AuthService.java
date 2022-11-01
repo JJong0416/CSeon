@@ -33,9 +33,10 @@ public class AuthService {
     private Authentication getAuthentication(LoginReq loginReq) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginReq.getUserId(), loginReq.getUserPassword());
-
+        // customUserDetailsService를 통해 springSecurity가 리턴해줄 user객체를 재정의하지 않으면 nullPointerException이 발생
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         return authentication;
     }
 }

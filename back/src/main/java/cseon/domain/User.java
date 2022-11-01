@@ -30,14 +30,6 @@ public class User {
     @Column(name = "user_email", length = 30, nullable = false)
     private String userEmail;
 
-    @Column(name = "account_success_count")
-    private int successCount;
-
-    @Column(name = "using_badge_id")
-    private Long userBadgeId;
-
-    @Column(name = "account_role")
-    private String accountRole;
 
     @Column(name = "platform_type")
     private PlatformType platformType;
