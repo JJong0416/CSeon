@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -23,4 +24,20 @@ public class Workbook {
 
     @Column(name = "workbook_createdBy", nullable = false)
     private Long workbookCreatedBy;
+
+    @Column(name = "question_list")
+    private String questionList;
+
+    @Builder
+    public Workbook(String workbookName, String questionList, Long workbookCreatedBy){
+        this.questionList = questionList;
+        this.workbookName = workbookName;
+        this.workbookCreatedBy = workbookCreatedBy;
+    }
+
+    public void updateWorkbook(String workbookName, String questionList){
+        this.questionList = questionList;
+        this.workbookName = workbookName;
+    }
+
 }
