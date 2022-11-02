@@ -1,5 +1,6 @@
 package cseon.api.service;
 
+import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.response.AccountDetailsRes;
 import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.dto.response.WorkbookRes;
@@ -27,6 +28,12 @@ public class AccountService {
     private final WorkbookRepository workbookRepository;
     private final AccountBadgeRepository accountBadgeRepository;
     private final BadgeRepository badgeRepository;
+
+    @Transactional
+    public void accountSignUp(AccountSignUpReq accountSignUpReq){
+
+
+    }
 
     @Transactional(readOnly = true)
     public AccountDetailsRes takeMyPage() {

@@ -1,13 +1,16 @@
 package cseon.api.service;
 
 import cseon.api.dto.layer.KakaoProfileDto;
+import cseon.api.dto.layer.UserListDto;
+import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.request.LoginReq;
 import cseon.api.dto.request.UserSignUpReq;
 import cseon.api.repository.AccountRepository;
 import cseon.api.repository.UserRepository;
 import cseon.common.exception.CustomException;
+import cseon.common.exception.ErrorCode;
+import cseon.domain.Account;
 import cseon.domain.PlatformType;
-import cseon.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -21,6 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static cseon.common.utils.UserUtils.createRandomKakaoUserNickname;
@@ -52,33 +56,52 @@ public class OAuthService {
         // 카카오 정보 꺼내오기
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
-        String userId = String.valueOf(kakaoProfile.getId());
-        String userEmail = kakaoProfile.getKakao_account().getEmail();
+        String accountName = String.valueOf(kakaoProfile.getId());
+        String accountEmail = kakaoProfile.getKakao_account().getEmail();
 
         // 존재한다면 LoginReq로 반환해준다
-        Optional<User> kakaoUser = findKakaoUser(userId);
+        Optional<Account> kakaoUser = findKakaoUser(accountName);
+
         if (kakaoUser.isPresent()) {
-            return new LoginReq(kakaoUser.get().getUserId(),userEmail);
+            return new LoginReq(kakaoUser.get().getAccountName(), accountEmail);
         }
 
         // 존재하지 않으면 생성 + 저장 + LoginReq 반환
-        UserSignUpReq userSignUpReq = UserSignUpReq.builder()
-                .userId(userId)
-                .userPassword(userEmail)
-                .userEmail(userEmail)
-                .userNickname(createRandomKakaoUserNickname(15L))
+        AccountSignUpReq accountSignUpReq = AccountSignUpReq.builder()
+                .accountName(accountName)
+                .usingBadgeId(0)
                 .build();
 
-        userSignUpReq.setPlatformType(PlatformType.KAKAO);
-        userRegisterService.signup(userSignUpReq);
 
-        return new LoginReq(userSignUpReq.getUserId(), userEmail);
+//
+//        List<UserListDto> allUsers =
+//                userRepository.findUserByUserIdOrUserEmailOrUserNickname(
+//                        userSignUpReq.getUserId(),
+//                        userSignUpReq.getUserEmail(),
+//                        userSignUpReq.getUserNickname());
+//
+//        for (UserListDto user : allUsers) {
+//            if (user.getUserId().equals(userSignUpReq.getUserId())) {
+//                throw new CustomException(ErrorCode.ID_ALREADY_EXISTS);
+//            } else if (user.getUserNickname().equals(userSignUpReq.getUserNickname())) {
+//                throw new CustomException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+//            } else if (user.getUserEmail().equals(userSignUpReq.getUserEmail())) {
+//                throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
+//            }
+//        }
+//        userSignUpReq.dtoEncodePassword(passwordEncoder.encode(userSignUpReq.getUserPassword()));
+//        User user = createUser(userSignUpReq);
+//        userRepository.save(user);
+
+//        userRegisterService.signup(userSignUpReq);
+
+        return new LoginReq(accountName, accountEmail);
     }
 
     /* 현재 userRepository에 해당하는 카카오 아이디 찾아오기 */
     @Transactional(readOnly = true)
-    protected Optional<User> findKakaoUser(String accountId) throws CustomException {
-        return userRepository.findUserByUserIdAndPlatformType(accountId, PlatformType.KAKAO);
+    protected Optional<Account> findKakaoUser(String accountName) throws CustomException {
+        return accountRepository.findAccountByAccountName(accountName);
     }
 
     private KakaoProfileDto getKakaoProfile(String code) {
@@ -102,7 +125,6 @@ public class OAuthService {
                 kakaoRequest,
                 KakaoProfileDto.class
         );
-
         return exchange.getBody();
     }
 
