@@ -108,7 +108,8 @@ public class OAuthService {
     private String getKakaoAccessToken(String code) {
 
         final String ACCESS_TOKEN = "access_token";
-
+        System.out.println("authorization코드로 카카오에서 유저정보가져오기");
+        System.out.println("code는????" + code);
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
 

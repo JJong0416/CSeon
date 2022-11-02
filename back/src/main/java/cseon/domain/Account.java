@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -38,5 +39,12 @@ public class Account {
         this.accountRole = b;
         this.successCount = i;
         this.usingBadgeId= l1;
+
+    @Builder
+    public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
+        this.accountRole = accountRole;
+        this.successCount = successCount;
+        this.usingBadgeId = usingBadgeId;
+
     }
 }
