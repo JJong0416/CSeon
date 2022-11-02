@@ -8,6 +8,8 @@ import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.api.repository.AnswerRepository;
 import cseon.api.repository.QuestionRepository;
+import cseon.common.exception.CustomException;
+import cseon.common.exception.ErrorCode;
 import cseon.domain.AccountRequestQuestion;
 import cseon.domain.Answer;
 import cseon.api.dto.response.QuestionRes;
@@ -51,14 +53,14 @@ public class QuestionService {
     public void selectAnswer(AnswerRequestReq answerRequestReq) {
 
     }
-
+    @Transactional(readOnly = true)
     public QuestionDto getQuestion(Long questionId) {
         Question question = questionRepository.findById(questionId).orElseThrow(() -> {
-            throw new NullPointerException("해당 문제가 존재하지 않습니다.");
+            throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, true)
-                .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
+        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, false)
+                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         // answer : to Dto
         AnswerRes answerRes = AnswerRes.builder()

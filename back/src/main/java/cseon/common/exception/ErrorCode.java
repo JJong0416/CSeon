@@ -25,6 +25,12 @@ public enum ErrorCode {
 
     WORKBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "문제집을 찾을 수 없습니다."),
 
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 문제를 찾을 수 없습니다."),
+
+    ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 문제의 보기를 찾을 수 없습니다."),
+
+    BADGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 칭호를 찾을 수 없습니다."),
+
     NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 내용을 찾을 수 없습니다."),
 
     PICTURE_NOT_FOUND(HttpStatus.NOT_FOUND, "사진을 찾을 수 없습니다."),
