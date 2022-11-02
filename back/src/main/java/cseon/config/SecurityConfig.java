@@ -24,7 +24,6 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
     private final OAuth2SuccessHandler successHandler;
 
     @Bean
@@ -47,10 +46,6 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login/**").permitAll()
-                .antMatchers("/api/register/**").permitAll()
-                .antMatchers("/api/mission/search/**").permitAll()
-                .antMatchers("/api/find-pw").permitAll()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
 

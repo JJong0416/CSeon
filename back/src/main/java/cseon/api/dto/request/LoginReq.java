@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Getter @ToString
+@Getter
 public class LoginReq {
 
     @Pattern(regexp = "[a-z0-9]{6,15}")

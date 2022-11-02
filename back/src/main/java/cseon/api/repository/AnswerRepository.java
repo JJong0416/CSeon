@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends MongoRepository<Answer, Long> {
-    //List<Answer> findAllByQuestionId(Question questionId);
     Optional<Answer> findByQuestionIdAndRequest(Long questionId, Boolean request);
 }

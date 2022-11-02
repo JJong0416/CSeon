@@ -20,7 +20,7 @@ public class Contest {
     private Long contestId;
 
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workbook_id")
     private Workbook workbookId;
 

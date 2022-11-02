@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public class MessageResponse {
+
     HttpStatus httpStatus;
+
     String message;
 
     public static MessageResponse of(HttpStatus httpStatus, String message){

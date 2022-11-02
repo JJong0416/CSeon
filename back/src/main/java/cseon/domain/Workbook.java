@@ -27,7 +27,6 @@ public class Workbook {
     @Column(name = "question_list")
     private String questionList;
 
-    /* 여기 */
     @Builder
     public Workbook(String workbookName, String questionList, Long workbookCreatedBy) {
         this.questionList = questionList;

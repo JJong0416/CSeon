@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
-public class QuestionRequestDto {
+public class QuestionRequestReq {
 
     @NotNull
     private final Long questionId;
@@ -28,7 +28,7 @@ public class QuestionRequestDto {
     private Long accountId;
 
     @Builder
-    public QuestionRequestDto(Long questionId, String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
+    public QuestionRequestReq(Long questionId, String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;

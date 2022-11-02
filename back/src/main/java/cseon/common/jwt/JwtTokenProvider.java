@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider implements InitializingBean {
 
     private static final String AUTHORITIES_KEY = "auth";
-
     private final String secret;
     private final long tokenValidityInMilliseconds;
 

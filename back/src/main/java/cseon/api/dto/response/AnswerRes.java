@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-public class AnswerDto {
+public class AnswerRes {
 
     @NotNull
     private final List<String> answers;
@@ -16,7 +16,7 @@ public class AnswerDto {
     private final Integer rightAnswer;
 
     @Builder
-    public AnswerDto(List<String> answers, Integer rightAnswer) {
+    public AnswerRes(List<String> answers, Integer rightAnswer) {
         this.answers = answers;
         this.rightAnswer = rightAnswer;
     }

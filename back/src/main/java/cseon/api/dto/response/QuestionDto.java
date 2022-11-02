@@ -1,6 +1,5 @@
 package cseon.api.dto.response;
 
-import cseon.domain.Answer;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,7 +16,7 @@ public class QuestionDto {
 
     private String questionExp;
 
-    private AnswerDto answerDto;
+    private AnswerRes answerRes;
 
     private Long accountId;
 
@@ -27,16 +26,16 @@ public class QuestionDto {
         this.accountId = accountId;
     }
 
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerDto answerDto) {
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
-        this.answerDto= answerDto;
+        this.answerRes = answerRes;
     }
 
     @Builder
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerDto answerDto, Long accountId){
-        this(questionId, questionTitle, questionExp, answerDto);
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId){
+        this(questionId, questionTitle, questionExp, answerRes);
         this.accountId = accountId;
     }
 }

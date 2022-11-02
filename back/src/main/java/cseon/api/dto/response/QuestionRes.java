@@ -2,7 +2,6 @@ package cseon.api.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 public class QuestionRes {

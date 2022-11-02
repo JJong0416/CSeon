@@ -30,10 +30,8 @@ public class User {
     @Column(name = "user_email", length = 30, nullable = false)
     private String userEmail;
 
-
     @Column(name = "platform_type")
     private PlatformType platformType;
-
 
     @Builder
     public User(String userId, String userPassword, String userNickname, String userEmail,
@@ -44,5 +42,4 @@ public class User {
         this.userEmail = userEmail;
         this.platformType = platformType;
     }
-
 }
