@@ -34,9 +34,6 @@ public class User {
     @Column(name = "platform_type")
     private PlatformType platformType;
 
-    @Column(name = "platform_access_token")
-    private Long platformAccessToken;
-
 
     @Builder
     public User(String userId, String userPassword, String userNickname, String userEmail,

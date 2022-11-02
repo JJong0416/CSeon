@@ -8,9 +8,10 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name="question_label")
+@Table(name = "question_label")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionLabel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_label_id")
@@ -21,6 +22,7 @@ public class QuestionLabel {
     private Question questionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="label_id", referencedColumnName = "label_id")
-    private Label LabelId;
+    @JoinColumn(name = "label_id", referencedColumnName = "label_id")
+    private Label labelId;
+
 }

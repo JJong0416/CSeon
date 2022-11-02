@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,7 +9,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,4 +33,18 @@ public class Account {
 
     @Column(name = "using_badge_id")
     private Long usingBadgeId;
+
+    public Account(long l, boolean b, int i, long l1) {
+        this.accountId = l;
+        this.accountRole = b;
+        this.successCount = i;
+        this.usingBadgeId= l1;
+
+    @Builder
+    public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
+        this.accountRole = accountRole;
+        this.successCount = successCount;
+        this.usingBadgeId = usingBadgeId;
+
+    }
 }
