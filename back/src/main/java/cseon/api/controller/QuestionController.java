@@ -1,5 +1,6 @@
 package cseon.api.controller;
 
+import cseon.api.dto.request.AnswerRequestDto;
 import cseon.api.dto.request.QuestionRequestDto;
 
 import cseon.api.dto.response.QuestionDto;
@@ -10,7 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,6 +33,12 @@ public class QuestionController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/logs")
+    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestDto answerRequestDto){
+        questionService.selectAnswer(answerRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{questionId}")
     public ResponseEntity<QuestionDto> getQuestion(@PathVariable("questionId") Long questionId){
       return new ResponseEntity<>(questionService.getQuestion(questionId), HttpStatus.OK);
@@ -39,4 +49,5 @@ public class QuestionController {
     ) {
         return ResponseEntity.ok(questionService.takeQuestionsWithKeywordAndLabel(keyword, label));
     }
+
 }

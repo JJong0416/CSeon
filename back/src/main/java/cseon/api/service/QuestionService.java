@@ -1,5 +1,6 @@
 package cseon.api.service;
 
+import cseon.api.dto.request.AnswerRequestDto;
 import cseon.api.dto.request.QuestionRequestDto;
 
 import cseon.api.dto.response.AnswerDto;
@@ -41,6 +42,11 @@ public class QuestionService {
 
         // 2. RDB에 저장한다.
         accountRequestQuestionRepository.save(requestQuestion);
+    }
+
+    @Transactional
+    public void selectAnswer(AnswerRequestDto answerRequestDto) {
+
     }
 
     public QuestionDto getQuestion(Long questionId) {
