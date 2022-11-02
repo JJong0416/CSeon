@@ -13,6 +13,7 @@ import cseon.domain.Question;
 import cseon.common.exception.RequestQuestionApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Null;
 import java.util.ArrayList;
@@ -97,7 +98,9 @@ public class AdminService {
         return true;
     }
 
-    public boolean modifyQuestion(QuestionRequestDto questionRequestDto) {
+    @Transactional
+    public Boolean modifyQuestion(QuestionRequestDto questionRequestDto) {
+
         Question question = questionRepository.findById(questionRequestDto.getQuestionId())
                 .orElseThrow(() -> new NullPointerException("해당 문제가 존재하지 않습니다."));
 
@@ -105,8 +108,8 @@ public class AdminService {
                 .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
 
         // question 덮어쓰기
-        Question q = new Question(question.getQuestionId(), questionRequestDto.getQuestionTitle(), questionRequestDto.getQuestionExp());
-        questionRepository.save(q);
+        question.accountChangeQuestion(questionRequestDto.getQuestionTitle(), questionRequestDto.getQuestionExp());
+        questionRepository.save(question);
 
         // answer 덮어쓰기
         Answer a = Answer.builder()

@@ -64,6 +64,7 @@ public class QuestionService {
                 .build();
 
         return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerDto);
+    }
 
     // TODO: 2022-10-30 ElasticSearch를 통한 검색 성능 향상 필수
     @Transactional(readOnly = true)

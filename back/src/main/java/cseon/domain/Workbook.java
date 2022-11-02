@@ -4,13 +4,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "workbook") @ToString
+@Table(name = "workbook")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Workbook {
 
@@ -28,16 +27,16 @@ public class Workbook {
     @Column(name = "question_list")
     private String questionList;
 
+    /* 여기 */
     @Builder
-    public Workbook(String workbookName, String questionList, Long workbookCreatedBy){
+    public Workbook(String workbookName, String questionList, Long workbookCreatedBy) {
         this.questionList = questionList;
         this.workbookName = workbookName;
         this.workbookCreatedBy = workbookCreatedBy;
     }
 
-    public void updateWorkbook(String workbookName, String questionList){
+    public void changeWorkbook(String workbookName, String questionList) {
         this.questionList = questionList;
         this.workbookName = workbookName;
     }
-
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalTime;
 import java.util.List;
 
 @Service("workbookService")
@@ -50,7 +49,7 @@ public class WorkbookService {
         if (workbookRepository.findWorkbooksByWorkbookCreatedByAndWorkbookName(workbookRequestDto.getWorkbookCreatedBy(), workbookRequestDto.getWorkbookName()).isPresent()){
             throw new CustomException(ErrorCode.WORKBOOK_NAME_ALREADY_EXISTS);
         }
-        workbook.updateWorkbook(workbookRequestDto.getWorkbookName(), toString(quesId));
+        workbook.changeWorkbook(workbookRequestDto.getWorkbookName(), toString(quesId));
     }
 
     public String toString(List<Long> ids){

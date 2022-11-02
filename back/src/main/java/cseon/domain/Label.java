@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "label") @ToString
+@Table(name = "label")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Label {
 

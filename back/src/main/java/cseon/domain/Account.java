@@ -38,13 +38,13 @@ public class Account {
         this.accountId = l;
         this.accountRole = b;
         this.successCount = i;
-        this.usingBadgeId= l1;
+        this.usingBadgeId = l1;
+    }
 
     @Builder
     public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
         this.accountRole = accountRole;
         this.successCount = successCount;
         this.usingBadgeId = usingBadgeId;
-
     }
 }

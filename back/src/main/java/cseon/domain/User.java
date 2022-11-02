@@ -1,14 +1,14 @@
 package cseon.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
-@ToString
 @Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
