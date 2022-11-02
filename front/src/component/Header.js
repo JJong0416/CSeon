@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import { useNavigate } from "react-router";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -13,11 +14,24 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const navigate = useNavigate();
+  const ClickQuestions = () => {
+    navigate("/questionslist");
+  };
+  const ClickHome = () => {
+    navigate("/mainpage");
+  };
+  const ClickWorkbook = ()=>{
+    navigate("/workbooklist");
+  }
+  const ClickCompetition = ()=>{
+    navigate("/competitionlist");
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <Item>
+          <Item onClick={ClickHome}>
             <img
               src={require("../assets/메인로고2.png")}
               width="70%"
@@ -26,17 +40,18 @@ export default function Header() {
           </Item>
         </Grid>
         <Grid item xs={2}>
-          <Item>문제 풀기</Item>
+          <Item onClick={ClickQuestions}>문제 풀기</Item>
         </Grid>
         <Grid item xs={2}>
-          <Item>문제집</Item>
+          <Item onClick={ClickWorkbook}>문제집</Item>
         </Grid>
         <Grid item xs={2}>
-          <Item>실시간 대회</Item>
+          <Item onClick={ClickCompetition}>실시간 대회</Item>
         </Grid>
         <Grid item xs={3}>
           <Item>
-            <button>버튼</button>
+            <button>로그아웃</button>
+            <button>마이페이지</button>
           </Item>
         </Grid>
         {/* <Grid item xs={4}>
