@@ -17,8 +17,8 @@ public class AccountRequestQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_request_question_id")
-    private Long accountRequestQuestionId;
+    @Column(name = "request_question_id")
+    private Long requestQuestionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
@@ -31,14 +31,10 @@ public class AccountRequestQuestion {
     @Column(name = "request_question_exp", nullable = false)
     private String requestQuestionExp;
 
-    @Column(name = "request_question_ans", nullable = false)
-    private Integer requestQuestionAns;
-
     @Builder
-    public AccountRequestQuestion(Account account, String requestQuestionTitle, String requestQuestionExp, Integer requestQuestionAns) {
+    public AccountRequestQuestion(Account account, String requestQuestionTitle, String requestQuestionExp) {
         this.account = account;
         this.requestQuestionTitle = requestQuestionTitle;
         this.requestQuestionExp = requestQuestionExp;
-        this.requestQuestionAns = requestQuestionAns;
     }
 }

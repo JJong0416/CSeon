@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -28,4 +29,15 @@ public class Question {
     @OneToMany(mappedBy = "questionId")
     List<QuestionLabel> labels;
 
+    @Builder
+    public Question(String questionTitle, String questionExp){
+        this.questionTitle = questionTitle;
+        this.questionExp = questionExp;
+    }
+
+    public Question(Long questionId, String questionTitle, String questionExp){
+        this.questionId = questionId;
+        this.questionTitle = questionTitle;
+        this.questionExp = questionExp;
+    }
 }

@@ -34,10 +34,17 @@ public class Account {
     @Column(name = "using_badge_id")
     private Long usingBadgeId;
 
+    public Account(long l, boolean b, int i, long l1) {
+        this.accountId = l;
+        this.accountRole = b;
+        this.successCount = i;
+        this.usingBadgeId= l1;
+
     @Builder
     public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
         this.accountRole = accountRole;
         this.successCount = successCount;
         this.usingBadgeId = usingBadgeId;
+
     }
 }
