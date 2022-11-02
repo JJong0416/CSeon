@@ -8,9 +8,14 @@ import { FixedSizeList } from "react-window";
 function renderRow(props) {
   const { index, style } = props;
 
+  const Clicklistitem = (idx)=>{
+    console.log("click", idx);
+  }
+  
+
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton>
+      <ListItemButton onClick={()=>Clicklistitem(index)}>
         <ListItemText primary={`Item ${index + 1}`} />
       </ListItemButton>
     </ListItem>
