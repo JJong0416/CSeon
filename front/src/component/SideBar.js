@@ -17,7 +17,7 @@ function renderRow(props) {
   );
 }
 
-export default function ssss() {
+export default function SideBar() {
   return (
     <Box
       sx={{

@@ -1,3 +1,4 @@
+import { AutoFixHighSharp, LineAxisOutlined } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -8,9 +9,24 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import SideBar from "./ssss.js";
+import { useEffect, useState } from "react";
+import SideBar from "../SideBar";
 
-export default function SolvePage() {
+export default function QuestionsDetail() {
+
+  const [questionnum, setQuestionnum]=useState(0);
+  const [questiontitle, setQuestiontitle] = useState("");
+
+  useEffect(()=>{
+    // axios.get().then((res)=>{
+    //   console.log(res.data); // questionId, questionTitle, questionExp, answers:{0:dsf, 1:23}
+    //   setQuestiontitle(res.data.questionTitle);
+    // })
+  },[])
+
+  useEffect(()=>{
+    // axios.get()
+  }, [questionnum])
   return (
     <div style={{ display: "flex" }}>
       <div
@@ -34,6 +50,7 @@ export default function SolvePage() {
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
+            <h2>{questiontitle}</h2>
             <Grid item xs={6}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
