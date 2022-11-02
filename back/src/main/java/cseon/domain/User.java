@@ -34,8 +34,8 @@ public class User {
     private PlatformType platformType;
 
     @Builder
-    public User(String userId, String userPassword, String userNickname, String userEmail,
-                PlatformType platformType) {
+    public User(
+            String userId, String userPassword, String userNickname, String userEmail, PlatformType platformType) {
         this.userId = userId;
         this.userPassword = userPassword;
         this.userNickname = userNickname;

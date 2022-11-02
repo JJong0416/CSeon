@@ -37,8 +37,11 @@ public class QuestionService {
         AccountRequestQuestion requestQuestion = AccountRequestQuestion.builder()
                 .account(null) // TODO: 2022-10-30 로그인 기능 완성 시, 추가해서 넣기
                 .requestQuestionTitle(questionRequestReq.getQuestionTitle())
-                .requestQuestionExp(questionRequestReq.getQuestionTitle())
+                .requestQuestionExp(questionRequestReq.getQuestionExp())
                 .build();
+
+        // 2. MongoDB에 문제에 대한 설명을 넣어준다
+
 
         // 2. RDB에 저장한다.
         accountRequestQuestionRepository.save(requestQuestion);

@@ -3,6 +3,7 @@ package cseon.api.service;
 import cseon.api.dto.layer.KakaoProfileDto;
 import cseon.api.dto.request.LoginReq;
 import cseon.api.dto.request.UserSignUpReq;
+import cseon.api.repository.AccountRepository;
 import cseon.api.repository.UserRepository;
 import cseon.common.exception.CustomException;
 import cseon.domain.PlatformType;
@@ -30,6 +31,8 @@ import static cseon.common.utils.UserUtils.createRandomKakaoUserNickname;
 public class OAuthService {
 
     private final UserRegisterService userRegisterService;
+
+    private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
 
@@ -72,11 +75,10 @@ public class OAuthService {
         return new LoginReq(userSignUpReq.getUserId(), userEmail);
     }
 
-
     /* 현재 userRepository에 해당하는 카카오 아이디 찾아오기 */
     @Transactional(readOnly = true)
-    protected Optional<User> findKakaoUser(String userId) throws CustomException {
-        return userRepository.findUserByUserIdAndPlatformType(userId, PlatformType.KAKAO);
+    protected Optional<User> findKakaoUser(String accountId) throws CustomException {
+        return userRepository.findUserByUserIdAndPlatformType(accountId, PlatformType.KAKAO);
     }
 
     private KakaoProfileDto getKakaoProfile(String code) {
