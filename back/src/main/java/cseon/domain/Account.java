@@ -1,5 +1,6 @@
 package cseon.domain;
 
+import cseon.domain.type.AccountRole;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,29 +25,31 @@ public class Account {
     private Long accountId;
 
     @Column(name = "account_name", nullable = false)
-    @ColumnDefault("unknown")
+//    @ColumnDefault("unknown")
     private String accountName;
 
     @Column(name = "account_role", nullable = false)
-    @ColumnDefault("0")
-    private Boolean accountRole;
+//    @ColumnDefault("0")
+//    @Enumerated(value = EnumType.STRING)
+    private AccountRole accountRole;
 
     @Column(name = "success_count", nullable = false)
-    @ColumnDefault("0")
+//    @ColumnDefault("0")
     private Integer successCount;
 
     @Column(name = "using_badge_id")
     private Long usingBadgeId;
 
-    public Account(long l, boolean b, int i, long l1) {
+    public Account(long l, String accountName, AccountRole b, int i, long l1) {
         this.accountId = l;
+        this.accountName = accountName;
         this.accountRole = b;
         this.successCount = i;
         this.usingBadgeId = l1;
     }
 
     @Builder
-    public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
+    public Account(AccountRole accountRole, Integer successCount, Long usingBadgeId) {
         this.accountRole = accountRole;
         this.successCount = successCount;
         this.usingBadgeId = usingBadgeId;
