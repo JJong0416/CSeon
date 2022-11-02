@@ -1,16 +1,11 @@
 package cseon.api.service;
 
 import cseon.api.dto.layer.KakaoProfileDto;
-import cseon.api.dto.layer.UserListDto;
 import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.request.LoginReq;
-import cseon.api.dto.request.UserSignUpReq;
 import cseon.api.repository.AccountRepository;
-import cseon.api.repository.UserRepository;
 import cseon.common.exception.CustomException;
-import cseon.common.exception.ErrorCode;
 import cseon.domain.Account;
-import cseon.domain.PlatformType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -24,21 +19,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
-
-import static cseon.common.utils.UserUtils.createRandomKakaoUserNickname;
 
 
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
 
-    private final UserRegisterService userRegisterService;
-
     private final AccountRepository accountRepository;
-    private final UserRepository userRepository;
-
+    private final AccountDetailsService accountDetailsService;
 
     @Value("${kakao.client-id}")
     private String client_id;
@@ -57,45 +46,19 @@ public class OAuthService {
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
         String accountName = String.valueOf(kakaoProfile.getId());
-        String accountEmail = kakaoProfile.getKakao_account().getEmail();
 
         // 존재한다면 LoginReq로 반환해준다
         Optional<Account> kakaoUser = findKakaoUser(accountName);
 
         if (kakaoUser.isPresent()) {
-            return new LoginReq(kakaoUser.get().getAccountName(), accountEmail);
+            return new LoginReq(kakaoUser.get().getAccountName(), kakaoUser.get().getAccountName());
         }
 
         // 존재하지 않으면 생성 + 저장 + LoginReq 반환
-        AccountSignUpReq accountSignUpReq = AccountSignUpReq.builder()
-                .accountName(accountName)
-                .usingBadgeId(0)
-                .build();
+        AccountSignUpReq accountSignUpReq = new AccountSignUpReq(accountName);
 
-
-//
-//        List<UserListDto> allUsers =
-//                userRepository.findUserByUserIdOrUserEmailOrUserNickname(
-//                        userSignUpReq.getUserId(),
-//                        userSignUpReq.getUserEmail(),
-//                        userSignUpReq.getUserNickname());
-//
-//        for (UserListDto user : allUsers) {
-//            if (user.getUserId().equals(userSignUpReq.getUserId())) {
-//                throw new CustomException(ErrorCode.ID_ALREADY_EXISTS);
-//            } else if (user.getUserNickname().equals(userSignUpReq.getUserNickname())) {
-//                throw new CustomException(ErrorCode.NICKNAME_ALREADY_EXISTS);
-//            } else if (user.getUserEmail().equals(userSignUpReq.getUserEmail())) {
-//                throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
-//            }
-//        }
-//        userSignUpReq.dtoEncodePassword(passwordEncoder.encode(userSignUpReq.getUserPassword()));
-//        User user = createUser(userSignUpReq);
-//        userRepository.save(user);
-
-//        userRegisterService.signup(userSignUpReq);
-
-        return new LoginReq(accountName, accountEmail);
+        accountDetailsService.signup(accountSignUpReq);
+        return new LoginReq(accountName, accountName);
     }
 
     /* 현재 userRepository에 해당하는 카카오 아이디 찾아오기 */

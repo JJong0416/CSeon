@@ -46,7 +46,8 @@ public class Account {
     }
 
     @Builder
-    public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
+    public Account(String accountName, Boolean accountRole, Integer successCount, Long usingBadgeId) {
+        this.accountName = accountName;
         this.accountRole = accountRole;
         this.successCount = successCount;
         this.usingBadgeId = usingBadgeId;

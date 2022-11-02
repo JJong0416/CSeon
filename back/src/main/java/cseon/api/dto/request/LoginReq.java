@@ -13,7 +13,6 @@ public class LoginReq {
     private final String accountName;
 
     @NotBlank
-    @Size(min = 6, max = 100)
     private final String accountEmail;
 
     public LoginReq(String accountName, String accountEmail) {

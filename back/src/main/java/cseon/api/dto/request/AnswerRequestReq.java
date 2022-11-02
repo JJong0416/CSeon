@@ -8,11 +8,13 @@ import javax.validation.constraints.Size;
 
 @Getter
 public class AnswerRequestReq {
+
     @NotNull
     private final Long questionId;
 
     @Size(min = 1, max = 4)
     private final Integer checkNumber;
+
     @NotNull
     private final Boolean isAnswer;
 

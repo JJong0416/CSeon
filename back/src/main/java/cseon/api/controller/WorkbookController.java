@@ -6,6 +6,7 @@ import cseon.domain.Workbook;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,10 @@ import java.util.List;
 @Tag(name = "문제집", description = "문제집 관련 api입니다")
 @RestController
 @RequestMapping("/v1/api/workbook")
+@RequiredArgsConstructor
 public class WorkbookController {
-    @Autowired
-    WorkbookService workbookService;
+
+    private final WorkbookService workbookService;
 
     @Operation(summary = "전체 문제집", description = "전체 문제집을 가져오는 메소드입니다.")
     @GetMapping(value = "")

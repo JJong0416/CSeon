@@ -16,6 +16,4 @@ public class UserListDto {
         UserNickname = userNickname;
         UserEmail = userEmail;
     }
-
-
 }

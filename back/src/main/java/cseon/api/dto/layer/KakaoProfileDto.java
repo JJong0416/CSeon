@@ -3,7 +3,7 @@ package cseon.api.dto.layer;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter @ToString
+@Getter
 public class KakaoProfileDto {
     private Long id;
     private Properties properties;

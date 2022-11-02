@@ -20,7 +20,7 @@ public class QuestionDto {
 
     private Long accountId;
 
-    public QuestionDto(Long questionId, String questionTitle, Long accountId){
+    public QuestionDto(Long questionId, String questionTitle, Long accountId) {
         this.questionId = questionId;
         this.questionTitle = questionTitle;
         this.accountId = accountId;
@@ -34,7 +34,7 @@ public class QuestionDto {
     }
 
     @Builder
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId){
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId) {
         this(questionId, questionTitle, questionExp, answerRes);
         this.accountId = accountId;
     }

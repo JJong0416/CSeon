@@ -29,11 +29,6 @@ public class AccountService {
     private final AccountBadgeRepository accountBadgeRepository;
     private final BadgeRepository badgeRepository;
 
-    @Transactional
-    public void accountSignUp(AccountSignUpReq accountSignUpReq){
-
-
-    }
 
     @Transactional(readOnly = true)
     public AccountDetailsRes takeMyPage() {

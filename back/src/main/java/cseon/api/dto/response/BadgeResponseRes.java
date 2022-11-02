@@ -7,10 +7,13 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 public class BadgeResponseRes {
+
     @NotNull
     private final Long badgeId;
+
     @NotNull
     private final String badgeName;
+
     @NotNull
     private final String badgeExp;
 

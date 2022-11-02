@@ -21,10 +21,10 @@ public class AccountSignUpReq {
     private final Integer accountSuccessCount = 0;
 
     @NotNull
-    private final Integer usingBadgeId = 0;
+    private final Long usingBadgeId = 0L;
 
     @Builder
-    public AccountSignUpReq(String accountName, Integer usingBadgeId) {
+    public AccountSignUpReq(String accountName) {
         this.accountName = accountName;
     }
 }
