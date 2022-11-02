@@ -1,11 +1,16 @@
 package cseon.api.service;
 
 import cseon.api.dto.request.QuestionRequestDto;
-import cseon.api.dto.response.QuestionRes;
+
+import cseon.api.dto.response.AnswerDto;
+import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.AccountRequestQuestionRepository;
-import cseon.api.repository.LabelRepository;
+import cseon.api.repository.AnswerRepository;
 import cseon.api.repository.QuestionRepository;
 import cseon.domain.AccountRequestQuestion;
+import cseon.domain.Answer;
+import cseon.api.dto.response.QuestionRes;
+import cseon.api.repository.LabelRepository;
 import cseon.domain.Label;
 import cseon.domain.Question;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +25,9 @@ import java.util.stream.Collectors;
 public class QuestionService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
-    private final LabelRepository labelRepository;
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+    private final LabelRepository labelRepository;
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestDto questionRequestDto) {
@@ -31,12 +37,27 @@ public class QuestionService {
                 .account(null) // TODO: 2022-10-30 로그인 기능 완성 시, 추가해서 넣기
                 .requestQuestionTitle(questionRequestDto.getQuestionTitle())
                 .requestQuestionExp(questionRequestDto.getQuestionTitle())
-                .requestQuestionAns(questionRequestDto.getQuestionAnswer())
                 .build();
 
         // 2. RDB에 저장한다.
         accountRequestQuestionRepository.save(requestQuestion);
     }
+
+    public QuestionDto getQuestion(Long questionId) {
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> {
+            throw new NullPointerException("해당 문제가 존재하지 않습니다.");
+        });
+
+        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, true)
+                .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
+
+        // answer : to Dto
+        AnswerDto answerDto = AnswerDto.builder()
+                .answers(answer.getAnswers())
+                .rightAnswer(answer.getRightAnswer())
+                .build();
+
+        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerDto);
 
     // TODO: 2022-10-30 ElasticSearch를 통한 검색 성능 향상 필수
     @Transactional(readOnly = true)

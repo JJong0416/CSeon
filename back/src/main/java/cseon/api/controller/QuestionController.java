@@ -1,7 +1,10 @@
 package cseon.api.controller;
 
 import cseon.api.dto.request.QuestionRequestDto;
+
+import cseon.api.dto.response.QuestionDto;
 import cseon.api.dto.response.QuestionRes;
+
 import cseon.api.service.QuestionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/question")
+@RequestMapping("/v1/api/question")
 @Tag(name = "Question", description = "문제 관련 API")
 public class QuestionController {
 
@@ -25,6 +28,10 @@ public class QuestionController {
         questionService.requestQuestionAddBoard(questionRequestDto);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{questionId}")
+    public ResponseEntity<QuestionDto> getQuestion(@PathVariable("questionId") Long questionId){
+      return new ResponseEntity<>(questionService.getQuestion(questionId), HttpStatus.OK);
 
     @GetMapping("/{label}/{keyword}")
     public ResponseEntity<List<QuestionRes>> takeQuestionsWithInfo(@PathVariable("label") String label,
