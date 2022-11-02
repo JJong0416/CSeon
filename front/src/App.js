@@ -7,6 +7,7 @@ import RedirectPage from "./component/RedirectPage";
 import Header from "./component/Header";
 import QuestionsList from "./component/questions/QuestionsList";
 import QuestionsDetail from "./component/questions/QuestionsDetail";
+import QuestionRequest from "./component/questions/QuestionRequest";
 import WorkbookList from "./component/workbook/WorkbookList";
 import WorkbookDetail from "./component/workbook/WorkbookDetail";
 import CompetitionList from "./component/competition/CompetitionList";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/mainpage" element={<MainPage />}></Route>
           <Route path="/questionslist" element={<QuestionsList />}></Route>
           <Route path="/questionsdetail" element={<QuestionsDetail />}></Route>
+          <Route path="/questionrequest" element={<QuestionRequest />}></Route>
           <Route path="/workbooklist" element={<WorkbookList />}></Route>
           <Route path="/workbookdetail" element={<WorkbookDetail />}></Route>
           <Route path="/competitionlist" element={<CompetitionList />}></Route>
