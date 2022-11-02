@@ -13,20 +13,41 @@ import { useEffect, useState } from "react";
 import SideBar from "../SideBar";
 
 export default function QuestionsDetail() {
+  const [questionnum, setQuestionnum] = useState(0);
+  const [questiontitle, setQuestiontitle] = useState(
+    "문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제"
+  );
+  const [answers, setAnswers] = useState([
+    "1번보기1번보기1번보기1번보기1번보기1번보기1번보기",
+    "2번보기2번보기2번보기2번보기2번보기2번보기2번보기",
+    "3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기",
+    "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기",
+  ]);
 
-  const [questionnum, setQuestionnum]=useState(0);
-  const [questiontitle, setQuestiontitle] = useState("");
-
-  useEffect(()=>{
+  useEffect(() => {
     // axios.get().then((res)=>{
     //   console.log(res.data); // questionId, questionTitle, questionExp, answers:{0:dsf, 1:23}
     //   setQuestiontitle(res.data.questionTitle);
     // })
-  },[])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
+    // axios로 보기 내용 받아오기
+    // setAnswers([
+    //   "1번보기1번보기1번보기1번보기1번보기1번보기1번보기",
+    //   "2번보기2번보기2번보기2번보기2번보기2번보기2번보기",
+    //   "3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기",
+    //   "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기",
+    // ]);
+    // setQuestiontitle(
+    //   "문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제"
+    // );
+  });
+
+  useEffect(() => {
     // axios.get()
-  }, [questionnum])
+  }, [questionnum]);
+
   return (
     <div style={{ display: "flex" }}>
       <div
@@ -37,6 +58,7 @@ export default function QuestionsDetail() {
       >
         <SideBar></SideBar>
       </div>
+      {/* 버튼을 누르면 전에 있는 문제를 불러와야함 */}
       <Button>&lt;&lt;</Button>
       <div
         style={{
@@ -45,64 +67,56 @@ export default function QuestionsDetail() {
         }}
       >
         <Box sx={{ width: "100%" }}>
+          <h2>Q. {questiontitle}</h2>
           <Grid
             container
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            <h2>{questiontitle}</h2>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ my: 5 }}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                    1번
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {answers[0]}
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ my: 5 }}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                    2번
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {answers[1]}
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ my: 5 }}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                    3번
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {answers[2]}
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} sx={{ my: 5 }}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                    4번
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {answers[3]}
                   </Typography>
                 </CardContent>
               </Card>
