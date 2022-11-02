@@ -4,21 +4,20 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.jdbc.Work;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "workbook")
+@Table(name = "workbook") @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Workbook {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workbook_id")
-    private int workbookId;
+    private Long workbookId;
 
     @Column(name = "workbook_name", length = 50, nullable = false)
     private String workbookName;
