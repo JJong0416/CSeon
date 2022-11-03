@@ -8,7 +8,6 @@ export default function MainPage() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
   const Token = localStorage.getItem("token");
-  console.log(sessionStorage.getItem("token"));
 
   const [user_id, setUserId] = useState();
   const [nickName, setNickName] = useState();
@@ -34,7 +33,7 @@ export default function MainPage() {
     navigate("/");
   };
   useEffect(() => {
-  
+    console.log("token:", Token);
     apitest(
       Token,
       (res) => {
