@@ -13,6 +13,7 @@ import WorkbookDetail from "./component/workbook/WorkbookDetail";
 import CompetitionList from "./component/competition/CompetitionList";
 import CompetitionDetail from "./component/competition/CompetitionDetail";
 import { useSelector } from "react-redux";
+import MyPage from "./component/MyPage";
 
 function App() {
   const isloggedin = useSelector((state) => state.UserInfo.loggedIn);
@@ -34,6 +35,7 @@ function App() {
           <Route path="/workbookdetail" element={<WorkbookDetail />}></Route>
           <Route path="/competitionlist" element={<CompetitionList />}></Route>
           <Route path="/competitiondetail" element={<CompetitionDetail />}></Route>
+          <Route path="/mypage" element={<MyPage />}></Route>
           
         </Routes>
       </BrowserRouter>

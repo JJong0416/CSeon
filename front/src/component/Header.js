@@ -27,6 +27,9 @@ export default function Header() {
   const ClickCompetition = ()=>{
     navigate("/competitionlist");
   }
+  const ClickMypage = () =>{
+    navigate("/mypage");
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -51,7 +54,7 @@ export default function Header() {
         <Grid item xs={3}>
           <Item>
             <button>로그아웃</button>
-            <button>마이페이지</button>
+            <button onClick={ClickMypage}>마이페이지</button>
           </Item>
         </Grid>
         {/* <Grid item xs={4}>
