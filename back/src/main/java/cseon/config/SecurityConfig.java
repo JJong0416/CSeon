@@ -48,9 +48,11 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers("/api/test").hasAnyRole("USER")
+                .antMatchers("/api/admin").hasAnyRole("ADMIN")
                 .antMatchers("/v1/api/question").hasAnyRole("USER")
                 .antMatchers("/api/mypage/badge").hasAnyRole("USER")
                 .anyRequest().authenticated()
+
                 .and()
                 .oauth2Login()
                 .successHandler(successHandler)
