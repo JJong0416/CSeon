@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+.main-container {
+  /* width: 100vh; */
+  height: 100vh;
+  background-image: url("assets/mainBG.jpg");
+}
+.left {
+  width: 50vh;
+  height: 100vh;
+  float: left;
+  box-sizing: border-box;
+  text-align: center;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.right {
+  width: 50vh;
+  height: 100vh;
+  margin: auto;
+  float: right;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
