@@ -43,7 +43,7 @@ function updateUserPassword(updateUserPasswordInfo, token, success, error) {
       headers: createHeaders(token),
     })
     .then(success)
-    .catch(error); 
+    .catch(error);
 }
 
 // back에서 수정 필요(back 대신 userSeq 가 필요없도록 front 를 수정함.)
@@ -58,8 +58,11 @@ function getUserNickname(userSeq, success, error) {
   instance.get(`/user/getNickname/${userSeq}`, {}).then(success).catch(error);
 }
 
-function apitest(token, success, error){
-  instance.get("/test", {headers:createHeaders(token)}).then(success).catch(error);
+function apitest(token, success, error) {
+  instance
+    .get("/test", { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
 }
 
 export {
@@ -72,5 +75,5 @@ export {
   deleteUser,
   findUserPassword,
   getUserNickname,
-  apitest
+  apitest,
 };
