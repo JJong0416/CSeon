@@ -16,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +29,7 @@ public class AdminService {
 
     public List<QuestionDto> getRequestQuestionList() {
         List<AccountRequestQuestion> requestList = accountRequestQuestionRepository.findAll();
-        
+
         // requestList 안의 내용을 questionDto로 변경
         List<QuestionDto> res = requestList.stream()
                 .map(accountRequestQuestion -> new QuestionDto(accountRequestQuestion.getRequestQuestionId(),
