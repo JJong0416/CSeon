@@ -58,6 +58,10 @@ function getUserNickname(userSeq, success, error) {
   instance.get(`/user/getNickname/${userSeq}`, {}).then(success).catch(error);
 }
 
+function apitest(token, success, error){
+  instance.get("/test", {headers:createHeaders(token)}).then(success).catch(error);
+}
+
 export {
   registerUser,
   checkDuplicatedUserId,
@@ -68,4 +72,5 @@ export {
   deleteUser,
   findUserPassword,
   getUserNickname,
+  apitest
 };

@@ -13,13 +13,14 @@ function RedirectPage() {
   
   // let code = new URL(window.location.href).searchParams.get("code");
   const sendCode = () => {
+    console.log("카카오 로그인 실행");
     axios({
       method: "get",
       url: `/api/login/kakao/${CODE}`,
     })
       .then((res) => {
         // 토큰, 유저정보 받아오기(미완 백엔드 수정(AuthController))
-        sessionStorage.setItem("token", res.data.token);
+        localStorage.setItem("token", res.data.token);
         dispatch(SET_LOGIN());
         console.log(res.data);
         navigate("/mainpage");
