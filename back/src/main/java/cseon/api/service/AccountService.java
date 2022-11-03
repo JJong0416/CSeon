@@ -1,6 +1,5 @@
 package cseon.api.service;
 
-import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.response.AccountDetailsRes;
 import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.dto.response.WorkbookRes;
@@ -18,9 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 
 @Service
 @RequiredArgsConstructor
@@ -58,11 +58,16 @@ public class AccountService {
     }
 
 
-    public List<BadgeResponseRes> getMyBadge(Account account) {
+    public List<BadgeResponseRes> getMyBadge() {
+        String accountName = getCurrentUsername().get();
+        Account account = accountRepository.findAccountByAccountName(accountName)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                });
         List<AccountBadge> accountBadges = accountBadgeRepository.findByAccount(account);
 
         List<BadgeResponseRes> badges = accountBadges.stream()
-                .map(accountBadge -> accountBadge.getBadgeId())
+                .map(AccountBadge::getBadgeId)
                 .map(this::readBadge)
                 .map(badge -> BadgeResponseRes.builder()
                         .badgeId(badge.getBadgeId())
@@ -73,7 +78,7 @@ public class AccountService {
         return badges;
     }
 
-    private Badge readBadge(Long badgeId){
+    private Badge readBadge(Long badgeId) {
         return badgeRepository.findById(badgeId).orElseThrow(() -> {
             throw new CustomException(ErrorCode.BADGE_NOT_FOUND);
         });

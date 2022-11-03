@@ -3,7 +3,6 @@ package cseon.api.controller;
 import cseon.api.dto.response.AccountDetailsRes;
 import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.service.AccountService;
-import cseon.domain.Account;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,15 +31,15 @@ public class AccountController {
     }
 
     @GetMapping("/mypage/badge")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<BadgeResponseRes>> getMyBadge() {
         // account 정보 가져오기
-        Account ac = new Account(1L, false, 1, 1L);
-        return new ResponseEntity<>(accountService.getMyBadge(ac), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.getMyBadge(), HttpStatus.OK);
     }
 
     @GetMapping("/test")
     @PreAuthorize("hasRole('ADMIN')")
-    public void test(){
+    public void test() {
         System.out.println(getCurrentUsername().get());
     }
 }
