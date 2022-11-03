@@ -25,14 +25,14 @@ public class SecurityUtils {
             return Optional.empty();
         }
 
-        String accountId = null;
+        String accountName = null;
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-            accountId = springSecurityUser.getUsername();
+            accountName = springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof String) {
-            accountId = (String) authentication.getPrincipal();
+            accountName = (String) authentication.getPrincipal();
         }
 
-        return Optional.ofNullable(accountId);
+        return Optional.ofNullable(accountName);
     }
 }

@@ -24,15 +24,12 @@ public class Account {
     private Long accountId;
 
     @Column(name = "account_name", nullable = false)
-    @ColumnDefault("unknown")
     private String accountName;
 
     @Column(name = "account_role", nullable = false)
-    @ColumnDefault("0")
     private Boolean accountRole;
 
     @Column(name = "success_count", nullable = false)
-    @ColumnDefault("0")
     private Integer successCount;
 
     @Column(name = "using_badge_id")

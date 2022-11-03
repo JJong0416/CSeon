@@ -7,6 +7,7 @@ import cseon.api.repository.AccountRepository;
 import cseon.common.exception.CustomException;
 import cseon.domain.Account;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OAuthService {
 
     private final AccountRepository accountRepository;
@@ -42,23 +44,24 @@ public class OAuthService {
     private String token_uri;
 
     public LoginReq kakaoLoginOrRegister(String code) {
-        // 카카오 정보 꺼내오기
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
-        String accountName = String.valueOf(kakaoProfile.getId());
+        String accountEmail = kakaoProfile.getKakao_account().getEmail();
+        String[] accountName = accountEmail.split("@");
 
-        // 존재한다면 LoginReq로 반환해준다
-        Optional<Account> kakaoUser = findKakaoUser(accountName);
+
+        Optional<Account> kakaoUser = findKakaoUser(accountName[0]);
 
         if (kakaoUser.isPresent()) {
+            log.info("kakaoUser가 존재할 경우");
             return new LoginReq(kakaoUser.get().getAccountName(), kakaoUser.get().getAccountName());
         }
 
         // 존재하지 않으면 생성 + 저장 + LoginReq 반환
-        AccountSignUpReq accountSignUpReq = new AccountSignUpReq(accountName);
+        AccountSignUpReq accountSignUpReq = new AccountSignUpReq(accountName[0]);
 
         accountDetailsService.signup(accountSignUpReq);
-        return new LoginReq(accountName, accountName);
+        return new LoginReq(accountName[0], accountName[0]);
     }
 
     /* 현재 userRepository에 해당하는 카카오 아이디 찾아오기 */
@@ -95,8 +98,6 @@ public class OAuthService {
     private String getKakaoAccessToken(String code) {
 
         final String ACCESS_TOKEN = "access_token";
-        System.out.println("authorization코드로 카카오에서 유저정보가져오기");
-        System.out.println("code는????" + code);
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
 
