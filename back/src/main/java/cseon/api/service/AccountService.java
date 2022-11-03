@@ -8,6 +8,8 @@ import cseon.api.repository.AccountBadgeRepository;
 import cseon.api.repository.AccountRepository;
 import cseon.api.repository.BadgeRepository;
 import cseon.api.repository.WorkbookRepository;
+import cseon.common.exception.CustomException;
+import cseon.common.exception.ErrorCode;
 import cseon.domain.Account;
 import cseon.domain.AccountBadge;
 import cseon.domain.Badge;
@@ -58,18 +60,22 @@ public class AccountService {
 
     public List<BadgeResponseRes> getMyBadge(Account account) {
         List<AccountBadge> accountBadges = accountBadgeRepository.findByAccount(account);
-        List<BadgeResponseRes> badges = new LinkedList<>();
 
-        for (AccountBadge accountBadge : accountBadges) {
-            Badge badge = badgeRepository.findById(accountBadge.getBadgeId()).orElseThrow(() -> {
-                throw new NullPointerException("해당 칭호가 존재하지 않습니다.");
-            });
+        List<BadgeResponseRes> badges = accountBadges.stream()
+                .map(accountBadge -> accountBadge.getBadgeId())
+                .map(this::readBadge)
+                .map(badge -> BadgeResponseRes.builder()
+                        .badgeId(badge.getBadgeId())
+                        .badgeName(badge.getBadgeName())
+                        .badgeExp(badge.getBadgeExp()).build())
+                .collect(Collectors.toList());
 
-            badges.add(BadgeResponseRes.builder()
-                    .badgeId(badge.getBadgeId())
-                    .badgeName(badge.getBadgeName())
-                    .badgeExp(badge.getBadgeExp()).build());
-        }
         return badges;
+    }
+
+    private Badge readBadge(Long badgeId){
+        return badgeRepository.findById(badgeId).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.BADGE_NOT_FOUND);
+        });
     }
 }
