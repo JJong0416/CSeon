@@ -6,9 +6,10 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @Schema(description = "WorkbookRequest")
-public class WorkbookRequestDto {
+public class WorkbookRequestReq {
 
     @Schema(description = "문제 목록", example = "[5, 60, 61, 80, 78, 54, 55, 80, 61, 60, 78]")
     private List<Long> questionId;

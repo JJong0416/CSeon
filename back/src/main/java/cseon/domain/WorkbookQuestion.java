@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "workbook_question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WorkbookQuestion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workbook_question_id")

@@ -1,7 +1,6 @@
 package cseon.api.controller;
 
-import cseon.api.dto.layer.RequestQuestionDto;
-import cseon.api.dto.request.QuestionRequestDto;
+import cseon.api.dto.request.QuestionRequestReq;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.service.AdminService;
 import cseon.common.utils.DtoResponse;
@@ -27,28 +26,30 @@ public class AdminController {
      * 요청된 문제 리스트 가져오기
      */
     @GetMapping("/request")
-    public ResponseEntity<?> getRequestQuestionList(){
+    public ResponseEntity<?> getRequestQuestionList() {
         List<QuestionDto> res = adminService.getRequestQuestionList();
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, "Success", res));
     }
 
     /**
      * 요청된 문제 디테일 가져오기
+     *
      * @param requestQuestionId
      */
     @GetMapping("/request/{requestQuestionId}")
-    public ResponseEntity<?> getRequestQuestion(@PathVariable("requestQuestionId") Long requestQuestionId){
+    public ResponseEntity<?> getRequestQuestion(@PathVariable("requestQuestionId") Long requestQuestionId) {
         QuestionDto res = adminService.getRequestQuestion(requestQuestionId);
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, "Success", res));
     }
 
     /**
      * 문제 등록 허가
-     * @param questionDto
+     *
+     * @param questionRequestReq
      */
     @PostMapping("/request")
-    public ResponseEntity<?> allowQuestion(@RequestBody QuestionRequestDto questionRequestDto){
-        boolean res = adminService.allowQuestion(questionRequestDto);
+    public ResponseEntity<?> allowQuestion(@RequestBody QuestionRequestReq questionRequestReq) {
+        boolean res = adminService.allowQuestion(questionRequestReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? "Success" : "Fail"));
     }
 
@@ -56,8 +57,8 @@ public class AdminController {
      * 문제 변경
      */
     @PutMapping("/question")
-    public ResponseEntity<?> modifyQuestion(@RequestBody QuestionRequestDto questionRequestDto){
-        boolean res = adminService.modifyQuestion(questionRequestDto);
+    public ResponseEntity<?> modifyQuestion(@RequestBody QuestionRequestReq questionRequestReq) {
+        boolean res = adminService.modifyQuestion(questionRequestReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? "Success" : "Fail"));
     }
 }

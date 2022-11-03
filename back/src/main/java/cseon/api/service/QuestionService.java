@@ -1,9 +1,9 @@
 package cseon.api.service;
 
-import cseon.api.dto.request.AnswerRequestDto;
-import cseon.api.dto.request.QuestionRequestDto;
+import cseon.api.dto.request.AnswerRequestReq;
+import cseon.api.dto.request.QuestionRequestReq;
 
-import cseon.api.dto.response.AnswerDto;
+import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.api.repository.AnswerRepository;
@@ -31,21 +31,24 @@ public class QuestionService {
     private final LabelRepository labelRepository;
 
     @Transactional
-    public void requestQuestionAddBoard(QuestionRequestDto questionRequestDto) {
+    public void requestQuestionAddBoard(QuestionRequestReq questionRequestReq) {
 
         // 1. 가져온 값을 바탕으로 질문지를 생성해서,
         AccountRequestQuestion requestQuestion = AccountRequestQuestion.builder()
                 .account(null) // TODO: 2022-10-30 로그인 기능 완성 시, 추가해서 넣기
-                .requestQuestionTitle(questionRequestDto.getQuestionTitle())
-                .requestQuestionExp(questionRequestDto.getQuestionTitle())
+                .requestQuestionTitle(questionRequestReq.getQuestionTitle())
+                .requestQuestionExp(questionRequestReq.getQuestionExp())
                 .build();
+
+        // 2. MongoDB에 문제에 대한 설명을 넣어준다
+
 
         // 2. RDB에 저장한다.
         accountRequestQuestionRepository.save(requestQuestion);
     }
 
     @Transactional
-    public void selectAnswer(AnswerRequestDto answerRequestDto) {
+    public void selectAnswer(AnswerRequestReq answerRequestReq) {
 
     }
 
@@ -58,12 +61,13 @@ public class QuestionService {
                 .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
 
         // answer : to Dto
-        AnswerDto answerDto = AnswerDto.builder()
+        AnswerRes answerRes = AnswerRes.builder()
                 .answers(answer.getAnswers())
                 .rightAnswer(answer.getRightAnswer())
                 .build();
 
-        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerDto);
+        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes);
+    }
 
     // TODO: 2022-10-30 ElasticSearch를 통한 검색 성능 향상 필수
     @Transactional(readOnly = true)
@@ -72,7 +76,6 @@ public class QuestionService {
         // 1. 먼저 해당 label Keyword를 통해 label을 가지고 온다.
         Label findLabel = labelRepository.findByLabelName(label)
                 .orElseThrow(IllegalArgumentException::new);
-
 
         // 2. 그 후, Question과 Question_Label 을 Fetch Join을 한다.
         List<Question> questions = questionRepository.findQuestionsByLabelAndKeyword(keyword);
@@ -88,8 +91,6 @@ public class QuestionService {
                         .questionTitle(question.getQuestionTitle())
                         .build())
                 .collect(Collectors.toList());
-
-        questionRes.forEach(System.out::println);
 
         return questionRes;
     }

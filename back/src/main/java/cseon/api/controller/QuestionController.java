@@ -1,20 +1,15 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.AnswerRequestDto;
-import cseon.api.dto.request.QuestionRequestDto;
-
+import cseon.api.dto.request.AnswerRequestReq;
+import cseon.api.dto.request.QuestionRequestReq;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.dto.response.QuestionRes;
-
 import cseon.api.service.QuestionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,20 +23,21 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> requestQuestion(@Valid @RequestBody QuestionRequestDto questionRequestDto) {
-        questionService.requestQuestionAddBoard(questionRequestDto);
+    public ResponseEntity<HttpStatus> requestQuestion(@Valid @RequestBody QuestionRequestReq questionRequestReq) {
+        questionService.requestQuestionAddBoard(questionRequestReq);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/logs")
-    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestDto answerRequestDto){
-        questionService.selectAnswer(answerRequestDto);
+    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestReq answerRequestReq) {
+        questionService.selectAnswer(answerRequestReq);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{questionId}")
-    public ResponseEntity<QuestionDto> getQuestion(@PathVariable("questionId") Long questionId){
-      return new ResponseEntity<>(questionService.getQuestion(questionId), HttpStatus.OK);
+    public ResponseEntity<QuestionDto> getQuestion(@PathVariable("questionId") Long questionId) {
+        return new ResponseEntity<>(questionService.getQuestion(questionId), HttpStatus.OK);
+    }
 
     @GetMapping("/{label}/{keyword}")
     public ResponseEntity<List<QuestionRes>> takeQuestionsWithInfo(@PathVariable("label") String label,

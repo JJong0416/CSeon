@@ -23,12 +23,13 @@ public class Account {
     @Column(name = "account_id")
     private Long accountId;
 
+    @Column(name = "account_name", nullable = false)
+    private String accountName;
+
     @Column(name = "account_role", nullable = false)
-    @ColumnDefault("0")
     private Boolean accountRole;
 
     @Column(name = "success_count", nullable = false)
-    @ColumnDefault("0")
     private Integer successCount;
 
     @Column(name = "using_badge_id")
@@ -38,13 +39,14 @@ public class Account {
         this.accountId = l;
         this.accountRole = b;
         this.successCount = i;
-        this.usingBadgeId= l1;
+        this.usingBadgeId = l1;
+    }
 
     @Builder
-    public Account(Boolean accountRole, Integer successCount, Long usingBadgeId) {
+    public Account(String accountName, Boolean accountRole, Integer successCount, Long usingBadgeId) {
+        this.accountName = accountName;
         this.accountRole = accountRole;
         this.successCount = successCount;
         this.usingBadgeId = usingBadgeId;
-
     }
 }

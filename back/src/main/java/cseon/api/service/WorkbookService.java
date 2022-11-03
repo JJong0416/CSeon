@@ -1,67 +1,82 @@
 package cseon.api.service;
 
-import cseon.api.dto.request.WorkbookRequestDto;
+import cseon.api.dto.request.WorkbookRequestReq;
 import cseon.api.repository.WorkbookRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.Workbook;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.time.LocalTime;
 import java.util.List;
 
-@Service("workbookService")
+@Service
+@RequiredArgsConstructor
 @Transactional
 public class WorkbookService {
-    @Autowired
-    WorkbookRepository workbookRepository;
+
+    private final WorkbookRepository workbookRepository;
 
     //모든 workbook 조회
+    @Transactional(readOnly = true)
     public List<Workbook> getAllWorkbook() {
-        List<Workbook> wb = workbookRepository.findAllWorkbooks().orElseThrow(() -> {
-            throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
-        });
-        return wb;
+        return workbookRepository.findAllWorkbooks()
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+                });
     }
 
-    public Workbook getWorkbook(int workbookId){
-        Workbook wb = workbookRepository.findWorkbookByWorkbookId(workbookId).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
-        });
-        return wb;
+    @Transactional(readOnly = true)
+    public Workbook getWorkbook(Long workbookId) {
+        return getWorkbookWithWorkbookId(workbookId);
     }
 
-    public void createWorkbook (WorkbookRequestDto workbookRequestDto){
-        List<Long> quesId = workbookRequestDto.getQuestionId();
-        if (workbookRepository.findWorkbooksByWorkbookCreatedByAndWorkbookName(workbookRequestDto.getWorkbookCreatedBy(), workbookRequestDto.getWorkbookName()).isPresent()){
-            throw new CustomException(ErrorCode.WORKBOOK_NAME_ALREADY_EXISTS);
-        }
-        Workbook wb = Workbook.builder().workbookCreatedBy(workbookRequestDto.getWorkbookCreatedBy()).workbookName(workbookRequestDto.getWorkbookName()).questionList(toString(quesId)).build();
+    public void createWorkbook(WorkbookRequestReq workbookRequestReq) {
+
+        List<Long> quesId = workbookRequestReq.getQuestionId();
+
+        checkWorkbookWithCreatedByAndName(workbookRequestReq);
+
+        Workbook wb = Workbook.builder()
+                .workbookCreatedBy(workbookRequestReq.getWorkbookCreatedBy())
+                .workbookName(workbookRequestReq.getWorkbookName())
+                .questionList(changeListToString(quesId))
+                .build();
+
         workbookRepository.save(wb);
     }
 
-    public void modifyWorkbook(WorkbookRequestDto workbookRequestDto, int workbookId){
-        Workbook workbook = workbookRepository.findWorkbookByWorkbookId(workbookId).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
-        });
-        List<Long> quesId = workbookRequestDto.getQuestionId();
-        if (workbookRepository.findWorkbooksByWorkbookCreatedByAndWorkbookName(workbookRequestDto.getWorkbookCreatedBy(), workbookRequestDto.getWorkbookName()).isPresent()){
-            throw new CustomException(ErrorCode.WORKBOOK_NAME_ALREADY_EXISTS);
-        }
-        workbook.updateWorkbook(workbookRequestDto.getWorkbookName(), toString(quesId));
+    public void modifyWorkbook(WorkbookRequestReq workbookRequestReq, Long workbookId) {
+
+        Workbook workbook = getWorkbookWithWorkbookId(workbookId);
+
+        List<Long> quesId = workbookRequestReq.getQuestionId();
+
+        checkWorkbookWithCreatedByAndName(workbookRequestReq);
+
+        workbook.changeWorkbook(workbookRequestReq.getWorkbookName(), changeListToString(quesId));
     }
 
-    public String toString(List<Long> ids){
+    private Workbook getWorkbookWithWorkbookId(Long workbookId) {
+        return workbookRepository.findWorkbookByWorkbookId(workbookId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+                });
+    }
+
+    private void checkWorkbookWithCreatedByAndName(WorkbookRequestReq workbookRequestReq){
+        if (workbookRepository.findWorkbooksByWorkbookCreatedByAndWorkbookName(
+                workbookRequestReq.getWorkbookCreatedBy(), workbookRequestReq.getWorkbookName()).isPresent()) {
+            throw new CustomException(ErrorCode.WORKBOOK_NAME_ALREADY_EXISTS);
+        }
+    }
+
+    private String changeListToString(List<Long> ids) {
         StringBuilder sb = new StringBuilder();
-        for (Long l : ids){
+        for (Long l : ids) {
             sb.append(l).append(" ");
         }
         return sb.toString();
     }
-
-
-
-
 }

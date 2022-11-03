@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "question") @ToString
+@Table(name = "question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question {
 
@@ -27,16 +27,16 @@ public class Question {
     private String questionExp;
 
     @OneToMany(mappedBy = "questionId")
-    List<QuestionLabel> labels;
+    private List<QuestionLabel> labels;
 
     @Builder
-    public Question(String questionTitle, String questionExp){
+    public Question(Long questionId, String questionTitle, String questionExp){
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
+        this.questionId = questionId;
     }
 
-    public Question(Long questionId, String questionTitle, String questionExp){
-        this.questionId = questionId;
+    public void accountChangeQuestion(String questionTitle, String questionExp){
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
     }

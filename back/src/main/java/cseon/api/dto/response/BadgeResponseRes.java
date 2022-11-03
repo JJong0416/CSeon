@@ -3,21 +3,22 @@ package cseon.api.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Getter
-public class BadgeResponseDto {
-    @Id
+public class BadgeResponseRes {
+
     @NotNull
-    private Long badgeId;
+    private final Long badgeId;
+
     @NotNull
-    private String badgeName;
+    private final String badgeName;
+
     @NotNull
-    private String badgeExp;
+    private final String badgeExp;
 
     @Builder
-    public BadgeResponseDto(Long badgeId, String badgeName, String badgeExp) {
+    public BadgeResponseRes(Long badgeId, String badgeName, String badgeExp) {
         this.badgeId = badgeId;
         this.badgeName = badgeName;
         this.badgeExp = badgeExp;

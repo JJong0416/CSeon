@@ -1,16 +1,22 @@
 package cseon.api.service;
 
+import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.response.AccountDetailsRes;
+import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.dto.response.WorkbookRes;
+import cseon.api.repository.AccountBadgeRepository;
 import cseon.api.repository.AccountRepository;
+import cseon.api.repository.BadgeRepository;
 import cseon.api.repository.WorkbookRepository;
 import cseon.domain.Account;
+import cseon.domain.AccountBadge;
+import cseon.domain.Badge;
 import cseon.domain.Workbook;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +26,9 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final WorkbookRepository workbookRepository;
+    private final AccountBadgeRepository accountBadgeRepository;
+    private final BadgeRepository badgeRepository;
+
 
     @Transactional(readOnly = true)
     public AccountDetailsRes takeMyPage() {
@@ -44,5 +53,23 @@ public class AccountService {
                 .usingBadgeId(account.getUsingBadgeId())
                 .workbooks(workbookRes)
                 .build();
+    }
+
+
+    public List<BadgeResponseRes> getMyBadge(Account account) {
+        List<AccountBadge> accountBadges = accountBadgeRepository.findByAccount(account);
+        List<BadgeResponseRes> badges = new LinkedList<>();
+
+        for (AccountBadge accountBadge : accountBadges) {
+            Badge badge = badgeRepository.findById(accountBadge.getBadgeId()).orElseThrow(() -> {
+                throw new NullPointerException("해당 칭호가 존재하지 않습니다.");
+            });
+
+            badges.add(BadgeResponseRes.builder()
+                    .badgeId(badge.getBadgeId())
+                    .badgeName(badge.getBadgeName())
+                    .badgeExp(badge.getBadgeExp()).build());
+        }
+        return badges;
     }
 }

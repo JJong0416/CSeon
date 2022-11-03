@@ -6,16 +6,10 @@ import cseon.common.jwt.JwtAuthenticationEntryPoint;
 import cseon.common.jwt.JwtSecurityConfig;
 import cseon.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +24,6 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
     private final OAuth2SuccessHandler successHandler;
 
     @Bean
@@ -54,10 +47,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/login/**").permitAll()
-                .antMatchers("/api/register/**").permitAll()
-                .antMatchers("/api/mission/search/**").permitAll()
-                .antMatchers("/api/find-pw").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/api/test").hasAnyRole("USER")
                 .anyRequest().authenticated()
 
                 .and()

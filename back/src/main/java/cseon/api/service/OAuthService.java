@@ -1,13 +1,13 @@
 package cseon.api.service;
 
 import cseon.api.dto.layer.KakaoProfileDto;
+import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.request.LoginReq;
-import cseon.api.dto.request.UserSignUpReq;
-import cseon.api.repository.UserRepository;
+import cseon.api.repository.AccountRepository;
 import cseon.common.exception.CustomException;
-import cseon.domain.PlatformType;
-import cseon.domain.User;
+import cseon.domain.Account;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,16 +22,14 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static cseon.common.utils.UserUtils.createRandomKakaoUserNickname;
-
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OAuthService {
 
-    private final UserRegisterService userRegisterService;
-    private final UserRepository userRepository;
-
+    private final AccountRepository accountRepository;
+    private final AccountDetailsService accountDetailsService;
 
     @Value("${kakao.client-id}")
     private String client_id;
@@ -46,37 +44,30 @@ public class OAuthService {
     private String token_uri;
 
     public LoginReq kakaoLoginOrRegister(String code) {
-        // 카카오 정보 꺼내오기
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
-        String userId = String.valueOf(kakaoProfile.getId());
-        String userEmail = kakaoProfile.getKakao_account().getEmail();
+        String accountEmail = kakaoProfile.getKakao_account().getEmail();
+        String[] accountName = accountEmail.split("@");
 
-        // 존재한다면 LoginReq로 반환해준다
-        Optional<User> kakaoUser = findKakaoUser(userId);
+
+        Optional<Account> kakaoUser = findKakaoUser(accountName[0]);
+
         if (kakaoUser.isPresent()) {
-            return new LoginReq(kakaoUser.get().getUserId(),userEmail);
+            log.info("kakaoUser가 존재할 경우");
+            return new LoginReq(kakaoUser.get().getAccountName(), kakaoUser.get().getAccountName());
         }
 
         // 존재하지 않으면 생성 + 저장 + LoginReq 반환
-        UserSignUpReq userSignUpReq = UserSignUpReq.builder()
-                .userId(userId)
-                .userPassword(userEmail)
-                .userEmail(userEmail)
-                .userNickname(createRandomKakaoUserNickname(15L))
-                .build();
+        AccountSignUpReq accountSignUpReq = new AccountSignUpReq(accountName[0]);
 
-        userSignUpReq.setPlatformType(PlatformType.KAKAO);
-        userRegisterService.signup(userSignUpReq);
-
-        return new LoginReq(userSignUpReq.getUserId(), userEmail);
+        accountDetailsService.signup(accountSignUpReq);
+        return new LoginReq(accountName[0], accountName[0]);
     }
-
 
     /* 현재 userRepository에 해당하는 카카오 아이디 찾아오기 */
     @Transactional(readOnly = true)
-    protected Optional<User> findKakaoUser(String userId) throws CustomException {
-        return userRepository.findUserByUserIdAndPlatformType(userId, PlatformType.KAKAO);
+    protected Optional<Account> findKakaoUser(String accountName) throws CustomException {
+        return accountRepository.findAccountByAccountName(accountName);
     }
 
     private KakaoProfileDto getKakaoProfile(String code) {
@@ -100,7 +91,6 @@ public class OAuthService {
                 kakaoRequest,
                 KakaoProfileDto.class
         );
-
         return exchange.getBody();
     }
 
@@ -108,8 +98,6 @@ public class OAuthService {
     private String getKakaoAccessToken(String code) {
 
         final String ACCESS_TOKEN = "access_token";
-        System.out.println("authorization코드로 카카오에서 유저정보가져오기");
-        System.out.println("code는????" + code);
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
 

@@ -14,7 +14,7 @@ public interface WorkbookRepository extends JpaRepository<Workbook, Long> {
     @Query(value = "select w from Workbook w")
     Optional<List<Workbook>> findAllWorkbooks();
 
-    Optional<Workbook> findWorkbookByWorkbookId(int workbookId);
+    Optional<Workbook> findWorkbookByWorkbookId(Long workbookId);
 
     Optional<Workbook> findWorkbooksByWorkbookCreatedByAndWorkbookName(Long workbookCreatedBy, String workbookName);
 

@@ -32,7 +32,7 @@ public class AuthService {
     // SecurityContextHolder에 user 정보의 토큰을 넣고 반환
     private Authentication getAuthentication(LoginReq loginReq) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginReq.getUserId(), loginReq.getUserPassword());
+                new UsernamePasswordAuthenticationToken(loginReq.getAccountName(), loginReq.getAccountName());
         // customUserDetailsService를 통해 springSecurity가 리턴해줄 user객체를 재정의하지 않으면 nullPointerException이 발생
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -19,12 +19,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        System.out.println(request.toString());
         log.info(request.toString());
-        System.out.println("1111");
-        System.out.println(response.toString());
         log.info(response.toString());
-        System.out.println("2222");
         response.sendRedirect("/api/test");
     }
 }
