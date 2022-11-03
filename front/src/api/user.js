@@ -60,7 +60,7 @@ function getUserNickname(userSeq, success, error) {
 
 function apitest(token, success, error) {
   instance
-    .get("/test", { headers: createHeaders(token) })
+    .get("/test111", { headers: createHeaders(token) })
     .then(success)
     .catch(error);
 }
