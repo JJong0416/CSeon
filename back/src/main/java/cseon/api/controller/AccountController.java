@@ -28,7 +28,6 @@ public class AccountController {
     // TODO: 2022-11-01 JWT 로그인 기능 완성 시, Account 계정으로 넣기
     @GetMapping("/mypage")
     public ResponseEntity<AccountDetailsRes> showMyPage() {
-        System.out.println(getCurrentUsername());
         return ResponseEntity.ok(accountService.takeMyPage());
     }
 
@@ -37,5 +36,11 @@ public class AccountController {
         // account 정보 가져오기
         Account ac = new Account(1L, false, 1, 1L);
         return new ResponseEntity<>(accountService.getMyBadge(ac), HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public void test(){
+        System.out.println("AccountController.test");
+        System.out.println(getCurrentUsername());
     }
 }

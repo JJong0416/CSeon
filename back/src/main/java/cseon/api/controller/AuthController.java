@@ -35,7 +35,7 @@ public class AuthController {
                 new TokenRes(jwt), authService.createJwtHttpHeader(jwt), HttpStatus.OK);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test1")
     public String test1() {
         return "Perfect Jenkins-Test";
     }
