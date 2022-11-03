@@ -65,6 +65,13 @@ function apitest(token, success, error) {
     .catch(error);
 }
 
+function apitest2(token, success, error) {
+  instance
+    .get("/mypage", { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
+}
+
 export {
   registerUser,
   checkDuplicatedUserId,
@@ -76,4 +83,5 @@ export {
   findUserPassword,
   getUserNickname,
   apitest,
+  apitest2,
 };

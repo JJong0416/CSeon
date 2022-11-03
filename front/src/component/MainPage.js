@@ -8,6 +8,7 @@ export default function MainPage() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
   const Token = localStorage.getItem("token");
+
   console.log(localStorage.getItem("token"));
 
   const [user_id, setUserId] = useState();
