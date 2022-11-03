@@ -34,6 +34,7 @@ export default function MainPage() {
     navigate("/");
   };
   useEffect(() => {
+  
     apitest(
       Token,
       (res) => {

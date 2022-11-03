@@ -233,8 +233,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function QuestionsList() {
-
-  const token= localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
   const [selected, setSelected] = useState([]);
@@ -296,12 +295,17 @@ export default function QuestionsList() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-
-  useEffect(()=>{
-    apitest2(token, (res)=>{console.log(res)}, (err)=>{
-      console.log(err);
-    })
-  },[]);
+  useEffect(() => {
+    apitest2(
+      token,
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, []);
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
