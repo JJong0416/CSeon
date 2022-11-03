@@ -39,8 +39,8 @@ public class AccountController {
     }
 
     @GetMapping("/test")
+    @PreAuthorize("hasRole('ADMIN')")
     public void test(){
-        System.out.println("AccountController.test");
-        System.out.println(getCurrentUsername());
+        System.out.println(getCurrentUsername().get());
     }
 }
