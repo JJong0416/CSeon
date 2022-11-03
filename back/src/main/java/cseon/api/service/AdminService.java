@@ -7,16 +7,19 @@ import cseon.api.repository.AccountRepository;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.api.repository.AnswerRepository;
 import cseon.api.repository.QuestionRepository;
+import cseon.common.exception.CustomException;
+import cseon.common.exception.ErrorCode;
 import cseon.domain.AccountRequestQuestion;
 import cseon.domain.Answer;
 import cseon.domain.Question;
-import cseon.common.exception.RequestQuestionApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,25 +31,23 @@ public class AdminService {
 
     public List<QuestionDto> getRequestQuestionList() {
         List<AccountRequestQuestion> requestList = accountRequestQuestionRepository.findAll();
-        List<QuestionDto> res = new ArrayList<>();
+        
+        // requestList 안의 내용을 questionDto로 변경
+        List<QuestionDto> res = requestList.stream()
+                .map(accountRequestQuestion -> new QuestionDto(accountRequestQuestion.getRequestQuestionId(),
+                        accountRequestQuestion.getRequestQuestionTitle(),
+                        accountRequestQuestion.getAccount().getAccountId()))
+                .collect(Collectors.toList());
 
-        // questionId, questionTitle, accountId -> Dto
-        for(AccountRequestQuestion accountRequestQuestion : requestList){
-            QuestionDto questionDto = new QuestionDto(accountRequestQuestion.getRequestQuestionId(),
-                    accountRequestQuestion.getRequestQuestionTitle(),
-                    accountRequestQuestion.getAccount().getAccountId());
-
-            res.add(questionDto);
-        }
         return res;
     }
 
     public QuestionDto getRequestQuestion(Long requestQuestionId) {
         AccountRequestQuestion accountRequestQuestion = accountRequestQuestionRepository.findById(requestQuestionId)
-                .orElseThrow(() -> new RequestQuestionApiException("REQUEST_QUESTION_NOT_FOUND"));
+                .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 
         Answer answer = answerRepository.findByQuestionIdAndRequest(accountRequestQuestion.getRequestQuestionId(), true)
-                .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         // answer : to Dto
         AnswerRes answerRes = AnswerRes.builder()
@@ -76,15 +77,9 @@ public class AdminService {
         Long id = questionRepository.save(question).getQuestionId();
 
         // answer의 questionId, request 변경
-        Answer original = answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), true)
-                .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
-        Answer answer = Answer.builder()
-                .id(original.getId())
-                .questionId(id)
-                .request(false)
-                .answers(questionRequestReq.getAnswers())
-                .rightAnswer(questionRequestReq.getRightAnswer())
-                .build();
+        Answer answer = answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), true)
+                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+        answer.allowAnswer(id, questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
         answerRepository.save(answer);
 
         // requestQuestion db에서 삭제
@@ -100,24 +95,18 @@ public class AdminService {
     public Boolean modifyQuestion(QuestionRequestReq questionRequestReq) {
 
         Question question = questionRepository.findById(questionRequestReq.getQuestionId())
-                .orElseThrow(() -> new NullPointerException("해당 문제가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 
         Answer answer = answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), false)
-                .orElseThrow(() -> new NullPointerException("보기가 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         // question 덮어쓰기
         question.accountChangeQuestion(questionRequestReq.getQuestionTitle(), questionRequestReq.getQuestionExp());
         questionRepository.save(question);
 
         // answer 덮어쓰기
-        Answer a = Answer.builder()
-                .id(answer.getId())
-                .questionId(questionRequestReq.getQuestionId())
-                .request(false)
-                .answers(questionRequestReq.getAnswers())
-                .rightAnswer(questionRequestReq.getRightAnswer())
-                .build();
-        answerRepository.save(a);
+        answer.modifyAnswer(questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
+        answerRepository.save(answer);
 
         return true;
     }
