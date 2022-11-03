@@ -12,17 +12,17 @@ public class AccountDetailsRes {
 
     private final Integer accountSuccessCount;
 
-    private final Long usingBadgeId;
+    private final String badgeName;
 
     private final List<WorkbookRes> workbooks;
 
     @Builder
     public AccountDetailsRes(
-            Boolean accountRole, Integer accountSuccessCount, Long usingBadgeId, List<WorkbookRes> workbooks
+            Boolean accountRole, Integer accountSuccessCount, String badgeName, List<WorkbookRes> workbooks
     ) {
         this.accountRole = accountRole;
         this.accountSuccessCount = accountSuccessCount;
-        this.usingBadgeId = usingBadgeId;
+        this.badgeName = badgeName;
         this.workbooks = workbooks;
     }
 }

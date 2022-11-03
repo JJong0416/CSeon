@@ -1,5 +1,7 @@
 package cseon.common.utils;
 
+import cseon.common.exception.CustomException;
+import cseon.common.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +36,11 @@ public class SecurityUtils {
         }
 
         return Optional.ofNullable(accountName);
+    }
+
+    public static String getAccountName() {
+        return getCurrentUsername().orElseThrow(() -> {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        });
     }
 }
