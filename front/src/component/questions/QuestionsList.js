@@ -20,7 +20,8 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { apitest2 } from "../../api/user";
 
 function createData(name, calories, fat, carbs, protein) {
   return {
@@ -232,6 +233,8 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function QuestionsList() {
+
+  const token= localStorage.getItem("token");
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
   const [selected, setSelected] = useState([]);
@@ -293,6 +296,12 @@ export default function QuestionsList() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+
+  useEffect(()=>{
+    apitest2(token, (res)=>{console.log(res)}, (err)=>{
+      console.log(err);
+    })
+  },[]);
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>

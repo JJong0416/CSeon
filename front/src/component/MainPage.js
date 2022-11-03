@@ -7,7 +7,7 @@ import { apitest } from "../api/user";
 export default function MainPage() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
-  const Token = sessionStorage.getItem("token");
+  const Token = localStorage.getItem("token");
   console.log(sessionStorage.getItem("token"));
 
   const [user_id, setUserId] = useState();
