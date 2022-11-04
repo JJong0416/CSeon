@@ -3,8 +3,11 @@ import { useSelector } from "react-redux/es/exports";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apitest } from "../api/user";
+import { SET_LOGOUT } from "../redux/UserInfo";
+import { useDispatch } from "react-redux";
 
 export default function MainPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
   const Token = localStorage.getItem("token");
@@ -30,6 +33,7 @@ export default function MainPage() {
   const Logout = () => {
     // session 비우기
     sessionStorage.clear();
+    dispatch(SET_LOGOUT());
     navigate("/");
   };
   useEffect(() => {

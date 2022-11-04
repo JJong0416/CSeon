@@ -20,10 +20,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <div>
-          {isloggedin ? <Header></Header> : null}
-          
-        </div>
+        <div>{isloggedin ? <Header></Header> : null}</div>
         <Routes>
           <Route exact path="/" element={<LoginPage />}></Route>
           <Route path="/oauth/redirect" element={<RedirectPage />}></Route>
@@ -34,9 +31,11 @@ function App() {
           <Route path="/workbooklist" element={<WorkbookList />}></Route>
           <Route path="/workbookdetail" element={<WorkbookDetail />}></Route>
           <Route path="/competitionlist" element={<CompetitionList />}></Route>
-          <Route path="/competitiondetail" element={<CompetitionDetail />}></Route>
+          <Route
+            path="/competitiondetail"
+            element={<CompetitionDetail />}
+          ></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
-          
         </Routes>
       </BrowserRouter>
     </div>
