@@ -4,13 +4,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { apitest } from "../api/user";
 import { SET_LOGOUT } from "../redux/UserInfo";
-import { useDispatch } from "react-redux";
 
 export default function MainPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
-  const Token = localStorage.getItem("token");
 
   const [user_id, setUserId] = useState();
   const [nickName, setNickName] = useState();
@@ -30,16 +27,10 @@ export default function MainPage() {
   //     console.log(err);
   //   }
   // };
-  const Logout = () => {
-    // session 비우기
-    sessionStorage.clear();
-    dispatch(SET_LOGOUT());
-    navigate("/");
-  };
   useEffect(() => {
-    console.log("token:", Token);
+    console.log("token:", token);
     apitest(
-      Token,
+      token,
       (res) => {
         console.log(res);
       },
@@ -52,7 +43,6 @@ export default function MainPage() {
   return (
     <div>
       <h2>MainPage</h2>
-      <button onClick={Logout}>Logout</button>
       <h2>Token : {token}</h2>
       <h2>{user_id}</h2>
       <h2>{nickName}</h2>

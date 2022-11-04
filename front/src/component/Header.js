@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { SET_LOGOUT } from "../redux/UserInfo";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -14,6 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const ClickQuestions = () => {
     navigate("/questionslist");
@@ -29,6 +32,13 @@ export default function Header() {
   };
   const ClickMypage = () => {
     navigate("/mypage");
+  };
+  
+  const Logout = () => {
+    // session 비우기
+    sessionStorage.clear();
+    dispatch(SET_LOGOUT());
+    navigate("/");
   };
   return (
     <div style={{ boxShadow: "0px 0px 5px 0px" }}>
@@ -46,7 +56,7 @@ export default function Header() {
             <li onClick={ClickWorkbook}>문제집</li>
             <li onClick={ClickCompetition}>실시간 대회</li>
             <li>
-              <button>로그아웃</button>
+              <button onClick={Logout}>로그아웃</button>
               <button onClick={ClickMypage}>마이페이지</button>
             </li>
           </ul>
