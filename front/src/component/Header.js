@@ -48,6 +48,7 @@ export default function Header() {
           alt="메인 로고"
           src={require("../assets/메인로고2.png")}
           style={{ width: "18%", padding: "2vh 4vh" }}
+          onClick={ClickHome}
         />
 
         <nav>

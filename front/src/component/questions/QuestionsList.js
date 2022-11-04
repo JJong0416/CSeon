@@ -33,7 +33,7 @@ export default function QuestionsList() {
         .map(() => ({
           id: 11,
           label: "Java",
-          title: 'java문제 제목제목',
+          title: "java문제 제목제목",
           solved: "X",
         }))
     );
