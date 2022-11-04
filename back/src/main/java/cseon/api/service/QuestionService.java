@@ -1,5 +1,6 @@
 package cseon.api.service;
 
+import cseon.api.dto.layer.TryLogs;
 import cseon.api.dto.request.AnswerRequestReq;
 import cseon.api.dto.request.QuestionRequestReq;
 
