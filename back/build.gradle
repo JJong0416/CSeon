@@ -44,6 +44,19 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.7.3'
+
+    //STOMP 웹소캣 서버 사이드 테스트를 위한 의존성 추가
+    implementation("org.springframework.boot:spring-boot-starter-mustache")
+    //STOMP 관련 프론트 라이브러리
+    implementation('org.webjars.bower:jquery:3.3.1')
+    implementation('org.webjars:sockjs-client:1.1.2')
+    implementation('org.webjars:stomp-websocket:2.3.3-1')
+    implementation('org.webjars:webjars-locator:0.30')
+//    websocket
+    implementation 'org.webjars:webjars-locator-core'
+    implementation 'org.webjars:sockjs-client:1.0.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3'
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
 }
 
 tasks.named('test') {
