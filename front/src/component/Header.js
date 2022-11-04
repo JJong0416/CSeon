@@ -34,6 +34,7 @@ export default function Header() {
     <div style={{ boxShadow: "0px 0px 5px 0px" }}>
       <header>
         <img
+          onClick={ClickHome}
           alt="메인 로고"
           src={require("../assets/메인로고2.png")}
           style={{ width: "18%", padding: "2vh 4vh" }}
@@ -47,7 +48,7 @@ export default function Header() {
             <li onClick={ClickCompetition}>실시간 대회</li>
             <li>
               <button>로그아웃</button>
-              // <button onClick={ClickMypage}>마이페이지</button>
+              <button onClick={ClickMypage}>마이페이지</button>
             </li>
           </ul>
         </nav>

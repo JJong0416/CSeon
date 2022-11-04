@@ -7,4 +7,8 @@ module.exports = (app) => {
       changeOrigin: true,
     })
   );
+  // app.use(
+  //   "/ws-stomp",
+  //   createProxyMiddleware({ target: "http://localhost:7070", ws: true })
+  // );
 };
