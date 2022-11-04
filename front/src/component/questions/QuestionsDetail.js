@@ -1,4 +1,5 @@
 import { AutoFixHighSharp, LineAxisOutlined } from "@mui/icons-material";
+import { getQuestion } from "../..//api/question";
 import {
   Button,
   Card,
@@ -11,8 +12,10 @@ import {
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import SideBar from "../SideBar";
+import { useSelector } from "react-redux";
 
 export default function QuestionsDetail() {
+  const Token = useSelector((state) => state.UserInfo.accessToken);
   const [questionnum, setQuestionnum] = useState(0);
   const [questiontitle, setQuestiontitle] = useState(
     "문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제"
@@ -25,10 +28,18 @@ export default function QuestionsDetail() {
   ]);
 
   useEffect(() => {
-    // axios.get().then((res)=>{
-    //   console.log(res.data); // questionId, questionTitle, questionExp, answers:{0:dsf, 1:23}
-    //   setQuestiontitle(res.data.questionTitle);
-    // })
+    const questionId = 1;
+    getQuestion(
+      questionId,
+      Token,
+      (res) => {
+        console.log(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    // getProfile();
   }, []);
 
   useEffect(() => {

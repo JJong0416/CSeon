@@ -1,5 +1,12 @@
 import { instance, createHeaders } from "./index";
 
+function getQuestion(questionId, token, success, error) {
+  instance
+    .get(`/question/${questionId}`, { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
+}
+
 function registerUser(userInfo, success, error) {
   instance.post(`/user/signup`, userInfo, {}).then(success).catch(error);
 }
@@ -60,7 +67,7 @@ function getUserNickname(userSeq, success, error) {
 
 function apitest(token, success, error) {
   instance
-    .get("/mypage/badge", { headers: createHeaders(token) })
+    .get("/test", { headers: createHeaders(token) })
     .then(success)
     .catch(error);
 }
@@ -72,4 +79,4 @@ function apitest2(token, success, error) {
     .catch(error);
 }
 
-export { getUserProfile, apitest };
+export { getQuestion, apitest };
