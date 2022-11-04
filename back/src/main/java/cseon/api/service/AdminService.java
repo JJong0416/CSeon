@@ -3,10 +3,7 @@ package cseon.api.service;
 import cseon.api.dto.request.QuestionRequestReq;
 import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
-import cseon.api.repository.AccountRepository;
-import cseon.api.repository.AccountRequestQuestionRepository;
-import cseon.api.repository.AnswerRepository;
-import cseon.api.repository.QuestionRepository;
+import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.AccountRequestQuestion;
@@ -28,6 +25,8 @@ public class AdminService {
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
     private final AnswerRepository answerRepository;
+    private final LabelRepository labelRepository;
+    private final QuestionLabelRepository questionLabelRepository;
 
     @Transactional(readOnly = true)
     public List<QuestionDto> getRequestQuestionList() {
@@ -89,7 +88,6 @@ public class AdminService {
                         .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         answer.allowAnswer(id, questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
-
         answerRepository.save(answer);
 
         // requestQuestion db에서 삭제

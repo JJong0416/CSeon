@@ -6,6 +6,9 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 public class TryLogs implements Serializable {
@@ -16,7 +19,10 @@ public class TryLogs implements Serializable {
     private final String accountName;
 
     @NotNull
-    AnswerRequestReq answerRequestReq;
+    private final AnswerRequestReq answerRequestReq;
+
+    @NotNull
+    private final LocalDateTime timestamp = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
     @Builder
     public TryLogs(String accountName, AnswerRequestReq answerRequestReq){
@@ -26,6 +32,6 @@ public class TryLogs implements Serializable {
 
     @Override
     public String toString(){
-        return accountName + " " + answerRequestReq.toString();
+        return accountName + " " + answerRequestReq.toString() + timestamp;
     }
 }

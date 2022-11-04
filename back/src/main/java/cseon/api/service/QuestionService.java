@@ -36,6 +36,7 @@ public class QuestionService {
     private final LabelRepository labelRepository;
     private final AccountRepository accountRepository;
     private final KafkaProducerProvider kafkaProducerProvider;
+    private final QuestionLabelRepository questionLabelRepository;
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestReq questionRequestReq) {
@@ -91,6 +92,10 @@ public class QuestionService {
                 .answers(answer.getAnswers())
                 .rightAnswer(answer.getRightAnswer())
                 .build();
+
+        // label의 이름들을 찾아서 담기
+        List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
+        
 
         return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes);
     }

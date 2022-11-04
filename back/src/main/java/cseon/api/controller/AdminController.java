@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class AdminController extends ControllerConstant {
     private final AdminService adminService;
 
     /**
-     * 요청된 문제 리스트 가져오기, 문제 제목까지만 보임^^
+     * 요청된 문제 리스트 가져오기
      */
     @Operation(summary = "요청 문제 리스트", description = "요청된 문제들의 리스트를 전부 가져옵니다.")
     @GetMapping("/request")
@@ -36,6 +37,8 @@ public class AdminController extends ControllerConstant {
 
     /**
      * 요청된 문제 디테일 가져오기
+     *
+     * @param requestQuestionId
      */
     @Operation(summary = "요청 문제 상세 정보", description = "선택한 요청 문제에 대한 상세 정보를 가져옵니다.")
     @GetMapping("/request/{requestQuestionId}")
@@ -46,6 +49,7 @@ public class AdminController extends ControllerConstant {
 
     /**
      * 문제 등록 허가
+     * @param questionRequestReq
      */
     @Operation(summary = "등록 허가", description = "요청된 문제를 정식 문제로 채택합니다.")
     @PostMapping("/request")
