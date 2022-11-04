@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { SET_LOGIN } from "../redux/UserInfo";
+import { SET_LOGIN, SET_TOKEN } from "../redux/UserInfo";
 import {useDispatch} from "react-redux";
 
 function RedirectPage() {
@@ -20,8 +20,9 @@ function RedirectPage() {
     })
       .then((res) => {
         // 토큰, 유저정보 받아오기(미완 백엔드 수정(AuthController))
-        localStorage.setItem("token", res.data.token);
+        // localStorage.setItem("token", res.data.token);
         dispatch(SET_LOGIN());
+        dispatch(SET_TOKEN(res.data.token));
         console.log(res.data);
         navigate("/mainpage");
       })

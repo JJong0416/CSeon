@@ -7,10 +7,4 @@ module.exports = (app) => {
       changeOrigin: true,
     })
   );
-  app.use(
-    createProxyMiddleware("/v1", {
-      target: "http://localhost:7070",
-      changeOrigin: true,
-    })
-  );
 };

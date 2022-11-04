@@ -296,15 +296,15 @@ export default function QuestionsList() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   useEffect(() => {
-    apitest2(
-      token,
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    // apitest2(
+    //   token,
+    //   (res) => {
+    //     console.log(res);
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //   }
+    // );
   }, []);
   return (
     <Box sx={{ width: "100%" }}>
