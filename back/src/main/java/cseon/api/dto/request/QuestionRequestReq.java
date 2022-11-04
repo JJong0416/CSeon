@@ -27,6 +27,7 @@ public class QuestionRequestReq {
     @NotNull
     private final Long accountId;
 
+    private List<String> labels;
 
     @Builder
     public QuestionRequestReq(String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {

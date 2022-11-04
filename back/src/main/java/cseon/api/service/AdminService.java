@@ -3,15 +3,10 @@ package cseon.api.service;
 import cseon.api.dto.request.QuestionRequestReq;
 import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
-import cseon.api.repository.AccountRepository;
-import cseon.api.repository.AccountRequestQuestionRepository;
-import cseon.api.repository.AnswerRepository;
-import cseon.api.repository.QuestionRepository;
+import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
-import cseon.domain.AccountRequestQuestion;
-import cseon.domain.Answer;
-import cseon.domain.Question;
+import cseon.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +21,13 @@ public class AdminService {
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
     private final AnswerRepository answerRepository;
+    private final LabelRepository labelRepository;
+    private final QuestionLabelRepository questionLabelRepository;
 
     public List<QuestionDto> getRequestQuestionList() {
         List<AccountRequestQuestion> requestList = accountRequestQuestionRepository.findAll();
 
-        // requestList 안의 내용을 questionDto로 변경
+        // requestList 안의 내용을 questionDto로 변경 -> 라벨들 찾아와야함.
         List<QuestionDto> res = requestList.stream()
                 .map(accountRequestQuestion -> new QuestionDto(accountRequestQuestion.getRequestQuestionId(),
                         accountRequestQuestion.getRequestQuestionTitle(),
@@ -80,6 +77,14 @@ public class AdminService {
         answer.allowAnswer(id, questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
         answerRepository.save(answer);
 
+        // QuestionLabel 추가
+        questionRequestReq.getLabels().stream()
+                .map(labelName -> QuestionLabel.builder()
+                        .question(question)
+                        .label(getLabel(labelName))
+                        .build())
+                .map(questionLabelRepository::save);
+
         // requestQuestion db에서 삭제
         accountRequestQuestionRepository.deleteById(questionRequestReq.getQuestionId());
 
@@ -106,6 +111,14 @@ public class AdminService {
         answer.modifyAnswer(questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
         answerRepository.save(answer);
 
+        // label update? delete and insert?
+
         return true;
+    }
+
+    private Label getLabel(String labelName){
+        return labelRepository.findByLabelName(labelName).orElseThrow(
+                () -> new CustomException(ErrorCode.LABEL_NOT_FOUND)
+        );
     }
 }
