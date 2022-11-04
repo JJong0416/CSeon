@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
 
 export default function QuestionsList() {
@@ -28,22 +27,14 @@ export default function QuestionsList() {
     setPage(0);
   };
   useEffect(() => {
-    faker.seed(123);
-    faker.locale = "ko";
-    console.log({
-      id: 11,
-      name: faker.name.lastName() + faker.name.firstName(),
-      email: faker.internet.email(),
-      phone: faker.phone.number(),
-    });
     setUsers(
-      Array(53)
+      Array(60)
         .fill()
         .map(() => ({
           id: 11,
-          name: faker.name.lastName() + faker.name.firstName(),
-          email: faker.internet.email(),
-          phone: faker.phone.number(),
+          label: "Java",
+          title: 'java문제 제목제목',
+          solved: "X",
         }))
     );
   }, []);
@@ -67,25 +58,25 @@ export default function QuestionsList() {
             <TableRow>
               <TableCell>No</TableCell>
               <TableCell align="right">Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Phone</TableCell>
+              <TableCell align="right">Label</TableCell>
+              <TableCell align="right">Title</TableCell>
+              <TableCell align="right">Solved</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {users
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ id, name, email, phone }, i) => (
+              .map(({ id, label, title, solved }, i) => (
                 <TableRow key={id}>
                   <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
                   </TableCell>
                   <TableCell align="right">{id}</TableCell>
+                  <TableCell align="right">{label}</TableCell>
                   <TableCell align="right" onClick={ClickTitle}>
-                    {name}
+                    {title}
                   </TableCell>
-                  <TableCell align="right">{email}</TableCell>
-                  <TableCell align="right">{phone}</TableCell>
+                  <TableCell align="right">{solved}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
