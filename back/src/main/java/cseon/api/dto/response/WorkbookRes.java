@@ -10,10 +10,10 @@ public class WorkbookRes {
 
     private final String workbookName;
 
-    private final Long workbookCreateBy;
+    private final String workbookCreateBy;
 
     @Builder
-    public WorkbookRes(Long workbookId, String workbookName, Long workbookCreateBy) {
+    public WorkbookRes(Long workbookId, String workbookName, String workbookCreateBy) {
         this.workbookId = workbookId;
         this.workbookName = workbookName;
         this.workbookCreateBy = workbookCreateBy;

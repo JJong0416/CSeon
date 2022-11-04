@@ -18,5 +18,5 @@ public interface WorkbookRepository extends JpaRepository<Workbook, Long> {
 
     Optional<Workbook> findWorkbooksByWorkbookCreatedByAndWorkbookName(Long workbookCreatedBy, String workbookName);
 
-    List<Workbook> findWorkbooksByWorkbookCreatedBy(Long workbookCreatedBy);
+    List<Workbook> findWorkbooksByWorkbookCreatedBy(String workbookCreatedBy);
 }

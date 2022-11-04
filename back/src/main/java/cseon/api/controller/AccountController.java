@@ -18,7 +18,7 @@ import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/v1/api")
 @Tag(name = "MyPage", description = "계정 관리 API")
 public class AccountController {
 
@@ -26,6 +26,7 @@ public class AccountController {
 
     // TODO: 2022-11-01 JWT 로그인 기능 완성 시, Account 계정으로 넣기
     @GetMapping("/mypage")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<AccountDetailsRes> showMyPage() {
         return ResponseEntity.ok(accountService.takeMyPage());
     }

@@ -46,8 +46,7 @@ public class QuestionController {
     @GetMapping("/{label}/{keyword}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<QuestionRes>> takeQuestionsWithInfo(@PathVariable("label") String label,
-                                                                   @PathVariable("keyword") String keyword
-    ) {
+                                                                   @PathVariable("keyword") String keyword) {
         return ResponseEntity.ok(questionService.takeQuestionsWithKeywordAndLabel(keyword, label));
     }
 

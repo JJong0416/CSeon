@@ -20,7 +20,7 @@ import static cseon.common.utils.SecurityUtils.getCurrentUsername;
  * 권한에 대한 Controller (Login 포함)
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/v1/api")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {

@@ -7,6 +7,7 @@ import cseon.common.jwt.JwtSecurityConfig;
 import cseon.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,6 +49,9 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers("/api/test").hasAnyRole("USER")
+                .antMatchers(HttpMethod.GET, "/v1/api/question/**").hasAnyRole("ADMIN","USER")
+                .antMatchers(HttpMethod.POST, "/v1/api/question/**").hasAnyRole("ADMIN","USER")
+                .antMatchers(HttpMethod.GET,"/v1/api/mypage").hasRole("USER")
                 .antMatchers("/api/admin").hasAnyRole("ADMIN")
                 .antMatchers("/v1/api/question").hasAnyRole("USER")
                 .antMatchers("/api/mypage/badge").hasAnyRole("USER")

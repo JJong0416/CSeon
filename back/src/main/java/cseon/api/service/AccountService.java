@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static cseon.common.utils.SecurityUtils.getAccountName;
 import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 
 @Service
@@ -34,10 +35,14 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public AccountDetailsRes takeMyPage() {
-        Account account = accountRepository.findById(1L).get(); // TODO: 2022-11-01 Account 계정 가져오기
+
+        Account account = accountRepository.findAccountByAccountName(getAccountName())
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                });
 
         // 1. 해당 계정이 생성한 문제집들을 가져온다.
-        List<Workbook> workbooks = workbookRepository.findWorkbooksByWorkbookCreatedBy(account.getAccountId());
+        List<Workbook> workbooks = workbookRepository.findWorkbooksByWorkbookCreatedBy(account.getAccountName());
 
         // 2. Workbook을 WorkbookRes로 DTO로 옮겨준다.
         List<WorkbookRes> workbookRes = workbooks.stream()
@@ -48,11 +53,14 @@ public class AccountService {
                         .build())
                 .collect(Collectors.toList());
 
+        // 3. BadgeName을 가져오기 위해 DB를 찔러준다.
+        Badge badge = readBadge(account.getUsingBadgeId());
+
         // 3. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
         return AccountDetailsRes.builder()
                 .accountRole(account.getAccountRole())
                 .accountSuccessCount(account.getSuccessCount())
-                .usingBadgeId(account.getUsingBadgeId())
+                .badgeName(badge.getBadgeName())
                 .workbooks(workbookRes)
                 .build();
     }
