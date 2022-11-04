@@ -51,7 +51,10 @@ public class SecurityConfig {
                 .antMatchers("/api/test").hasAnyRole("USER")
                 .antMatchers(HttpMethod.GET, "/v1/api/question/**").hasAnyRole("ADMIN","USER")
                 .antMatchers(HttpMethod.POST, "/v1/api/question/**").hasAnyRole("ADMIN","USER")
-                .antMatchers(HttpMethod.GET,"/v1/api/mypage").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/v1/api/mypage").hasRole("USER")
+                .antMatchers("/api/admin").hasAnyRole("ADMIN")
+                .antMatchers("/v1/api/question").hasAnyRole("USER")
+                .antMatchers("/api/mypage/badge").hasAnyRole("USER")
                 .anyRequest().authenticated()
 
                 .and()

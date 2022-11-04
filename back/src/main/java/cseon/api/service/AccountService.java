@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
+import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +65,13 @@ public class AccountService {
                 .build();
     }
 
-    public List<BadgeResponseRes> getMyBadge(Account account) {
+
+    public List<BadgeResponseRes> getMyBadge() {
+        String accountName = getCurrentUsername().get();
+        Account account = accountRepository.findAccountByAccountName(accountName)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                });
         List<AccountBadge> accountBadges = accountBadgeRepository.findByAccount(account);
 
         List<BadgeResponseRes> badges = accountBadges.stream()
