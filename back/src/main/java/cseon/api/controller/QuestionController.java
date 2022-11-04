@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/question")
+@RequestMapping("/api/question")
 @Tag(name = "Question", description = "문제 관련 API")
 public class QuestionController {
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/admin")
+@RequestMapping("/api/admin")
 @Tag(name = "Admin Function", description = "관리자 관련 API")
 public class AdminController {
 

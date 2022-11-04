@@ -16,14 +16,14 @@ import java.util.List;
 
 @Tag(name = "문제집", description = "문제집 관련 api입니다")
 @RestController
-@RequestMapping("/v1/api/workbook")
+@RequestMapping("/api/workbook")
 @RequiredArgsConstructor
 public class WorkbookController {
 
     private final WorkbookService workbookService;
 
     @Operation(summary = "전체 문제집", description = "전체 문제집을 가져오는 메소드입니다.")
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List> workbookList() {
         List<Workbook> wb = workbookService.getAllWorkbook();
         return ResponseEntity.ok().body(wb);
@@ -36,14 +36,14 @@ public class WorkbookController {
     }
 
     @Operation(summary = "문제집 만들기", description = "문제집을 만드는 메소드입니다.")
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<HttpStatus> newWorkbook(@Parameter @RequestBody WorkbookRequestReq workbookRequestReq) {
         workbookService.createWorkbook(workbookRequestReq);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "문제집 수정하기", description = "문제집을 수정하는 메소드입니다.")
-    @PatchMapping(value = "")
+    @PatchMapping
     public ResponseEntity<HttpStatus> changeWorkbook(@Parameter @RequestBody WorkbookRequestReq workbookRequestReq, Long workbookId) {
         workbookService.modifyWorkbook(workbookRequestReq, workbookId);
         return ResponseEntity.ok().build();

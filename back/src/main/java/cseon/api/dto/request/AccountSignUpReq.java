@@ -1,5 +1,6 @@
 package cseon.api.dto.request;
 
+import cseon.domain.type.AccountRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,12 +11,11 @@ import javax.validation.constraints.Pattern;
 @Getter
 public class AccountSignUpReq {
 
-
     @Pattern(regexp = "[a-z0-9]{6,15}")
     private final String accountName;
 
     @NotBlank
-    private final Boolean accountRole = false;
+    private final AccountRole accountRole = AccountRole.USER;
 
     @NotNull
     private final Integer accountSuccessCount = 0;

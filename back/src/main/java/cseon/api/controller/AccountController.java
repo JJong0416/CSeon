@@ -18,7 +18,7 @@ import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api")
+@RequestMapping("/api")
 @Tag(name = "MyPage", description = "계정 관리 API")
 public class AccountController {
 
