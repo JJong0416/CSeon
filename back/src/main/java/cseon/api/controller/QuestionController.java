@@ -17,34 +17,31 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/question")
+@RequestMapping("/api/question")
 @Tag(name = "Question", description = "문제 관련 API")
 public class QuestionController {
 
     private final QuestionService questionService;
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<HttpStatus> requestQuestion(@Valid @RequestBody QuestionRequestReq questionRequestReq) {
+        System.out.println("hello");
         questionService.requestQuestionAddBoard(questionRequestReq);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/logs")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestReq answerRequestReq) {
         questionService.selectAnswer(answerRequestReq);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{questionId}")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<QuestionDto> getQuestion(@PathVariable("questionId") Long questionId) {
         return new ResponseEntity<>(questionService.getQuestion(questionId), HttpStatus.OK);
     }
 
     @GetMapping("/{label}/{keyword}")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<QuestionRes>> takeQuestionsWithInfo(@PathVariable("label") String label,
                                                                    @PathVariable("keyword") String keyword) {
         return ResponseEntity.ok(questionService.takeQuestionsWithKeywordAndLabel(keyword, label));

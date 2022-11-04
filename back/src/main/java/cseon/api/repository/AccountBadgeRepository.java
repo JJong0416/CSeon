@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface AccountBadgeRepository extends JpaRepository<AccountBadge, Long> {
-    List<AccountBadge> findByAccount(Account account);
+    List<AccountBadge> findAccountBadgeByAccount(Account account);
 }

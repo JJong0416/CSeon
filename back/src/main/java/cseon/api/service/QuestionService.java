@@ -24,8 +24,11 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 public class QuestionService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
+
     private final QuestionRepository questionRepository;
+
     private final AnswerRepository answerRepository;
+
     private final LabelRepository labelRepository;
 
     private final AccountRepository accountRepository;

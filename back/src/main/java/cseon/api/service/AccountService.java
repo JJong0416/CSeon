@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
-import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +35,7 @@ public class AccountService {
     @Transactional(readOnly = true)
     public AccountDetailsRes takeMyPage() {
 
-        Account account = accountRepository.findAccountByAccountName(getAccountName())
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
-                });
+        Account account = hasAccountWithAccountName(getAccountName());
 
         // 1. 해당 계정이 생성한 문제집들을 가져온다.
         List<Workbook> workbooks = workbookRepository.findWorkbooksByWorkbookCreatedBy(account.getAccountName());
@@ -66,13 +62,13 @@ public class AccountService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<BadgeResponseRes> getMyBadge() {
-        String accountName = getCurrentUsername().get();
-        Account account = accountRepository.findAccountByAccountName(accountName)
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
-                });
-        List<AccountBadge> accountBadges = accountBadgeRepository.findByAccount(account);
+        String accountName = getAccountName();
+
+        Account account = hasAccountWithAccountName(accountName);
+
+        List<AccountBadge> accountBadges = accountBadgeRepository.findAccountBadgeByAccount(account);
 
         List<BadgeResponseRes> badges = accountBadges.stream()
                 .map(AccountBadge::getBadgeId)
@@ -84,6 +80,13 @@ public class AccountService {
                 .collect(Collectors.toList());
 
         return badges;
+    }
+
+    private Account hasAccountWithAccountName(String accountName) {
+        return accountRepository.findAccountByAccountName(accountName)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                });
     }
 
     private Badge readBadge(Long badgeId) {

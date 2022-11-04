@@ -10,17 +10,17 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(title = "CS 선생님 CSeon",
                 description = "CS 프로젝트",
-                version = "v1"))
+                version = "api"))
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi chatOpenApi() {
-        String[] paths = {"/v1/**"};
+        String[] paths = {"/api/**"};
 
         return GroupedOpenApi.builder()
-                .group("CSeon API v1")
+                .group("CSeon API API")
                 .pathsToMatch(paths)
                 .build();
     }

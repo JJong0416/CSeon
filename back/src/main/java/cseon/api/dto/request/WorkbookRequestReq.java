@@ -18,5 +18,5 @@ public class WorkbookRequestReq {
     private String workbookName;
 
     @Schema(description = "유저 식별자", example = "1")
-    private Long workbookCreatedBy;
+    private String workbookCreatedBy;
 }
