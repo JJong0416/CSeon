@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<HttpStatus> requestQuestion(@Valid @RequestBody QuestionRequestReq questionRequestReq) {
         questionService.requestQuestionAddBoard(questionRequestReq);
         return ResponseEntity.ok().build();

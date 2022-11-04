@@ -64,7 +64,6 @@ public class AccountService {
                 .build();
     }
 
-
     public List<BadgeResponseRes> getMyBadge(Account account) {
         List<AccountBadge> accountBadges = accountBadgeRepository.findByAccount(account);
 
