@@ -25,7 +25,6 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> requestQuestion(@Valid @RequestBody QuestionRequestReq questionRequestReq) {
-        System.out.println("hello");
         questionService.requestQuestionAddBoard(questionRequestReq);
         return ResponseEntity.ok().build();
     }

@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Getter @NoArgsConstructor
+@Getter
+@NoArgsConstructor
 public class QuestionRequestReq {
 
     private Long questionId;
@@ -18,11 +19,10 @@ public class QuestionRequestReq {
 
     @NotNull
     private String questionExp;
-
     @NotNull
     private List<String> answers;
 
-    @Size(min = 1, max = 4)
+    @NotNull
     private Integer rightAnswer;
 
     private Long accountId;
@@ -36,8 +36,8 @@ public class QuestionRequestReq {
     }
 
     public QuestionRequestReq(
-            Long questionId, String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
-        this(questionTitle, questionExp, answers, rightAnswer, accountId);
+            Long questionId, String questionTitle, String questionExp, List<String> answers, Integer rightAnswer) {
+        this(questionTitle, questionExp, answers, rightAnswer);
         this.questionId = questionId;
     }
 
@@ -45,5 +45,10 @@ public class QuestionRequestReq {
     public QuestionRequestReq(String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
         this(questionTitle, questionExp, answers, rightAnswer);
         this.accountId = accountId;
+    }
+
+    public void updateQuestionInfo(Long accountId, Long questionId){
+        this.accountId = accountId;
+        this.questionId = questionId;
     }
 }

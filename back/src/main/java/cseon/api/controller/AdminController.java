@@ -36,7 +36,6 @@ public class AdminController {
 
     /**
      * 요청된 문제 디테일 가져오기
-     *
      * @param requestQuestionId
      */
     @Operation(summary = "요청 문제 상세 정보", description = "선택한 요청 문제에 대한 상세 정보를 가져옵니다.")
