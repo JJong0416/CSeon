@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface QuestionLabelRepository extends JpaRepository<QuestionLabel, Long> {
-    Optional<List<QuestionLabel>> findAllByQuestionId(Long questionId);
+    List<QuestionLabel> findAllByQuestionId(Long questionId);
 }

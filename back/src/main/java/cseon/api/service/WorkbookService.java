@@ -38,6 +38,8 @@ public class WorkbookService {
 
         checkWorkbookWithCreatedByAndName(workbookRequestReq);
 
+        // Error
+        // workbookRequestReq의 createdBy는 Long인데, workbook의 createdBy는 왜 String..?
         Workbook wb = Workbook.builder()
                 .workbookCreatedBy(workbookRequestReq.getWorkbookCreatedBy())
                 .workbookName(workbookRequestReq.getWorkbookName())

@@ -36,11 +36,15 @@ public class QuestionDto {
         this.answerRes = answerRes;
     }
 
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, List<String> labels){
+        this(questionId, questionTitle, questionExp, answerRes);
+        this.labels = labels;
+    }
+
     @Builder
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId, List<String> labels) {
+    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId) {
         this(questionId, questionTitle, questionExp, answerRes);
         this.accountId = accountId;
-        this.labels = labels;
     }
 }
 
