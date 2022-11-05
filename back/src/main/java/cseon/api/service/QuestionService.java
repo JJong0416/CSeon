@@ -94,10 +94,16 @@ public class QuestionService {
                 .build();
 
         // label의 이름들을 찾아서 담기
+        // 이거 AdminService의 getLabel method와 겹치는데 빼는게 좋지 않을까요
         List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
-        
+        List<String> labels = null;
+        if(!questionLabelList.isEmpty()){
+            labels = questionLabelList.stream()
+                    .map(questionLabel -> )
+                    .collect(Collectors.toList());
+        }
 
-        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes);
+        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes, labels);
     }
 
     // TODO: 2022-10-30 ElasticSearch를 통한 검색 성능 향상 필수
