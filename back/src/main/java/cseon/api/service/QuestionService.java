@@ -1,6 +1,5 @@
 package cseon.api.service;
 
-import cseon.api.dto.layer.TryLogs;
 import cseon.api.dto.request.AnswerRequestReq;
 import cseon.api.dto.request.QuestionRequestReq;
 
@@ -86,7 +85,6 @@ public class QuestionService {
                 answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
-        // answer : to Dto
         AnswerRes answerRes = AnswerRes.builder()
                 .answers(answer.getAnswers())
                 .rightAnswer(answer.getRightAnswer())
