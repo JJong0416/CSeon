@@ -14,33 +14,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static cseon.common.utils.SecurityUtils.getCurrentUsername;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api")
+@RequestMapping("/api")
 @Tag(name = "MyPage", description = "계정 관리 API")
 public class AccountController {
 
     private final AccountService accountService;
 
-    // TODO: 2022-11-01 JWT 로그인 기능 완성 시, Account 계정으로 넣기
+    /**
+     * 유저가 마이페이지에 들어가서 정볼르 확인한다.
+     */
     @GetMapping("/mypage")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<AccountDetailsRes> showMyPage() {
         return ResponseEntity.ok(accountService.takeMyPage());
     }
 
+    /**
+     * 유저가 마이페이지에 들어가서 어떤 벳지가 있는지 확인을 한다.
+     */
     @GetMapping("/mypage/badge")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<BadgeResponseRes>> getMyBadge() {
+    public ResponseEntity<List<BadgeResponseRes>> getAccountMyBadge() {
         // account 정보 가져오기
         return new ResponseEntity<>(accountService.getMyBadge(), HttpStatus.OK);
-    }
-
-    @GetMapping("/test")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void test() {
-        System.out.println(getCurrentUsername().get());
     }
 }

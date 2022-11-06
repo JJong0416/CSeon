@@ -48,13 +48,12 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/login/**").permitAll()
-                .antMatchers("/api/test").hasAnyRole("USER")
-                .antMatchers(HttpMethod.GET, "/v1/api/question/**").hasAnyRole("ADMIN","USER")
-                .antMatchers(HttpMethod.POST, "/v1/api/question/**").hasAnyRole("ADMIN","USER")
-                .antMatchers(HttpMethod.GET,"/v1/api/mypage").hasRole("USER")
-                .antMatchers("/api/admin").hasAnyRole("ADMIN")
-                .antMatchers("/v1/api/question").hasAnyRole("USER")
-                .antMatchers("/api/mypage/badge").hasAnyRole("USER")
+                .antMatchers(
+                        "/api/mypage/**",
+                        "/api/request/question",
+                        "/api/question/**",
+                        "/api/workbook/**").hasAnyRole("ADMIN","USER")
+                .antMatchers("/api/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
 
                 .and()

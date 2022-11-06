@@ -24,8 +24,11 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 public class QuestionService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
+
     private final QuestionRepository questionRepository;
+
     private final AnswerRepository answerRepository;
+
     private final LabelRepository labelRepository;
 
     private final AccountRepository accountRepository;
@@ -51,10 +54,11 @@ public class QuestionService {
         // 3. MongoDB에 넣어줄 문제를 생성하고
         Answer answer = Answer.builder()
                 .questionId(rqId)
-                .request(true)
+                .request(false)
                 .answers(questionRequestReq.getAnswers())
                 .rightAnswer(questionRequestReq.getRightAnswer())
                 .build();
+        System.out.println("answer = " + answer.toString());
 
         // 4. MongoDB에 넣어준다.
         answerRepository.save(answer);
@@ -64,8 +68,10 @@ public class QuestionService {
     public void selectAnswer(AnswerRequestReq answerRequestReq) {
 
     }
+
     @Transactional(readOnly = true)
     public QuestionDto getQuestion(Long questionId) {
+
         Question question = questionRepository.findById(questionId).orElseThrow(() -> {
             throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
@@ -73,7 +79,6 @@ public class QuestionService {
         Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, false)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
-        // answer : to Dto
         AnswerRes answerRes = AnswerRes.builder()
                 .answers(answer.getAnswers())
                 .rightAnswer(answer.getRightAnswer())

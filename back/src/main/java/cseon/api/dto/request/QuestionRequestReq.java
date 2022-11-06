@@ -2,44 +2,53 @@ package cseon.api.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class QuestionRequestReq {
 
     private Long questionId;
 
     @NotNull
-    private final String questionTitle;
+    private String questionTitle;
 
     @NotNull
-    private final String questionExp;
+    private String questionExp;
+    @NotNull
+    private List<String> answers;
 
     @NotNull
-    private final List<String> answers;
+    private Integer rightAnswer;
 
-    @Size(min = 1, max = 4)
-    private final Integer rightAnswer;
-
-    @NotNull
-    private final Long accountId;
-
+    private Long accountId;
 
     @Builder
-    public QuestionRequestReq(String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
+    public QuestionRequestReq(String questionTitle, String questionExp, List<String> answers, Integer rightAnswer) {
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
         this.answers = answers;
         this.rightAnswer = rightAnswer;
-        this.accountId = accountId;
     }
 
     public QuestionRequestReq(
-            Long questionId, String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
-        this(questionTitle, questionExp, answers, rightAnswer, accountId);
+            Long questionId, String questionTitle, String questionExp, List<String> answers, Integer rightAnswer) {
+        this(questionTitle, questionExp, answers, rightAnswer);
+        this.questionId = questionId;
+    }
+
+
+    public QuestionRequestReq(String questionTitle, String questionExp, List<String> answers, Integer rightAnswer, Long accountId) {
+        this(questionTitle, questionExp, answers, rightAnswer);
+        this.accountId = accountId;
+    }
+
+    public void updateQuestionInfo(Long accountId, Long questionId){
+        this.accountId = accountId;
         this.questionId = questionId;
     }
 }

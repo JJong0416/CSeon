@@ -22,12 +22,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
+
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
     private final AnswerRepository answerRepository;
 
+    @Transactional(readOnly = true)
     public List<QuestionDto> getRequestQuestionList() {
+
         List<AccountRequestQuestion> requestList = accountRequestQuestionRepository.findAll();
 
         // requestList 안의 내용을 questionDto로 변경
@@ -40,12 +43,15 @@ public class AdminService {
         return res;
     }
 
+    @Transactional(readOnly = true)
     public QuestionDto getRequestQuestion(Long requestQuestionId) {
-        AccountRequestQuestion accountRequestQuestion = accountRequestQuestionRepository.findById(requestQuestionId)
-                .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
+        AccountRequestQuestion accountRequestQuestion =
+                accountRequestQuestionRepository.findById(requestQuestionId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(accountRequestQuestion.getRequestQuestionId(), true)
-                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer =
+                answerRepository.findByQuestionIdAndRequest(accountRequestQuestion.getRequestQuestionId(), false)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         // answer : to Dto
         AnswerRes answerRes = AnswerRes.builder()
@@ -65,6 +71,7 @@ public class AdminService {
         return res;
     }
 
+    @Transactional
     public boolean allowQuestion(QuestionRequestReq questionRequestReq) {
 
         // requestQuestionDto를 question에 추가
@@ -72,12 +79,16 @@ public class AdminService {
                 .questionTitle(questionRequestReq.getQuestionTitle())
                 .questionExp(questionRequestReq.getQuestionExp())
                 .build();
+
         Long id = questionRepository.save(question).getQuestionId();
 
         // answer의 questionId, request 변경
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), true)
-                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer =
+                answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), false)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+
         answer.allowAnswer(id, questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
+
         answerRepository.save(answer);
 
         // requestQuestion db에서 삭제
@@ -92,11 +103,13 @@ public class AdminService {
     @Transactional
     public Boolean modifyQuestion(QuestionRequestReq questionRequestReq) {
 
-        Question question = questionRepository.findById(questionRequestReq.getQuestionId())
-                .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
+        Question question =
+                questionRepository.findById(questionRequestReq.getQuestionId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), false)
-                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+        Answer answer =
+                answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), true)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         // question 덮어쓰기
         question.accountChangeQuestion(questionRequestReq.getQuestionTitle(), questionRequestReq.getQuestionExp());
