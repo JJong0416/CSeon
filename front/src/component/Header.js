@@ -33,7 +33,7 @@ export default function Header() {
   const ClickMypage = () => {
     navigate("/mypage");
   };
-  
+
   const Logout = () => {
     // session 비우기
     sessionStorage.clear();
@@ -41,7 +41,7 @@ export default function Header() {
     navigate("/");
   };
   return (
-    <div style={{ boxShadow: "0px 0px 5px 0px" }}>
+    <div style={{ boxShadow: "0px 0px 5px 0px", margin: "0px 0px 2vh 0px" }}>
       <header>
         <img
           onClick={ClickHome}

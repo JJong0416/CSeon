@@ -5,73 +5,88 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FixedSizeList } from "react-window";
 import { useEffect, useState } from "react";
-
+import { getWorkbookQuestion } from "../api/workbook";
+import { useSelector } from "react-redux";
+import AutoSizer from "react-virtualized-auto-sizer";
 function renderRow(props) {
+  const { data, index } = props;
   console.log(props);
-  const { data, index, style } = props;
-
   const Clicklistitem = (idx) => {
     console.log("click", idx);
   };
 
   return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton
-        style={{ borderBottom: "solid black 1px" }}
-        onClick={() => selectQuestion(data[index])}
-      >
-        <ListItemText primary={data[index].questionTitle} />
+    <ListItem
+      key={index}
+      component="div"
+      disablePadding
+      style={{
+        borderBottom: "solid #9DCFFF 1px",
+        width: "90%",
+        margin: "auto",
+      }}
+    >
+      <ListItemButton onClick={() => props.handleQuestionIndex(index)}>
+        <ListItemText primary={data[index] + `번문제`} />
       </ListItemButton>
     </ListItem>
   );
 }
 
-function selectQuestion(questionInfo) {
-  // questionId로 문제 가져와서 문제 바꿔주는 함수
-  console.log("문제 선택" + questionInfo.questionId);
-}
+// function selectQuestion(questionInfo) {
+//   // questionId로 문제 가져와서 문제 바꿔주는 함수
+//   console.log("문제 선택" + questionInfo);
 
-export default function SideBar() {
-  const [questionList, setQuestionList] = useState([
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-    { questionId: 1, questionTitle: "1번문제!!!!!!!!!!!!!!!" },
-    { questionId: 2, questionTitle: "2번문제!!!!!!!!!!!!!!!" },
-  ]);
+// }
 
-  useEffect(() => {});
+export default function SideBar(props) {
+  console.log(props);
+  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const [workbookId, setWorkbookId] = useState(1);
+
+  useEffect(() => {
+    console.log(props.questionList);
+  }, []);
 
   return (
     <Box
       sx={{
-        width: "100%",
+        mt: 3,
+        mr: 2,
+        ml: 1,
+        width: "70%",
         height: "100%",
         maxWidth: 360,
         bgcolor: "background.paper",
+        borderColor: "#0099FF",
+        borderStyle: "solid",
       }}
     >
-      <FixedSizeList
-        height={400}
-        width={360}
+      {/* <FixedSizeList
+        height={200}
+        width={100}
         itemSize={46}
-        itemCount={questionList.length}
+        itemCount={props.questionList.length}
         overscanCount={5}
-        itemData={questionList}
+        itemData={props.questionList}
       >
         {renderRow}
-      </FixedSizeList>
+      </FixedSizeList> */}
+
+      <AutoSizer>
+        {({ height, width }) => (
+          <FixedSizeList
+            className="List"
+            height={height}
+            itemCount={props.questionList.length}
+            itemData={props.questionList}
+            itemSize={35}
+            width={width}
+          >
+            {renderRow}
+          </FixedSizeList>
+        )}
+      </AutoSizer>
     </Box>
   );
 }

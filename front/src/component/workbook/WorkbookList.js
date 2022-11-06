@@ -1,4 +1,7 @@
 import {
+  IconButton,
+  InputAdornment,
+  InputBase,
   Paper,
   Table,
   TableBody,
@@ -8,7 +11,9 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TextField,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
@@ -43,6 +48,7 @@ export default function WorkbookList() {
   }, []);
   const [search, setSearch] = useState("");
   const onChange = (e) => {
+    console.log(e.target.value);
     setSearch(e.target.value);
   };
   const ClickTitle = () => {
@@ -52,8 +58,30 @@ export default function WorkbookList() {
 
   return (
     <div>
-      <div>
-        <input type="text" value={search} onChange={onChange} />
+      <div style={{ marginTop: "3vh" }}>
+        {/* <input type="text" value={search} onChange={onChange} /> */}
+        <TextField
+          focused
+          color="info"
+          placeholder="문제집 검색하기"
+          value={search}
+          onChange={onChange}
+          id="outlined-start-adornment"
+          sx={{ mb: 4, width: "40vh" }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  type="button"
+                  sx={{ p: "10px" }}
+                  aria-label="search"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
       </div>
       <TableContainer component={Paper}>
         <Table size="small">

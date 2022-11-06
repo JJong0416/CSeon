@@ -1,4 +1,7 @@
-import { AutoFixHighSharp, LineAxisOutlined } from "@mui/icons-material";
+import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
+import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import MoodIcon from "@mui/icons-material/Mood";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import { getWorkbookQuestion } from "../..//api/workbook";
 import { getQuestion } from "../../api/question";
 import {
@@ -7,36 +10,87 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   getListItemAvatarUtilityClass,
   Grid,
+  Slide,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import SideBar from "../SideBar";
 import { useSelector } from "react-redux";
-
+import BasicButton from "./BasicButton";
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 export default function WorkbookDetail() {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [isCategorySelect, setIsCategorySelect] = useState(false);
+  const [answerList, setAnswerList] = useState(["", "", "", ""]);
+
+  const handleClick = (idx) => {
+    const newArr = Array(answerList.length).fill(false);
+    newArr[idx] = true;
+    setIsCategorySelect(newArr);
+    setSelectedAnswer(idx);
+    console.log(newArr);
+    handleClickOpen();
+  };
+
+  const handleQuestionIndex = (data) => {
+    console.log(data);
+    setQuestionIndex(data);
+  };
   const Token = useSelector((state) => state.UserInfo.accessToken);
   const [questionId, setQuestionId] = useState(1);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
-  const [answers, setAnswers] = useState([
-    "1번보기1번보기1번보기1번보기1번보기1번보기1번보기",
-    "2번보기2번보기2번보기2번보기2번보기2번보기2번보기",
-    "3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기",
-    "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기",
-  ]);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [workbookId, setWorkbookId] = useState(1);
+  const [questionList, setQuestionList] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState([]);
+
+  const prevQuestion = () => {
+    if (questionIndex > 0) {
+      setQuestionIndex(questionIndex - 1);
+    } else {
+      setQuestionIndex(0);
+    }
+    console.log("prev" + questionIndex);
+  };
+
+  const nextQuestion = () => {
+    if (questionIndex < questionList.length - 1) {
+      setQuestionIndex(questionIndex + 1);
+    } else {
+      setQuestionIndex(questionList.length - 1);
+    }
+    console.log(questionIndex);
+  };
 
   useEffect(() => {
     getWorkbookQuestion(
       workbookId,
       Token,
       (res) => {
-        console.log(res.data.questionList.split(", ")[0]);
-        setQuestionId(res.data.questionList.split(", ")[0]);
+        console.log(res.data.questionList.split(", ")[questionIndex]);
+        setQuestionList(res.data.questionList.split(", "));
+        setQuestionId(res.data.questionList.split(", ")[questionIndex]);
+        console.log(questionId);
         getQuestion(
           questionId,
           Token,
@@ -49,7 +103,7 @@ export default function WorkbookDetail() {
               res.data.answerRes.rightAnswer,
             ]);
             console.log(res.data.answerRes);
-            console.log(answerRes);
+            console.log(answerRes[0]);
           },
           (err) => {
             console.log(err);
@@ -60,41 +114,12 @@ export default function WorkbookDetail() {
         console.log(err);
       }
     );
-
-    //  getListItemAvatarUtilityClass().then({
-    //   setQuestionnum[arr[0]]
-    //   getQuestion(
-    //     questionId,
-    //     Token,
-    //     (res) => {
-    //       console.log(res.data);
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
   }, []);
 
-  //   // getProfile();
-  // }, []);
-
   useEffect(() => {
-    // axios로 보기 내용 받아오기
-    // setAnswers([
-    //   "1번보기1번보기1번보기1번보기1번보기1번보기1번보기",
-    //   "2번보기2번보기2번보기2번보기2번보기2번보기2번보기",
-    //   "3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기3번 보기",
-    //   "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기",
-    // ]);
-    // setQuestiontitle(
-    //   "문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제문제"
-    // );
-  });
-
-  useEffect(() => {
-    // axios.get()
+    console.log(questionList);
     getQuestion(
-      questionId,
+      questionList[questionIndex],
       Token,
       (res) => {
         console.log(res.data);
@@ -104,49 +129,58 @@ export default function WorkbookDetail() {
           res.data.answerRes.answers,
           res.data.answerRes.rightAnswer,
         ]);
+        setAnswerList(res.data.answerRes.answers);
       },
       (err) => {
         console.log(err);
       }
     );
-  }, [questionId]);
+    const newArr = Array(answerList.length).fill(false);
+    setIsCategorySelect(newArr);
+    console.log(newArr);
+  }, [questionIndex]);
 
   return (
-    <div style={{ display: "flex" }}>
-      <div
-        style={{
-          float: "left",
-          width: "30%",
-        }}
-      >
-        <SideBar></SideBar>
-      </div>
-      {/* 버튼을 누르면 전에 있는 문제를 불러와야함 */}
-      <Button>&lt;&lt;</Button>
-      <div
-        style={{
-          float: "right",
-          width: "70%",
-        }}
-      >
-        <span>
-          {" "}
-          {answerRes[0] != null && answerRes[0].length > 0 ? (
-            <Box sx={{ width: "100%" }}>
-              <h2>Q. {questionTitle}</h2>
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-              >
-                <Grid item xs={6} sx={{ my: 5 }}>
+    <div style={{ margin: "0vh 4vh" }}>
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            float: "left",
+            width: "25%",
+          }}
+        >
+          <SideBar
+            handleQuestionIndex={handleQuestionIndex}
+            questionList={questionList}
+          ></SideBar>
+        </div>
+
+        {/* 버튼을 누르면 전에 있는 문제를 불러와야함 */}
+        <div style={{ margin: "auto" }} onClick={prevQuestion}>
+          <Button size="large" style={{ backgroundColor: "black" }}>
+            <ChevronLeftOutlinedIcon fontSize="large"></ChevronLeftOutlinedIcon>
+          </Button>
+        </div>
+        <div
+          style={{
+            float: "right",
+            width: "75%",
+          }}
+        >
+          <span>
+            {" "}
+            {answerRes[0] != null && answerRes[0].length > 0 ? (
+              <Box sx={{ width: "100%" }}>
+                <h1 style={{ wordBreak: "break-all" }}>Q. {questionTitle}</h1>
+                <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
+                  {/* <Grid item xs={6} sx={{ my: 5 }}>
                   <Card sx={{ maxWidth: 345 }}>
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
                         1번
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {answerRes[0].answers[0]}
+                        {answerRes[0][0]}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -158,7 +192,7 @@ export default function WorkbookDetail() {
                         2번
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {answerRes.answers[1]}
+                        {answerRes[0][0]}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -170,7 +204,7 @@ export default function WorkbookDetail() {
                         3번
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {answerRes.answers[2]}
+                        {answerRes[0][0]}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -182,17 +216,68 @@ export default function WorkbookDetail() {
                         4번
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {answerRes.answers[3]}
+                        {answerRes[0][0]}
                       </Typography>
                     </CardContent>
                   </Card>
+                </Grid> */}
+
+                  {answerList.map((elm, index) => {
+                    return (
+                      <BasicButton
+                        key={index}
+                        isSelected={isCategorySelect[index]}
+                        handleClick={handleClick}
+                        elementIndex={index}
+                        content={elm}
+                      />
+                    );
+                  })}
                 </Grid>
-              </Grid>
-            </Box>
-          ) : null}
-        </span>
+              </Box>
+            ) : null}
+          </span>
+        </div>
+        <div style={{ margin: "auto" }} onClick={nextQuestion}>
+          <Button style={{ backgroundColor: "black" }}>
+            <ChevronRightOutlinedIcon fontSize="large"></ChevronRightOutlinedIcon>
+          </Button>
+        </div>
       </div>
-      <Button>&gt;&gt;</Button>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle style={{ margin: "auto" }}>
+          {answerRes[1] === selectedAnswer ? (
+            <h3>
+              {" "}
+              <MoodIcon fontSize="large" color="primary"></MoodIcon>
+              정답입니다.
+            </h3>
+          ) : (
+            <h3>
+              {" "}
+              <SentimentDissatisfiedIcon
+                fontSize="large"
+                color="warning"
+              ></SentimentDissatisfiedIcon>
+              틀렸습니다.
+            </h3>
+          )}
+        </DialogTitle>
+        <DialogContent style={{ margin: "auto" }}>
+          <DialogContentText id="alert-dialog-slide-description">
+            {questionExp}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>닫기</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
