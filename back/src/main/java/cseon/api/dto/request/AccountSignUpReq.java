@@ -1,5 +1,6 @@
 package cseon.api.dto.request;
 
+import cseon.domain.type.AccountRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,7 +16,7 @@ public class AccountSignUpReq {
     private final String accountName;
 
     @NotBlank
-    private final Boolean accountRole = false;
+    private final AccountRole accountRole = AccountRole.USER;
 
     @NotNull
     private final Integer accountSuccessCount = 0;

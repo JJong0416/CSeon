@@ -19,6 +19,7 @@ public class QuestionRequestReq {
 
     @NotNull
     private String questionExp;
+
     @NotNull
     private List<String> answers;
 

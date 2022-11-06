@@ -23,7 +23,7 @@ public class AccountController {
     private final AccountService accountService;
 
     /**
-     * 유저가 마이페이지에 들어가서 정볼르 확인한다.
+     * 유저가 마이페이지에 들어가서 정보를 확인한다.
      */
     @GetMapping("/mypage")
     public ResponseEntity<AccountDetailsRes> showMyPage() {
