@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +36,6 @@ public class AdminController extends ControllerConstant {
 
     /**
      * 요청된 문제 디테일 가져오기
-     *
      * @param requestQuestionId
      */
     @Operation(summary = "요청 문제 상세 정보", description = "선택한 요청 문제에 대한 상세 정보를 가져옵니다.")

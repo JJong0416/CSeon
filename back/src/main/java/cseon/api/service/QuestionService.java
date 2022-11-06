@@ -82,9 +82,11 @@ public class QuestionService {
             throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
+        Answer answer =
+                answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
+        // answer : to Dto
         AnswerRes answerRes = AnswerRes.builder()
                 .answers(answer.getAnswers())
                 .rightAnswer(answer.getRightAnswer())

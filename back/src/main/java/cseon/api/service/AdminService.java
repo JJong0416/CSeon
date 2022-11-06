@@ -87,6 +87,7 @@ public class AdminService {
                         .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         answer.allowAnswer(id, questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
+
         answerRepository.save(answer);
 
         // QuestionLabel 추가
