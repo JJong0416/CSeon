@@ -23,9 +23,8 @@ public class WorkbookController {
 
     @Operation(summary = "전체 문제집", description = "전체 문제집을 가져오는 메소드입니다.")
     @GetMapping
-    public ResponseEntity<List> workbookList() {
-        List<Workbook> wb = workbookService.getAllWorkbook();
-        return ResponseEntity.ok().body(wb);
+    public ResponseEntity<?> workbookList() {
+        return ResponseEntity.ok().body(workbookService.getAllWorkbook());
     }
 
     @Operation(summary = "특정 문제집", description = "특정 문제집만 가져오는 메소드입니다.")
@@ -43,7 +42,9 @@ public class WorkbookController {
 
     @Operation(summary = "문제집 수정하기", description = "문제집을 수정하는 메소드입니다.")
     @PatchMapping
-    public ResponseEntity<HttpStatus> changeWorkbook(@Parameter @RequestBody WorkbookRequestReq workbookRequestReq, Long workbookId) {
+    public ResponseEntity<HttpStatus> changeWorkbook(
+            @Parameter @RequestBody WorkbookRequestReq workbookRequestReq, Long workbookId
+    ) {
         workbookService.modifyWorkbook(workbookRequestReq, workbookId);
         return ResponseEntity.ok().build();
     }
