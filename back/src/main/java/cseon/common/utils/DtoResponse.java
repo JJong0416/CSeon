@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class DtoResponse<T> extends MessageResponse {
+
     T responseDto;
 
     public DtoResponse(HttpStatus httpStatus, String message, T dto) {

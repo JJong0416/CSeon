@@ -6,6 +6,7 @@ import cseon.common.exception.ErrorCode;
 import cseon.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,9 +33,13 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    private org.springframework.security.core.userdetails.User createUser(Account account) {
-        return new org.springframework.security.core.userdetails.User(account.getAccountName(),
+    // TODO: 2022-11-06 ENUM 타입으로
+    private User createUser(Account account) {
+        final String ROLE = (account.getAccountRole().equals(false)) ? "ROLE_USER"
+                : "ROLE_ADMIN";
+
+        return new User(account.getAccountName(),
                 passwordEncoder.encode(account.getAccountName()),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                List.of(new SimpleGrantedAuthority(ROLE)));
     }
 }
