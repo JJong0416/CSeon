@@ -1,5 +1,6 @@
 package cseon.domain;
 
+import cseon.domain.type.RequestQuestionType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +17,11 @@ public class Answer {
     @Id
     private String id;
     private Long questionId;
-    private Boolean request;
+    private RequestQuestionType request;
     private List<String> answers;
     private Integer rightAnswer;
 
-    public Answer(Long questionId, Boolean request, List<String> answers, Integer rightAnswer){
+    public Answer(Long questionId, RequestQuestionType request, List<String> answers, Integer rightAnswer){
         this.questionId = questionId;
         this.request = request;
         this.answers = answers;
@@ -28,14 +29,14 @@ public class Answer {
     }
 
     @Builder
-    public Answer(String id, Long questionId, Boolean request, List<String> answers, Integer rightAnswer) {
+    public Answer(String id, Long questionId, RequestQuestionType request, List<String> answers, Integer rightAnswer) {
         this(questionId, request, answers, rightAnswer);
         this.id = id;
     }
 
     public void allowAnswer(Long questionId, List<String> answers, Integer rightAnswer){
         this.questionId = questionId;
-        this.request = true;
+        this.request = RequestQuestionType.FORMAL;
         modifyAnswer(answers, rightAnswer);
     }
 

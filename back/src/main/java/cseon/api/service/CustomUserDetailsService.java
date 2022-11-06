@@ -4,6 +4,7 @@ import cseon.api.repository.AccountRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.Account;
+import cseon.domain.type.AccountRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -35,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // TODO: 2022-11-06 ENUM 타입으로
     private User createUser(Account account) {
-        final String ROLE = (account.getAccountRole().equals(false)) ? "ROLE_USER"
+        final String ROLE = (account.getAccountRole().equals(AccountRole.USER)) ? "ROLE_USER"
                 : "ROLE_ADMIN";
 
         return new User(account.getAccountName(),

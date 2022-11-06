@@ -10,6 +10,7 @@ import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.*;
 import cseon.api.dto.response.QuestionRes;
+import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,11 +55,10 @@ public class QuestionService {
         // 3. MongoDB에 넣어줄 문제를 생성하고
         Answer answer = Answer.builder()
                 .questionId(rqId)
-                .request(false)
+                .request(RequestQuestionType.INFORMAL)
                 .answers(questionRequestReq.getAnswers())
                 .rightAnswer(questionRequestReq.getRightAnswer())
                 .build();
-        System.out.println("answer = " + answer.toString());
 
         // 4. MongoDB에 넣어준다.
         answerRepository.save(answer);
@@ -76,7 +76,7 @@ public class QuestionService {
             throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, false)
+        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         AnswerRes answerRes = AnswerRes.builder()

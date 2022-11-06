@@ -1,5 +1,6 @@
 package cseon.domain;
 
+import cseon.domain.type.AccountRole;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Account {
     private String accountName;
 
     @Column(name = "account_role", nullable = false)
-    private Boolean accountRole;
+    private AccountRole accountRole;
 
     @Column(name = "success_count", nullable = false)
     private Integer successCount;
@@ -35,15 +36,8 @@ public class Account {
     @Column(name = "using_badge_id")
     private Long usingBadgeId;
 
-    public Account(long l, boolean b, int i, long l1) {
-        this.accountId = l;
-        this.accountRole = b;
-        this.successCount = i;
-        this.usingBadgeId = l1;
-    }
-
     @Builder
-    public Account(String accountName, Boolean accountRole, Integer successCount, Long usingBadgeId) {
+    public Account(String accountName, AccountRole accountRole, Integer successCount, Long usingBadgeId) {
         this.accountName = accountName;
         this.accountRole = accountRole;
         this.successCount = successCount;
