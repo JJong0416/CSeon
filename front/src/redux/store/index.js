@@ -19,6 +19,7 @@ import storage from "redux-persist/lib/storage";
 import storageSession from "redux-persist/lib/storage/session";
 
 import userInfoReducer from "../UserInfo";
+import questionInfoReducer from "../QuestionInfo";
 // import channelListReducer from "../ChannelList";
 // import mapListReducer from "../MapList";
 // import pinListReducer from "../PinList";
@@ -28,11 +29,12 @@ const persistConfig = {
   key: "root",
   version: 1,
   // storage: storage,  // local storage
-  storage: storageSession  // session storage
+  storage: storageSession, // session storage
 };
 
 const rootReducer = combineReducers({
   UserInfo: userInfoReducer,
+  QuestionInfo: questionInfoReducer,
   // ChannelList: channelListReducer,
   // MapList: mapListReducer,
   // PinList: pinListReducer,
