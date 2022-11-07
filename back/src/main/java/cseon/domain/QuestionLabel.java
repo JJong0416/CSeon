@@ -31,5 +31,4 @@ public class QuestionLabel {
         this.questionId = question;
         this.labelId = label;
     }
-
 }

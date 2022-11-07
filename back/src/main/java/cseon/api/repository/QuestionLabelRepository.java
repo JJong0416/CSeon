@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface QuestionLabelRepository extends JpaRepository<QuestionLabel, Long> {
     List<QuestionLabel> findAllByQuestionId(Long questionId);
+
 }

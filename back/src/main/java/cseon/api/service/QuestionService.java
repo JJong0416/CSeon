@@ -28,15 +28,12 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 public class QuestionService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
-
     private final QuestionRepository questionRepository;
-
     private final AnswerRepository answerRepository;
-
-    private final LabelRepository labelRepository;
     private final AccountRepository accountRepository;
     private final KafkaProducerProvider kafkaProducerProvider;
     private final QuestionLabelRepository questionLabelRepository;
+    private final LabelService labelService;
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestReq questionRequestReq) {
@@ -94,12 +91,12 @@ public class QuestionService {
                 .build();
 
         // label의 이름들을 찾아서 담기
-        // 이거 AdminService의 getLabel method와 겹치는데 빼는게 좋지 않을까요
         List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
         List<String> labels = null;
         if(!questionLabelList.isEmpty()){
             labels = questionLabelList.stream()
-                    .map(questionLabel -> )
+                    .map(questionLabel -> labelService.getLabelNameById(questionLabel.getLabelId()))
+                    .map(Label::getLabelName)
                     .collect(Collectors.toList());
         }
 
@@ -111,8 +108,7 @@ public class QuestionService {
     public List<QuestionRes> takeQuestionsWithKeywordAndLabel(String keyword, String label) {
 
         // 1. 먼저 해당 label Keyword를 통해 label을 가지고 온다.
-        Label findLabel = labelRepository.findByLabelName(label)
-                .orElseThrow(IllegalArgumentException::new);
+        Label findLabel = labelService.getLabelIdByName(label);
 
         // 2. 그 후, Question과 Question_Label 을 Fetch Join을 한다.
         List<Question> questions = questionRepository.findQuestionsByLabelAndKeyword(keyword);

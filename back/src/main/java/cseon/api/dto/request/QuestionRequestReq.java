@@ -28,6 +28,8 @@ public class QuestionRequestReq {
 
     private Long accountId;
 
+    private List<String> labels;
+
     @Builder
     public QuestionRequestReq(String questionTitle, String questionExp, List<String> answers, Integer rightAnswer) {
         this.questionTitle = questionTitle;
