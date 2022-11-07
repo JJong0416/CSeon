@@ -1,5 +1,6 @@
 package cseon.api.service;
 
+import cseon.api.dto.layer.TryLogs;
 import cseon.api.dto.request.AnswerRequestReq;
 import cseon.api.dto.request.QuestionRequestReq;
 
@@ -8,10 +9,12 @@ import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
+import cseon.common.provider.KafkaProducerProvider;
 import cseon.domain.*;
 import cseon.api.dto.response.QuestionRes;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +28,12 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 public class QuestionService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
-
     private final QuestionRepository questionRepository;
-
     private final AnswerRepository answerRepository;
-
-    private final LabelRepository labelRepository;
-
     private final AccountRepository accountRepository;
+    private final KafkaProducerProvider kafkaProducerProvider;
+    private final QuestionLabelRepository questionLabelRepository;
+    private final LabelService labelService;
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestReq questionRequestReq) {
@@ -66,7 +67,12 @@ public class QuestionService {
 
     @Transactional
     public void selectAnswer(AnswerRequestReq answerRequestReq) {
+        TryLogs tryLogs = TryLogs.builder()
+                .accountName(getAccountName())
+                .answerRequestReq(answerRequestReq)
+                .build();
 
+        kafkaProducerProvider.getKafkaProducer().send(new ProducerRecord<>("cseon.logs.try", tryLogs.toString()));
     }
 
     @Transactional(readOnly = true)
@@ -76,7 +82,8 @@ public class QuestionService {
             throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
+        Answer answer =
+                answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         AnswerRes answerRes = AnswerRes.builder()
@@ -84,7 +91,17 @@ public class QuestionService {
                 .rightAnswer(answer.getRightAnswer())
                 .build();
 
-        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes);
+        // label의 이름들을 찾아서 담기
+        List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
+        List<String> labels = null;
+        if(!questionLabelList.isEmpty()){
+            labels = questionLabelList.stream()
+                    .map(questionLabel -> labelService.getLabelNameById(questionLabel.getLabelId()))
+                    .map(Label::getLabelName)
+                    .collect(Collectors.toList());
+        }
+
+        return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes, labels);
     }
 
     // TODO: 2022-10-30 ElasticSearch를 통한 검색 성능 향상 필수
@@ -92,8 +109,7 @@ public class QuestionService {
     public List<QuestionRes> takeQuestionsWithKeywordAndLabel(String keyword, String label) {
 
         // 1. 먼저 해당 label Keyword를 통해 label을 가지고 온다.
-        Label findLabel = labelRepository.findByLabelName(label)
-                .orElseThrow(IllegalArgumentException::new);
+        Label findLabel = labelService.getLabelIdByName(label);
 
         // 2. 그 후, Question과 Question_Label 을 Fetch Join을 한다.
         List<Question> questions = questionRepository.findQuestionsByLabelAndKeyword(keyword);

@@ -30,6 +30,7 @@ public enum ErrorCode {
     ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 문제의 보기를 찾을 수 없습니다."),
 
     BADGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 칭호를 찾을 수 없습니다."),
+    LABEL_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 라벨을 찾을 수 없습니다."),
 
     NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 내용을 찾을 수 없습니다."),
 

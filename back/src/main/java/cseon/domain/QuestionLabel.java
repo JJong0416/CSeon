@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,9 @@ public class QuestionLabel {
     @JoinColumn(name = "label_id", referencedColumnName = "label_id")
     private Label labelId;
 
+    @Builder
+    public QuestionLabel(Question question, Label label){
+        this.questionId = question;
+        this.labelId = label;
+    }
 }

@@ -24,4 +24,9 @@ public class AnswerRequestReq {
         this.checkNumber = checkNumber;
         this.isAnswer = isAnswer;
     }
+
+    @Override
+    public String toString(){
+        return questionId + " " + checkNumber + " " + isAnswer;
+    }
 }
