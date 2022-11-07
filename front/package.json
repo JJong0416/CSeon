@@ -28,6 +28,7 @@
     "redux-persist": "^6.0.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
+    "sweetalert2": "^11.6.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

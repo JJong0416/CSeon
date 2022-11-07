@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Card, CardContent, Grid, TextField, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export default function AnswerForm(props) {
@@ -26,7 +26,22 @@ export default function AnswerForm(props) {
             {elementIndex + 1} 번
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <input></input>
+            {/* <TextField
+              style={{ width: "100%" }}
+              id="standard-multiline-static"
+              label="Multiline"
+              multiline
+              rows={4}
+              placeholder="보기를 작성해주세요."
+              variant="standard"
+            /> */}
+            <TextField
+              style={{ width: "100%" }}
+              id="outlined-multiline-static"
+              placeholder="보기를 작성해주세요."
+              multiline
+              rows={4}
+            />
           </Typography>
         </CardContent>
       </Card>

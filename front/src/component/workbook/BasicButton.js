@@ -26,7 +26,7 @@ export default function BasicButton(props) {
             {elementIndex + 1} 번
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {props.content}
+            {content}
           </Typography>
         </CardContent>
       </Card>

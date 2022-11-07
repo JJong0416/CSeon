@@ -4,6 +4,10 @@ import MoodIcon from "@mui/icons-material/Mood";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import { getWorkbookQuestion } from "../..//api/workbook";
 import { getQuestion } from "../../api/question";
+import Swal from "sweetalert2";
+
+// CommonJS
+
 import {
   Button,
   Card,
@@ -23,12 +27,15 @@ import {
 import { Box } from "@mui/system";
 import { forwardRef, useEffect, useState } from "react";
 import SideBar from "../SideBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BasicButton from "./BasicButton";
+import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 export default function WorkbookDetail() {
+  const Swal = require("sweetalert2");
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -45,44 +52,62 @@ export default function WorkbookDetail() {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
     setIsCategorySelect(newArr);
-    setSelectedAnswer(idx);
     console.log(newArr);
     handleClickOpen();
+
+    console.log("answerRes", answerRes[1], questionExp);
+
+    if (answerRes[1] !== idx) {
+      Swal.fire({
+        icon: "error",
+        title: "틀렸습니다.",
+        text: questionExp,
+      });
+    } else if (answerRes[1] === idx) {
+      Swal.fire({
+        icon: "success",
+        title: "맞았습니다.",
+        text: questionExp,
+      });
+    }
+    // 사용자 로그 찍는거
   };
 
   const handleQuestionIndex = (data) => {
     console.log(data);
-    setQuestionIndex(data);
+    dispatch(SET_QUESTION_INDEX(data));
   };
   const Token = useSelector((state) => state.UserInfo.accessToken);
   const [questionId, setQuestionId] = useState(1);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const questionIndex = useSelector(
+    (state) => state.QuestionInfo.questionIndex
+  ); // redux 상태관리
   const [workbookId, setWorkbookId] = useState(1);
   const [questionList, setQuestionList] = useState([]);
-  const [selectedAnswer, setSelectedAnswer] = useState([]);
 
   const prevQuestion = () => {
     if (questionIndex > 0) {
-      setQuestionIndex(questionIndex - 1);
+      dispatch(SET_QUESTION_INDEX(questionIndex - 1));
     } else {
-      setQuestionIndex(0);
+      dispatch(SET_QUESTION_INDEX(0));
     }
     console.log("prev" + questionIndex);
   };
 
   const nextQuestion = () => {
     if (questionIndex < questionList.length - 1) {
-      setQuestionIndex(questionIndex + 1);
+      dispatch(SET_QUESTION_INDEX(questionIndex + 1));
     } else {
-      setQuestionIndex(questionList.length - 1);
+      dispatch(SET_QUESTION_INDEX(questionList.length - 1));
     }
     console.log(questionIndex);
   };
 
   useEffect(() => {
+    dispatch(SET_QUESTION_INDEX(0));
     getWorkbookQuestion(
       workbookId,
       Token,
@@ -90,7 +115,9 @@ export default function WorkbookDetail() {
         console.log(res.data.questionList.split(", ")[questionIndex]);
         setQuestionList(res.data.questionList.split(", "));
         setQuestionId(res.data.questionList.split(", ")[questionIndex]);
-        console.log(questionId);
+        console.log(
+          res.data.questionList.split(", ")[0] + "----------------------"
+        );
         getQuestion(
           questionId,
           Token,
@@ -104,6 +131,7 @@ export default function WorkbookDetail() {
             ]);
             console.log(res.data.answerRes);
             console.log(answerRes[0]);
+            setAnswerList(res.data.answerRes.answers);
           },
           (err) => {
             console.log(err);
@@ -118,26 +146,28 @@ export default function WorkbookDetail() {
 
   useEffect(() => {
     console.log(questionList);
-    getQuestion(
-      questionList[questionIndex],
-      Token,
-      (res) => {
-        console.log(res.data);
-        setQuestionTitle(res.data.questionTitle);
-        setQuestionExp(res.data.questionExp);
-        setAnswerRes([
-          res.data.answerRes.answers,
-          res.data.answerRes.rightAnswer,
-        ]);
-        setAnswerList(res.data.answerRes.answers);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-    const newArr = Array(answerList.length).fill(false);
-    setIsCategorySelect(newArr);
-    console.log(newArr);
+    if (questionList.length !== 0) {
+      getQuestion(
+        questionList[questionIndex],
+        Token,
+        (res) => {
+          console.log(res.data);
+          setQuestionTitle(res.data.questionTitle);
+          setQuestionExp(res.data.questionExp);
+          setAnswerRes([
+            res.data.answerRes.answers,
+            res.data.answerRes.rightAnswer,
+          ]);
+          setAnswerList(res.data.answerRes.answers);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      const newArr = Array(answerList.length).fill(false);
+      setIsCategorySelect(newArr);
+      console.log(newArr);
+    }
   }, [questionIndex]);
 
   return (
@@ -244,40 +274,6 @@ export default function WorkbookDetail() {
           </Button>
         </div>
       </div>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle style={{ margin: "auto" }}>
-          {answerRes[1] === selectedAnswer ? (
-            <h3>
-              {" "}
-              <MoodIcon fontSize="large" color="primary"></MoodIcon>
-              정답입니다.
-            </h3>
-          ) : (
-            <h3>
-              {" "}
-              <SentimentDissatisfiedIcon
-                fontSize="large"
-                color="warning"
-              ></SentimentDissatisfiedIcon>
-              틀렸습니다.
-            </h3>
-          )}
-        </DialogTitle>
-        <DialogContent style={{ margin: "auto" }}>
-          <DialogContentText id="alert-dialog-slide-description">
-            {questionExp}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>닫기</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
