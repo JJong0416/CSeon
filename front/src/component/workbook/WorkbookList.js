@@ -17,8 +17,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
-
+import { getWorkbookList } from "../..//api/workbook";
+import { useDispatch, useSelector } from "react-redux";
 export default function WorkbookList() {
+  const Token = useSelector((state) => state.UserInfo.accessToken);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -33,6 +35,24 @@ export default function WorkbookList() {
     setPage(0);
   };
   useEffect(() => {
+    // getWorkbookList(
+    //   Token,
+    //   (res) => {
+    //     console.log(res.data);
+    //     setQuestionTitle(res.data.questionTitle);
+    //     setQuestionExp(res.data.questionExp);
+    //     setAnswerRes([
+    //       res.data.answerRes.answers,
+    //       res.data.answerRes.rightAnswer,
+    //     ]);
+    //     console.log(res.data.answerRes);
+    //     console.log(answerRes[0]);
+    //     setAnswerList(res.data.answerRes.answers);
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //   }
+    // );
     faker.seed(123);
     faker.locale = "ko";
     setUsers(

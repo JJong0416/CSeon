@@ -68,7 +68,7 @@ export default function QuestionsList() {
     <div>
       <div style={{ marginTop: "3vh" }}>
         <Box sx={{ minWidth: 120, mb: 4 }}>
-          <FormControl sx={{ mr: 15, minWidth: 120 }} focused>
+          <FormControl sx={{ mr: 10, width: "15%" }} focused>
             <InputLabel id="demo-simple-select-standard-label">
               라벨 선택
             </InputLabel>
@@ -89,7 +89,7 @@ export default function QuestionsList() {
             </Select>
           </FormControl>
           <TextField
-            sx={{ ml: 15 }}
+            sx={{ ml: 10, width: "50%" }}
             focused
             color="info"
             placeholder="문제 검색하기"
@@ -109,8 +109,9 @@ export default function QuestionsList() {
                 </InputAdornment>
               ),
             }}
-          />
+          />{" "}
         </Box>
+
         {/* <input type="text" value={search} onChange={onChange} /> */}
       </div>
       <TableContainer component={Paper} sx={{ mb: 4 }}>
@@ -154,7 +155,18 @@ export default function QuestionsList() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <Button onClick={clickQuestionCreate}>문제 만들기</Button>
+      <Button
+        size="small"
+        variant="contained"
+        style={{
+          backgroundColor: "#64b5f6",
+          float: "right",
+          margin: "0vh 4vh 4vh 0vh",
+        }}
+        onClick={clickQuestionCreate}
+      >
+        문제 만들기
+      </Button>
     </div>
   );
 }

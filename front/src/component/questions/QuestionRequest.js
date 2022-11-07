@@ -1,7 +1,16 @@
-import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  FormHelperText,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import BasicButton from "../workbook/BasicButton";
+import BasicButton from "../BasicButton";
 import AnswerForm from "./AnswerForm";
 
 export default function QuestionRequest() {
@@ -15,11 +24,16 @@ export default function QuestionRequest() {
     setRightAnswer(idx);
   };
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box style={{ width: "100%", marginTop: "3vh" }}>
       <h1 style={{ wordBreak: "break-all" }}>
-        Q. <input></input>
+        Q.{" "}
+        <TextField
+          helperText="100자 이하로 작성해주세요."
+          placeholder="질문을 작성해주세요."
+          style={{ width: "70%" }}
+        />{" "}
       </h1>
-      <h3>정답을 눌러주세요.</h3>
+      <h4>정답을 눌러주세요.</h4>
       <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
         {/* <Grid xs={6} sx={{ my: 5 }} style={{ textAlign: "center" }}>
           <Card>
@@ -46,10 +60,24 @@ export default function QuestionRequest() {
           );
         })}
       </Grid>
-      <div>
-        해설 <input></input>
+      <Divider></Divider> <Divider></Divider>
+      <h1>해설</h1>
+      <TextField
+        style={{ width: "90%", marginBottom: "4vh" }}
+        id="outlined-multiline-static"
+        placeholder="해설을 작성해주세요."
+        multiline
+        rows={4}
+      />
+      <div style={{ marginBottom: "4vh" }}>
+        <Button
+          size="large"
+          variant="contained"
+          style={{ backgroundColor: "#64b5f6" }}
+        >
+          등록 요청
+        </Button>
       </div>
-      <Button>등록 요청</Button>
     </Box>
   );
 }

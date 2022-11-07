@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 export default function AnswerForm(props) {
   const clickedButtonStyle = {
     textColor: "white",
-    backgroundColor: "PaleTurquoise",
+    backgroundColor: "#90caf9",
     margin: "0vh 5vh 5vh 5vh",
   };
+
   const buttonStyle = {
     textColor: "black",
     backgroundColor: "white",
@@ -16,7 +17,7 @@ export default function AnswerForm(props) {
   const Token = useSelector((state) => state.UserInfo.accessToken);
 
   return (
-    <Grid xs={6} sx={{ my: 5 }} style={{ textAlign: "center" }}>
+    <Grid xs={6} sx={{ mt: 5 }} style={{ textAlign: "center" }}>
       <Card
         style={isSelected ? clickedButtonStyle : buttonStyle}
         onClick={() => handleClick(elementIndex)}

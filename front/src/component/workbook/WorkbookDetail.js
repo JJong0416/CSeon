@@ -28,7 +28,7 @@ import { Box } from "@mui/system";
 import { forwardRef, useEffect, useState } from "react";
 import SideBar from "../SideBar";
 import { useDispatch, useSelector } from "react-redux";
-import BasicButton from "./BasicButton";
+import BasicButton from "../BasicButton";
 import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

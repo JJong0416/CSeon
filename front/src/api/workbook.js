@@ -6,4 +6,11 @@ function getWorkbookQuestion(workbookId, token, success, error) {
     .then(success)
     .catch(error);
 }
-export { getWorkbookQuestion };
+
+function getWorkbookList(token, success, error) {
+  instance
+    .get(`/workbook`, { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
+}
+export { getWorkbookQuestion, getWorkbookList };
