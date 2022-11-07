@@ -76,7 +76,7 @@ public class QuestionService {
             throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
 
-        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
+        Answer answer = answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.FORMAL)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         AnswerRes answerRes = AnswerRes.builder()
