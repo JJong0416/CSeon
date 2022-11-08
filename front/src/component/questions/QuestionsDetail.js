@@ -1,15 +1,5 @@
-import { AutoFixHighSharp, LineAxisOutlined } from "@mui/icons-material";
 import { getQuestion } from "../..//api/question";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Icon,
-  Typography,
-} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -79,7 +69,7 @@ export default function QuestionsDetail() {
   }, []);
 
   return (
-    <div style={{ display: "flex", margin: "5vh" }}>
+    <div style={{ margin: "5vh" }}>
       {" "}
       {answerRes[0] != null && answerRes[0].length > 0 ? (
         <div>

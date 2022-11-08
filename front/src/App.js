@@ -14,6 +14,7 @@ import ContestList from "./component/contest/ContestList";
 import ContestDetail from "./component/contest/ContestDetail";
 import { useSelector } from "react-redux";
 import MyPage from "./component/MyPage";
+import WorkbookCreate from "./component/workbook/WorkbookCreate";
 
 function App() {
   const isloggedin = useSelector((state) => state.UserInfo.loggedIn);
@@ -30,11 +31,9 @@ function App() {
           <Route path="/questionrequest" element={<QuestionRequest />}></Route>
           <Route path="/workbooklist" element={<WorkbookList />}></Route>
           <Route path="/workbookdetail" element={<WorkbookDetail />}></Route>
+          <Route path="/workbookcreate" element={<WorkbookCreate />}></Route>
           <Route path="/contestlist" element={<ContestList />}></Route>
-          <Route
-            path="/contestdetail"
-            element={<ContestDetail />}
-          ></Route>
+          <Route path="/contestdetail" element={<ContestDetail />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
         </Routes>
       </BrowserRouter>
