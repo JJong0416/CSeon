@@ -28,7 +28,6 @@ public class AuthController {
     private final AuthService authService;
     private final OAuthService oAuthService;
 
-
     @GetMapping("/login/kakao/{code}")
     public ResponseEntity<TokenRes> loginOrSignupFromKakao(@PathVariable String code) {
         String jwt = authService.createJwtString(oAuthService.kakaoLoginOrRegister(code));

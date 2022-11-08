@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
 @Tag(name = "Admin Function", description = "관리자 관련 API")
-public class AdminController implements ControllerConstant {
+public class AdminController extends ControllerConstant {
 
     private final AdminService adminService;
 

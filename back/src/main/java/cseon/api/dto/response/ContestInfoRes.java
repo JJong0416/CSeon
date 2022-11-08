@@ -5,16 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Map;
+import java.util.SortedMap;
 
 @Getter
 public class ContestInfoRes {
 
-    private final Map<String, Integer> highRanking;
+    private final SortedMap<String, Double> highRanking;
 
     private final ContestMyRankingRes contestMyRankingRes;
 
     @Builder
-    public ContestInfoRes(Map<String, Integer> highRanking, ContestMyRankingRes contestMyRankingRes){
+    public ContestInfoRes(SortedMap<String, Double> highRanking, ContestMyRankingRes contestMyRankingRes){
         this.highRanking = highRanking;
         this.contestMyRankingRes = contestMyRankingRes;
     }

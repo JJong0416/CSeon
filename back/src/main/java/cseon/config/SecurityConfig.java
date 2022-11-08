@@ -47,7 +47,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login/**").permitAll()
+                .antMatchers("/api/login/**", "/api/contest/**").permitAll()
                 .antMatchers(
                         "/api/mypage/**",
                         "/api/request/question",
