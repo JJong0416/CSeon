@@ -15,7 +15,6 @@ import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
 export default function WorkbookDetail() {
   const Swal = require("sweetalert2");
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
   const Token = useSelector((state) => state.UserInfo.accessToken);
   const [questionId, setQuestionId] = useState(1);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -23,17 +22,10 @@ export default function WorkbookDetail() {
   const [answerRes, setAnswerRes] = useState([[], 0]);
   const questionIndex = useSelector(
     (state) => state.QuestionInfo.questionIndex
-  ); // redux 상태관리
-  const [workbookId, setWorkbookId] = useState(1);
-  const [questionList, setQuestionList] = useState([]);
+  );
+  const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
+  const [questionInfo, setQuestionInfo] = useState([]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
 
@@ -42,7 +34,6 @@ export default function WorkbookDetail() {
     newArr[idx] = true;
     setIsCategorySelect(newArr);
     console.log(newArr);
-    handleClickOpen();
 
     console.log("answerRes", answerRes[1], questionExp);
 
@@ -73,30 +64,29 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(0));
     }
-    console.log("prev" + questionIndex);
+    console.log("prev move:", questionIndex);
   };
 
   const nextQuestion = () => {
-    if (questionIndex < questionList.length - 1) {
+    if (questionIndex < questionInfo.length - 1) {
       dispatch(SET_QUESTION_INDEX(questionIndex + 1));
     } else {
-      dispatch(SET_QUESTION_INDEX(questionList.length - 1));
+      dispatch(SET_QUESTION_INDEX(questionInfo.length - 1));
     }
-    console.log(questionIndex);
+    console.log("next move:", questionIndex);
   };
 
   useEffect(() => {
+    console.log("workbookdeatil rendering.... workbookId:", workbookId);
     dispatch(SET_QUESTION_INDEX(0));
     getWorkbook(
       workbookId,
       Token,
       (res) => {
-        console.log(res.data.questionList.split(", ")[questionIndex]);
-        setQuestionList(res.data.questionList.split(", "));
-        setQuestionId(res.data.questionList.split(", ")[questionIndex]);
-        console.log(
-          res.data.questionList.split(", ")[0] + "----------------------"
-        );
+        console.log("res.data:", res.data);
+        setQuestionInfo(res.data.questionInfo.split(", "));
+        setQuestionId(res.data.questionInfo.split(", ")[questionIndex]);
+        console.log(questionId, "----------------------");
         getQuestion(
           questionId,
           Token,
@@ -124,29 +114,30 @@ export default function WorkbookDetail() {
   }, []);
 
   useEffect(() => {
-    console.log(questionList);
-    if (questionList.length !== 0) {
-      getQuestion(
-        questionList[questionIndex],
-        Token,
-        (res) => {
-          console.log(res.data);
-          setQuestionTitle(res.data.questionTitle);
-          setQuestionExp(res.data.questionExp);
-          setAnswerRes([
-            res.data.answerRes.answers,
-            res.data.answerRes.rightAnswer,
-          ]);
-          setAnswerList(res.data.answerRes.answers);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-      const newArr = Array(answerList.length).fill(false);
-      setIsCategorySelect(newArr);
-      console.log(newArr);
-    }
+    console.log("questionIndex changed...", questionIndex);
+    console.log("questionInfo:", questionInfo);
+    // if (questionInfo.length !== 0) {
+    getQuestion(
+      questionInfo[questionIndex],
+      Token,
+      (res) => {
+        console.log(res.data);
+        setQuestionTitle(res.data.questionTitle);
+        setQuestionExp(res.data.questionExp);
+        setAnswerRes([
+          res.data.answerRes.answers,
+          res.data.answerRes.rightAnswer,
+        ]);
+        setAnswerList(res.data.answerRes.answers);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    const newArr = Array(answerList.length).fill(false);
+    setIsCategorySelect(newArr);
+    console.log(newArr);
+    // }
   }, [questionIndex]);
 
   return (
@@ -160,7 +151,7 @@ export default function WorkbookDetail() {
         >
           <SideBar
             handleQuestionIndex={handleQuestionIndex}
-            questionList={questionList}
+            questionInfo={questionInfo}
           ></SideBar>
         </div>
 

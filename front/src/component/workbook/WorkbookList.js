@@ -33,12 +33,12 @@ export default function WorkbookList() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    console.log("handle", event.target);
+    // console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
   const onChange = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setSearch(e.target.value);
   };
   const ClickTitle = (id) => {
@@ -46,13 +46,16 @@ export default function WorkbookList() {
     dispatch(SET_WORKBOOK_INDEX(id));
     navigate("/workbookdetail");
   };
+  const ClickSearchBtn = ()=>{
+    console.log("search keywork: ",search);
+  }
 
   useEffect(() => {
     console.log("workbooklist rendering...")
     getAllWorkbookList(
       Token,
       (res) => {
-        console.log(res.data);
+        console.log("res.data:",res.data);
         // setQuestionTitle(res.data.questionTitle);
         // setQuestionExp(res.data.questionExp);
         // setAnswerRes([
@@ -71,7 +74,7 @@ export default function WorkbookList() {
       Array(53)
         .fill()
         .map(() => ({
-          id: 11,
+          id: 1,
           name: "만든 유저 이름",
           title: "XX의 문제집",
         }))
@@ -96,6 +99,7 @@ export default function WorkbookList() {
                   type="button"
                   sx={{ p: "10px" }}
                   aria-label="search"
+                  onClick={ClickSearchBtn}
                 >
                   <SearchIcon />
                 </IconButton>
