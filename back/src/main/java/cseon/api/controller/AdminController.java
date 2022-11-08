@@ -36,7 +36,6 @@ public class AdminController extends ControllerConstant {
 
     /**
      * 요청된 문제 디테일 가져오기
-     * @param requestQuestionId
      */
     @Operation(summary = "요청 문제 상세 정보", description = "선택한 요청 문제에 대한 상세 정보를 가져옵니다.")
     @GetMapping("/request/{requestQuestionId}")
@@ -47,7 +46,6 @@ public class AdminController extends ControllerConstant {
 
     /**
      * 문제 등록 허가
-     * @param questionRequestReq
      */
     @Operation(summary = "등록 허가", description = "요청된 문제를 정식 문제로 채택합니다.")
     @PostMapping("/request")

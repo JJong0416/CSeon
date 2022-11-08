@@ -4,6 +4,7 @@ import cseon.api.dto.request.LoginReq;
 import cseon.api.dto.response.TokenRes;
 import cseon.api.service.AuthService;
 import cseon.api.service.OAuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ import static cseon.common.utils.SecurityUtils.getCurrentUsername;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Slf4j
+@Tag(name = "AuthController", description = "로그인 관련 API")
 public class AuthController {
 
     private final AuthService authService;
@@ -42,5 +43,4 @@ public class AuthController {
         return new ResponseEntity<>(
                 new TokenRes(jwt), authService.createJwtHttpHeader(jwt), HttpStatus.OK);
     }
-
 }

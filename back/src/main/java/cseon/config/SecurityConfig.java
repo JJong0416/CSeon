@@ -48,8 +48,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/login/**", "/api/contest/**").permitAll()
-                .antMatchers(
-                        "/api/mypage/**",
+                .antMatchers("/api/mypage/**",
                         "/api/request/question",
                         "/api/question/**",
                         "/api/workbook/**").hasAnyRole("ADMIN","USER")

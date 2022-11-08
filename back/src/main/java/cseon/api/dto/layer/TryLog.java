@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Getter
-public class TryLogs implements Serializable {
+public class TryLog implements Serializable {
 
     private static final long serialVersionUID = 1234L;
 
@@ -25,7 +25,7 @@ public class TryLogs implements Serializable {
     private final LocalDateTime timestamp = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
     @Builder
-    public TryLogs(String accountName, AnswerRequestReq answerRequestReq){
+    public TryLog(String accountName, AnswerRequestReq answerRequestReq){
         this.accountName = accountName;
         this.answerRequestReq = answerRequestReq;
     }

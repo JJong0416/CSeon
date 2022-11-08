@@ -6,13 +6,14 @@ import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
 
@@ -52,7 +53,7 @@ public class ContestService {
                 .build();
     }
 
-    private void solvedContestQuestion(Long contestId, Double score){
+    private void solvedContestQuestion(Long contestId, Double score) {
         ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
         ZSetOperations.add(
                 String.valueOf(contestId), getAccountName(), ZSetOperations.score(String.valueOf(contestId), getAccountName()) + score);
@@ -79,8 +80,6 @@ public class ContestService {
 
     private void InitMyRankingInRedis(
             String redisId, String username, ZSetOperations<String, String> ZSetOperations) {
-
-        final double initScore = 0.0;
 
         if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
                 || ZSetOperations.rank(redisId, username) == null)

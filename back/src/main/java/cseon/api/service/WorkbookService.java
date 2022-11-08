@@ -65,7 +65,7 @@ public class WorkbookService {
                 });
     }
 
-    private void checkWorkbookWithCreatedByAndName(WorkbookRequestReq workbookRequestReq){
+    private void checkWorkbookWithCreatedByAndName(WorkbookRequestReq workbookRequestReq) {
         if (workbookRepository.findWorkbooksByWorkbookCreatedByAndWorkbookName(
                 workbookRequestReq.getWorkbookCreatedBy(), workbookRequestReq.getWorkbookName()).isPresent()) {
             throw new CustomException(ErrorCode.WORKBOOK_NAME_ALREADY_EXISTS);

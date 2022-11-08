@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface BadgeRepository extends JpaRepository<Badge, Long> {
-    @Transactional(readOnly = true)
+
     Optional<Badge> findBadgeByBadgeName(String badgeName);
 }

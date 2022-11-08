@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface QuestionLabelRepository extends JpaRepository<QuestionLabel, Long> {
+
     List<QuestionLabel> findAllByQuestionId(Long questionId);
 
 }
