@@ -26,7 +26,7 @@ export default function QuestionsList() {
   const [selectedLabel, setSelectedLabel] = useState("NONE");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [users, setUsers] = useState([]);
+  const [list, setList] = useState([]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -39,7 +39,7 @@ export default function QuestionsList() {
     setPage(0);
   };
   useEffect(() => {
-    setUsers(
+    setList(
       Array(60)
         .fill()
         .map(() => ({
@@ -126,7 +126,7 @@ export default function QuestionsList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users
+            {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
               .map(({ id, label, title, solved }, i) => (
                 <TableRow key={id}>
@@ -145,7 +145,7 @@ export default function QuestionsList() {
           <TableFooter>
             <TableRow>
               <TablePagination
-                count={users.length}
+                count={list.length}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 onPageChange={handleChangePage}
