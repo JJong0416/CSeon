@@ -1,17 +1,16 @@
 package cseon.api.service;
 
-import cseon.api.dto.layer.TryLogs;
+import cseon.api.dto.layer.TryLog;
 import cseon.api.dto.request.AnswerRequestReq;
 import cseon.api.dto.request.QuestionRequestReq;
-
 import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
+import cseon.api.dto.response.QuestionRes;
 import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.common.provider.KafkaProducerProvider;
 import cseon.domain.*;
-import cseon.api.dto.response.QuestionRes;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -67,12 +66,12 @@ public class QuestionService {
 
     @Transactional
     public void selectAnswer(AnswerRequestReq answerRequestReq) {
-        TryLogs tryLogs = TryLogs.builder()
+        TryLog tryLog = TryLog.builder()
                 .accountName(getAccountName())
                 .answerRequestReq(answerRequestReq)
                 .build();
 
-        kafkaProducerProvider.getKafkaProducer().send(new ProducerRecord<>("cseon.logs.try", tryLogs.toString()));
+        kafkaProducerProvider.getKafkaProducer().send(new ProducerRecord<>("cseon.logs.try", tryLog.toString()));
     }
 
     @Transactional(readOnly = true)
@@ -84,7 +83,7 @@ public class QuestionService {
 
         Answer answer =
                 answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
-                .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+                        .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         AnswerRes answerRes = AnswerRes.builder()
                 .answers(answer.getAnswers())
@@ -94,7 +93,7 @@ public class QuestionService {
         // label의 이름들을 찾아서 담기
         List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
         List<String> labels = null;
-        if(!questionLabelList.isEmpty()){
+        if (!questionLabelList.isEmpty()) {
             labels = questionLabelList.stream()
                     .map(questionLabel -> labelService.getLabelNameById(questionLabel.getLabelId()))
                     .map(Label::getLabelName)

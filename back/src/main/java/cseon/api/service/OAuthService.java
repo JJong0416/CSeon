@@ -46,14 +46,13 @@ public class OAuthService {
     public LoginReq kakaoLoginOrRegister(String code) {
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
-        String accountEmail = kakaoProfile.getKakao_account().getEmail();
-        String[] accountName = accountEmail.split("@");
-
+        String[] accountName = kakaoProfile.getKakao_account()
+                .getEmail()
+                .split("@");
 
         Optional<Account> kakaoUser = findKakaoUser(accountName[0]);
 
         if (kakaoUser.isPresent()) {
-            log.info("kakaoUser가 존재할 경우");
             return new LoginReq(kakaoUser.get().getAccountName(), kakaoUser.get().getAccountName());
         }
 

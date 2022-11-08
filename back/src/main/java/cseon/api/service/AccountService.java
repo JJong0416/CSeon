@@ -32,7 +32,7 @@ public class AccountService {
     private final BadgeRepository badgeRepository;
 
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, rollbackFor = NullPointerException.class)
     public AccountDetailsRes takeMyPage() {
 
         Account account = hasAccountWithAccountName(getAccountName());

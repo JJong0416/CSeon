@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AdminService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
@@ -27,7 +28,6 @@ public class AdminService {
     private final QuestionLabelRepository questionLabelRepository;
     private final LabelService labelService;
 
-    @Transactional(readOnly = true)
     public List<QuestionDto> getRequestQuestionList() {
 
         List<AccountRequestQuestion> requestList = accountRequestQuestionRepository.findAll();
@@ -42,7 +42,6 @@ public class AdminService {
         return res;
     }
 
-    @Transactional(readOnly = true)
     public QuestionDto getRequestQuestion(Long requestQuestionId) {
         AccountRequestQuestion accountRequestQuestion =
                 accountRequestQuestionRepository.findById(requestQuestionId)
@@ -132,15 +131,15 @@ public class AdminService {
         List<String> after = questionRequestReq.getLabels();
         List<QuestionLabel> before = questionLabelRepository.findAllByQuestionId(questionRequestReq.getQuestionId());
 
-        if(after == null && before == null){
+        if (after == null && before == null) {
             // 변경 x
 
-        } else if(after == null){
+        } else if (after == null) {
             // 들어온 값이 null -> before 전부 삭제
-            for(QuestionLabel questionLabel : before)
+            for (QuestionLabel questionLabel : before)
                 questionLabelRepository.delete(questionLabel);
 
-        } else if(before == null){
+        } else if (before == null) {
             // 원래 있던 값이 null -> after 전부 저장
             after.stream()
                     .map(labelService::getLabelIdByName)
@@ -150,7 +149,7 @@ public class AdminService {
                             .build())
                     .map(questionLabelRepository::save);
 
-        } else{
+        } else {
             // 원래 값과 들어온 값 비교
             List<Label> afterList = after.stream()
                     .map(labelService::getLabelIdByName)
@@ -160,11 +159,11 @@ public class AdminService {
             before.stream()
                     .map(questionLabel -> exist.put(questionLabel.getLabelId().getLabelId(), false));
 
-            for(Label label : afterList){
+            for (Label label : afterList) {
                 Boolean flag = exist.get(label.getLabelId());
-                if(!flag){  // 존재 -> true로 마킹
+                if (!flag) {  // 존재 -> true로 마킹
                     exist.put(label.getLabelId(), true);
-                } else if(flag == null){    // 존재x -> 새로 추가
+                } else if (flag == null) {    // 존재x -> 새로 추가
                     questionLabelRepository.save(QuestionLabel.builder()
                             .question(question)
                             .label(label)
@@ -172,8 +171,8 @@ public class AdminService {
                 }
             }
 
-            for(QuestionLabel questionLabel : before){
-                if(!exist.get(questionLabel.getLabelId().getLabelId()))
+            for (QuestionLabel questionLabel : before) {
+                if (!exist.get(questionLabel.getLabelId().getLabelId()))
                     questionLabelRepository.delete(questionLabel);
             }
         }

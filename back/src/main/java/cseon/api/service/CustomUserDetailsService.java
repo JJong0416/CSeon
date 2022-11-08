@@ -19,8 +19,8 @@ import java.util.List;
 /**
  * UserDetailsService를 구현한 CustomUserDetailsService
  */
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
@@ -34,9 +34,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    // TODO: 2022-11-06 ENUM 타입으로
     private User createUser(Account account) {
-        final String ROLE = (account.getAccountRole().equals(AccountRole.USER)) ? "ROLE_USER"
+        final String ROLE = (account.getAccountRole().equals(AccountRole.USER))
+                ? "ROLE_USER"
                 : "ROLE_ADMIN";
 
         return new User(account.getAccountName(),
