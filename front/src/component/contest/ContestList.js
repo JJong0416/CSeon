@@ -17,9 +17,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
-import { getWorkbookList } from "../..//api/workbook";
+import { getWorkbookList } from "../../api/workbook";
 import { useDispatch, useSelector } from "react-redux";
-export default function CompetitionList() {
+export default function ContestList() {
   const Token = useSelector((state) => state.UserInfo.accessToken);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
@@ -73,7 +73,7 @@ export default function CompetitionList() {
   };
   const ClickTitle = () => {
     //redux에 세팅 or props
-    navigate("/competitiondetail");
+    navigate("/contestdetail");
   };
 
   return (
