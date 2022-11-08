@@ -34,14 +34,14 @@ public class WorkbookService {
 
     public void createWorkbook(WorkbookRequestReq workbookRequestReq) {
 
-        List<Long> quesId = workbookRequestReq.getQuestionId();
+        List<Long> questionIds = workbookRequestReq.getQuestionId();
 
         checkWorkbookWithCreatedByAndName(workbookRequestReq);
 
         Workbook wb = Workbook.builder()
                 .workbookCreatedBy(workbookRequestReq.getWorkbookCreatedBy())
                 .workbookName(workbookRequestReq.getWorkbookName())
-                .questionList(changeListToString(quesId))
+                .questionList(changeListToString(questionIds))
                 .build();
 
         workbookRepository.save(wb);
@@ -51,11 +51,11 @@ public class WorkbookService {
 
         Workbook workbook = getWorkbookWithWorkbookId(workbookId);
 
-        List<Long> quesId = workbookRequestReq.getQuestionId();
+        List<Long> questionIds = workbookRequestReq.getQuestionId();
 
         checkWorkbookWithCreatedByAndName(workbookRequestReq);
 
-        workbook.changeWorkbook(workbookRequestReq.getWorkbookName(), changeListToString(quesId));
+        workbook.changeWorkbook(workbookRequestReq.getWorkbookName(), changeListToString(questionIds));
     }
 
     private Workbook getWorkbookWithWorkbookId(Long workbookId) {

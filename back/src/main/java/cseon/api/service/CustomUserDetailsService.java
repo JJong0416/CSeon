@@ -19,8 +19,8 @@ import java.util.List;
 /**
  * UserDetailsService를 구현한 CustomUserDetailsService
  */
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
