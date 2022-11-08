@@ -22,7 +22,6 @@ public class ContestService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Transactional
     public ContestInfoRes SearchRankingInfo(Long contestId) {
         final String username = getAccountName();
         final String redisId = String.valueOf(contestId);
@@ -54,7 +53,7 @@ public class ContestService {
     }
 
     private SortedMap<String, Double> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
-        SortedMap<String, Double> map = Collections.unmodifiableSortedMap(new TreeMap<>());
+        SortedMap<String, Double> map = new TreeMap<>();
 
         for (TypedTuple<String> typedTuple : typedTuples) {
             if (map.put(typedTuple.getValue(), typedTuple.getScore()) != null)
