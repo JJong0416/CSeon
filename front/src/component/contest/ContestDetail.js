@@ -1,6 +1,6 @@
 import { Divider } from "@mui/material";
 
-export default function CompetitionDetail() {
+export default function ContestDetail() {
   return (
     <div style={{ display: "block" }}>
       <div style={{ float: "left", width: "80%" }}>

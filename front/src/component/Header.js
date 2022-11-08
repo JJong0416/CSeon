@@ -27,8 +27,8 @@ export default function Header() {
   const ClickWorkbook = () => {
     navigate("/workbooklist");
   };
-  const ClickCompetition = () => {
-    navigate("/competitionlist");
+  const ClickContest = () => {
+    navigate("/contestlist");
   };
   const ClickMypage = () => {
     navigate("/mypage");
@@ -55,7 +55,7 @@ export default function Header() {
           <ul>
             <li onClick={ClickQuestions}>문제 풀기</li>
             <li onClick={ClickWorkbook}>문제집</li>
-            <li onClick={ClickCompetition}>실시간 대회</li>
+            <li onClick={ClickContest}>실시간 대회</li>
             <li>
               <button onClick={Logout}>로그아웃</button>
               <button onClick={ClickMypage}>마이페이지</button>
@@ -83,7 +83,7 @@ export default function Header() {
     //       <Item onClick={ClickWorkbook}>문제집</Item>
     //     </Grid>
     //     <Grid item xs={2}>
-    //       <Item onClick={ClickCompetition}>실시간 대회</Item>
+    //       <Item onClick={ClickContest}>실시간 대회</Item>
     //     </Grid>
     //     <Grid item xs={3}>
     //       <Item>

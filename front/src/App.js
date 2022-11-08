@@ -10,8 +10,8 @@ import QuestionsDetail from "./component/questions/QuestionsDetail";
 import QuestionRequest from "./component/questions/QuestionRequest";
 import WorkbookList from "./component/workbook/WorkbookList";
 import WorkbookDetail from "./component/workbook/WorkbookDetail";
-import CompetitionList from "./component/competition/CompetitionList";
-import CompetitionDetail from "./component/competition/CompetitionDetail";
+import ContestList from "./component/contest/ContestList";
+import ContestDetail from "./component/contest/ContestDetail";
 import { useSelector } from "react-redux";
 import MyPage from "./component/MyPage";
 
@@ -30,10 +30,10 @@ function App() {
           <Route path="/questionrequest" element={<QuestionRequest />}></Route>
           <Route path="/workbooklist" element={<WorkbookList />}></Route>
           <Route path="/workbookdetail" element={<WorkbookDetail />}></Route>
-          <Route path="/competitionlist" element={<CompetitionList />}></Route>
+          <Route path="/contestlist" element={<ContestList />}></Route>
           <Route
-            path="/competitiondetail"
-            element={<CompetitionDetail />}
+            path="/contestdetail"
+            element={<ContestDetail />}
           ></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
         </Routes>
