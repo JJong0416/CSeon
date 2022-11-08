@@ -1,36 +1,71 @@
 server:
-  port:
-    7070
+  port: 7070
+
+jwt:
+  header: Authorization
+  token-validity-in-seconds: 86400
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhb
+
+kakao:
+  client-secret: Fq2yn3jnwEJur8eRyJH6yKD57fMSL92J
+  redirect-uri: http://localhost:3000/oauth/redirect
+  client-id: 237be15b2e18e8a188bff253550e714c
+  token-uri: https://kauth.kakao.com/oauth/token
+
+springdoc:
+  default-produces-media-type: application/json
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: desc
+    operations-sorter: method
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  paths-to-match: /v1/**
+  show-actuator: true
 
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/{DB스키마}?serverTimezone=Asia/Seoul
-    username: {DB 권한자 ID}
-    password: {DB 권한자 Password}
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-secret: Fq2yn3jnwEJur8eRyJH6yKD57fMSL92J
+            redirect-uri: http://localhost:3000/oauth/redirect
+            authorization-grant-type: authorization_code
+            client-id: 237be15b2e18e8a188bff253550e714c
+            scope: profile_nickname, profile_image, account_email
+            client-name: Kakao
+            client-authentication-method: POST
+        provider:
+          kakao:
+            user-name-attribute: id
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
-        use_sql_comments: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        use_sql_comments: true
+        show_sql: true
+    defer-datasource-initialization: true
     open-in-view: false
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    groups-order: DESC
-    operationsSorter: method
-    disable-swagger-default-url: true
-    display-request-duration: true
-  api-docs:
-    path: /api-docs
-  show-actuator: true
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
-  paths-to-match:
-    - /v1/**
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: cseon
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: as5681
+    url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul

@@ -28,9 +28,34 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // Configuring Annotation Processor
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // OAuth2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
     /* Swagger 2.0 */
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+    /* Embedded Redis */
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'it.ozimov:embedded-redis:0.7.2'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.7.3'
+
+    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.3.1'
 }
 
 tasks.named('test') {
