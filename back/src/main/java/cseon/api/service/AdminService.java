@@ -3,20 +3,16 @@ package cseon.api.service;
 import cseon.api.dto.request.QuestionRequestReq;
 import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
-import cseon.api.repository.AccountRepository;
-import cseon.api.repository.AccountRequestQuestionRepository;
-import cseon.api.repository.AnswerRepository;
-import cseon.api.repository.QuestionRepository;
+import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
-import cseon.domain.AccountRequestQuestion;
-import cseon.domain.Answer;
-import cseon.domain.Question;
+import cseon.domain.*;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +24,8 @@ public class AdminService {
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
     private final AnswerRepository answerRepository;
+    private final QuestionLabelRepository questionLabelRepository;
+    private final LabelService labelService;
 
     @Transactional(readOnly = true)
     public List<QuestionDto> getRequestQuestionList() {
@@ -92,6 +90,15 @@ public class AdminService {
 
         answerRepository.save(answer);
 
+        // QuestionLabel 추가
+        questionRequestReq.getLabels().stream()
+                .map(labelName -> QuestionLabel.builder()
+                        .question(question)
+                        .label(labelService.getLabelIdByName(labelName))
+                        .build())
+                .map(questionLabelRepository::save);
+
+
         // requestQuestion db에서 삭제
         accountRequestQuestionRepository.deleteById(questionRequestReq.getQuestionId());
 
@@ -120,6 +127,56 @@ public class AdminService {
         // answer 덮어쓰기
         answer.modifyAnswer(questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
         answerRepository.save(answer);
+
+        // 라벨 다른 부분 수정
+        List<String> after = questionRequestReq.getLabels();
+        List<QuestionLabel> before = questionLabelRepository.findAllByQuestionId(questionRequestReq.getQuestionId());
+
+        if(after == null && before == null){
+            // 변경 x
+
+        } else if(after == null){
+            // 들어온 값이 null -> before 전부 삭제
+            for(QuestionLabel questionLabel : before)
+                questionLabelRepository.delete(questionLabel);
+
+        } else if(before == null){
+            // 원래 있던 값이 null -> after 전부 저장
+            after.stream()
+                    .map(labelService::getLabelIdByName)
+                    .map(label -> QuestionLabel.builder()
+                            .question(question)
+                            .label(label)
+                            .build())
+                    .map(questionLabelRepository::save);
+
+        } else{
+            // 원래 값과 들어온 값 비교
+            List<Label> afterList = after.stream()
+                    .map(labelService::getLabelIdByName)
+                    .collect(Collectors.toList());
+
+            HashMap<Long, Boolean> exist = new HashMap<>();
+            before.stream()
+                    .map(questionLabel -> exist.put(questionLabel.getLabelId().getLabelId(), false));
+
+            for(Label label : afterList){
+                Boolean flag = exist.get(label.getLabelId());
+                if(!flag){  // 존재 -> true로 마킹
+                    exist.put(label.getLabelId(), true);
+                } else if(flag == null){    // 존재x -> 새로 추가
+                    questionLabelRepository.save(QuestionLabel.builder()
+                            .question(question)
+                            .label(label)
+                            .build());
+                }
+            }
+
+            for(QuestionLabel questionLabel : before){
+                if(!exist.get(questionLabel.getLabelId().getLabelId()))
+                    questionLabelRepository.delete(questionLabel);
+            }
+        }
 
         return true;
     }

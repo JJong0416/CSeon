@@ -51,7 +51,6 @@ public class AccountService {
 
         // 3. BadgeName을 가져오기 위해 DB를 찔러준다.
         Badge badge = readBadge(account.getUsingBadgeId());
-
         // 3. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
         return AccountDetailsRes.builder()
                 .accountRole(account.getAccountRole())

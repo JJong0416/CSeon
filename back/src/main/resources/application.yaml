@@ -69,8 +69,3 @@ spring:
     username: root
     password: as5681
     url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
-
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    timeout: 6
