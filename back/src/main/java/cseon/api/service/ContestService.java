@@ -52,6 +52,12 @@ public class ContestService {
                 .build();
     }
 
+    private void solvedContestQuestion(Long contestId, Double score){
+        ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
+        ZSetOperations.add(
+                String.valueOf(contestId), getAccountName(), ZSetOperations.score(String.valueOf(contestId), getAccountName()) + score);
+    }
+
     private SortedMap<String, Double> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
         SortedMap<String, Double> map = new TreeMap<>();
 
