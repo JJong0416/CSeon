@@ -1,42 +1,31 @@
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import MoodIcon from "@mui/icons-material/Mood";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import { getWorkbookQuestion } from "../..//api/workbook";
+import { getWorkbook } from "../..//api/workbook";
 import { getQuestion } from "../../api/question";
 import Swal from "sweetalert2";
 
-// CommonJS
-
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  getListItemAvatarUtilityClass,
-  Grid,
-  Slide,
-  Typography,
-} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { forwardRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SideBar from "../SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import BasicButton from "../BasicButton";
 import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+
 export default function WorkbookDetail() {
   const Swal = require("sweetalert2");
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const [questionId, setQuestionId] = useState(1);
+  const [questionTitle, setQuestionTitle] = useState("");
+  const [questionExp, setQuestionExp] = useState("");
+  const [answerRes, setAnswerRes] = useState([[], 0]);
+  const questionIndex = useSelector(
+    (state) => state.QuestionInfo.questionIndex
+  ); // redux 상태관리
+  const [workbookId, setWorkbookId] = useState(1);
+  const [questionList, setQuestionList] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,16 +66,6 @@ export default function WorkbookDetail() {
     console.log(data);
     dispatch(SET_QUESTION_INDEX(data));
   };
-  const Token = useSelector((state) => state.UserInfo.accessToken);
-  const [questionId, setQuestionId] = useState(1);
-  const [questionTitle, setQuestionTitle] = useState("");
-  const [questionExp, setQuestionExp] = useState("");
-  const [answerRes, setAnswerRes] = useState([[], 0]);
-  const questionIndex = useSelector(
-    (state) => state.QuestionInfo.questionIndex
-  ); // redux 상태관리
-  const [workbookId, setWorkbookId] = useState(1);
-  const [questionList, setQuestionList] = useState([]);
 
   const prevQuestion = () => {
     if (questionIndex > 0) {
@@ -108,7 +87,7 @@ export default function WorkbookDetail() {
 
   useEffect(() => {
     dispatch(SET_QUESTION_INDEX(0));
-    getWorkbookQuestion(
+    getWorkbook(
       workbookId,
       Token,
       (res) => {

@@ -10,8 +10,8 @@ function RedirectPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const CODE = location.search.split("code=")[1];
-  
   // let code = new URL(window.location.href).searchParams.get("code");
+  
   const sendCode = () => {
     console.log("카카오 로그인 실행");
     axios({

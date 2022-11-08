@@ -1,7 +1,6 @@
 import {
   IconButton,
   InputAdornment,
-  InputBase,
   Paper,
   Table,
   TableBody,
@@ -15,16 +14,20 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
-import { getWorkbookList } from "../..//api/workbook";
 import { useDispatch, useSelector } from "react-redux";
+import { SET_WORKBOOK_INDEX } from "../../redux/WorkbookInfo";
+import { getAllWorkbookList } from "../../api/workbook";
+
 export default function WorkbookList() {
+  const dispatch = new useDispatch();
   const Token = useSelector((state) => state.UserInfo.accessToken);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [users, setUsers] = useState([]);
+  const [list, setList] = useState([]);
+  const [search, setSearch] = useState("");
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -34,48 +37,46 @@ export default function WorkbookList() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  useEffect(() => {
-    // getWorkbookList(
-    //   Token,
-    //   (res) => {
-    //     console.log(res.data);
-    //     setQuestionTitle(res.data.questionTitle);
-    //     setQuestionExp(res.data.questionExp);
-    //     setAnswerRes([
-    //       res.data.answerRes.answers,
-    //       res.data.answerRes.rightAnswer,
-    //     ]);
-    //     console.log(res.data.answerRes);
-    //     console.log(answerRes[0]);
-    //     setAnswerList(res.data.answerRes.answers);
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //   }
-    // );
-    faker.seed(123);
-    faker.locale = "ko";
-    setUsers(
-      Array(53)
-        .fill()
-        .map(() => ({
-          id: 11,
-          name: faker.name.lastName() + faker.name.firstName(),
-          title: "XX의 문제집",
-          count: 0,
-        }))
-    );
-  }, []);
-  const [search, setSearch] = useState("");
   const onChange = (e) => {
     console.log(e.target.value);
     setSearch(e.target.value);
   };
-  const ClickTitle = () => {
-    //redux에 세팅 or props
+  const ClickTitle = (id) => {
+    console.log("WorkbookTitle Click, id:", id);
+    dispatch(SET_WORKBOOK_INDEX(id));
     navigate("/workbookdetail");
   };
 
+  useEffect(() => {
+    console.log("workbooklist rendering...")
+    getAllWorkbookList(
+      Token,
+      (res) => {
+        console.log(res.data);
+        // setQuestionTitle(res.data.questionTitle);
+        // setQuestionExp(res.data.questionExp);
+        // setAnswerRes([
+        //   res.data.answerRes.answers,
+        //   res.data.answerRes.rightAnswer,
+        // ]);
+        // console.log(res.data.answerRes);
+        // console.log(answerRes[0]);
+        // setAnswerList(res.data.answerRes.answers);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    setList(
+      Array(53)
+        .fill()
+        .map(() => ({
+          id: 11,
+          name: "만든 유저 이름",
+          title: "XX의 문제집",
+        }))
+    );
+  }, []);
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
@@ -107,34 +108,32 @@ export default function WorkbookList() {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell align="right">Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Count</TableCell>
+              {/* <TableCell>No</TableCell> */}
+              <TableCell>번호</TableCell>
+              <TableCell align="left">만든 사람</TableCell>
+              <TableCell align="left">문제집 제목</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users
+            {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ id, name, title, count }, i) => (
+              .map(({ id, name, title }, i) => (
                 <TableRow key={id}>
-                  <TableCell component="th" scope="row">
+                  {/* <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
-                  </TableCell>
-                  <TableCell align="right">{id}</TableCell>
-                  <TableCell align="right">{name}</TableCell>
-                  <TableCell align="right" onClick={ClickTitle}>
+                  </TableCell> */}
+                  <TableCell>{id}</TableCell>
+                  <TableCell align="left">{name}</TableCell>
+                  <TableCell align="left" onClick={()=>ClickTitle(id)}>
                     {title}
                   </TableCell>
-                  <TableCell align="right">{count}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TablePagination
-                count={users.length}
+                count={list.length}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 onPageChange={handleChangePage}

@@ -12,7 +12,7 @@ export default function MainPage() {
     <div>
       <h2>MainPage</h2>
       <h2>메인 사진 띄울 예정</h2>
-      <img src="메인로고.png"></img>
+      <img src={require("../assets/메인로고2.png")}></img>
     </div>
   );
 }
