@@ -5,7 +5,8 @@ import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Document(collection = "tries")
@@ -18,6 +19,30 @@ public class Tries {
 
     public void addLogs(AnswerRequest answerRequest){
         this.logs.add(answerRequest);
+        checkSolved(answerRequest.getQuestionId(), answerRequest.getIsAnswer());
+    }
+
+    public void checkSolved(Long questionId, Boolean isAnswer){
+        Set<Long> correct = new HashSet<>(correctQuestion);
+        Set<Long> wrong = new HashSet<>(wrongQuestion);
+
+        if(correct.contains(questionId))
+            return;
+
+        if(isAnswer){
+            correct.add(questionId);
+            if(wrong.contains(questionId))
+                wrong.remove(questionId);
+        } else
+            wrong.add(questionId);
+
+        this.correctQuestion = correct.stream()
+                .sorted()
+                .collect(Collectors.toList());
+
+        this.wrongQuestion = wrong.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     public Tries(String accountName){

@@ -91,13 +91,12 @@ public class AdminService {
         answerRepository.save(answer);
 
         // QuestionLabel 추가
-        questionRequestReq.getLabels().stream()
-                .map(labelName -> QuestionLabel.builder()
-                        .question(question)
-                        .label(labelService.getLabelIdByName(labelName))
-                        .build())
-                .map(questionLabelRepository::save);
-
+        for(String labelName : questionRequestReq.getLabels()){
+            questionLabelRepository.save(QuestionLabel.builder()
+                    .question(question)
+                    .label(labelService.getLabelIdByName(labelName))
+                    .build());
+        }
 
         // requestQuestion db에서 삭제
         accountRequestQuestionRepository.deleteById(questionRequestReq.getQuestionId());
@@ -142,14 +141,16 @@ public class AdminService {
 
         } else if(before == null){
             // 원래 있던 값이 null -> after 전부 저장
-            after.stream()
+            List<Label> labels = after.stream()
                     .map(labelService::getLabelIdByName)
-                    .map(label -> QuestionLabel.builder()
-                            .question(question)
-                            .label(label)
-                            .build())
-                    .map(questionLabelRepository::save);
+                    .collect(Collectors.toList());
 
+            for(Label label : labels){
+                questionLabelRepository.save(QuestionLabel.builder()
+                                .question(question)
+                                .label(label)
+                                .build());
+            }
         } else{
             // 원래 값과 들어온 값 비교
             List<Label> afterList = after.stream()
@@ -157,8 +158,8 @@ public class AdminService {
                     .collect(Collectors.toList());
 
             HashMap<Long, Boolean> exist = new HashMap<>();
-            before.stream()
-                    .map(questionLabel -> exist.put(questionLabel.getLabelId().getLabelId(), false));
+            for(QuestionLabel questionLabel : before)
+                exist.put(questionLabel.getLabelId().getLabelId(), false);
 
             for(Label label : afterList){
                 Boolean flag = exist.get(label.getLabelId());
