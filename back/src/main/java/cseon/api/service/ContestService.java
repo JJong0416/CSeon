@@ -2,18 +2,22 @@ package cseon.api.service;
 
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
+import cseon.api.dto.response.ContestRes;
+import cseon.api.repository.ContestRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
+import cseon.domain.Contest;
+import cseon.domain.Workbook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
 
@@ -21,6 +25,7 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 @RequiredArgsConstructor
 public class ContestService {
 
+    private final ContestRepository contestRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
@@ -91,4 +96,26 @@ public class ContestService {
             throw new CustomException(ErrorCode.CONTEST_NOT_EXIST_SERVER);
         }
     }
+
+
+    @Transactional(readOnly = true)
+    public List<ContestRes> getAllContestRes () {
+        List<Contest> contests = contestRepository.findAllContests()
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
+                });
+        List<ContestRes> ctList = new ArrayList<>();
+        for (Contest c : contests){
+            ZonedDateTime nowKr = ZonedDateTime.now();
+            boolean check = nowKr.isAfter(c.getContestEnd());
+            ctList.add(ContestRes.builder().contestTitle(c.getContestName()).
+                    startTime(c.getContestStart()).
+                    endTime(c.getContestEnd()).
+                    isExpired(check)
+                    .build());
+        }
+        return ctList;
+    }
+
+
 }

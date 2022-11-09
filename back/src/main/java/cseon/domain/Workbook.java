@@ -24,18 +24,17 @@ public class Workbook {
     @Column(name = "workbook_createdBy", nullable = false)
     private String workbookCreatedBy;
 
-    @Column(name = "question_list")
-    private String questionList;
+//    @Column(name = "question_list")
+//    private String questionList;
 
     @Builder
-    public Workbook(String workbookName, String questionList, String workbookCreatedBy) {
-        this.questionList = questionList;
+    public Workbook(String workbookName, String workbookCreatedBy) {
+//        this.questionList = questionList;
         this.workbookName = workbookName;
         this.workbookCreatedBy = workbookCreatedBy;
     }
 
-    public void changeWorkbook(String workbookName, String questionList) {
-        this.questionList = questionList;
+    public void changeWorkbook(String workbookName) {
         this.workbookName = workbookName;
     }
 }
