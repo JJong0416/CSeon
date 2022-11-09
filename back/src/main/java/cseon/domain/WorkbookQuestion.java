@@ -1,6 +1,7 @@
 package cseon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,11 @@ public class WorkbookQuestion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", referencedColumnName = "question_id")
     private Question questionId;
+
+    @Builder
+    public WorkbookQuestion(Workbook workbook, Question question){
+        this.workbookId = workbook;
+        this.questionId = question;
+    }
+
 }

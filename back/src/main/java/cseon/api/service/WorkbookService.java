@@ -1,10 +1,14 @@
 package cseon.api.service;
 
 import cseon.api.dto.request.WorkbookRequestReq;
+import cseon.api.repository.QuestionRepository;
+import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.api.repository.WorkbookRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
+import cseon.domain.Question;
 import cseon.domain.Workbook;
+import cseon.domain.WorkbookQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +21,9 @@ import java.util.List;
 public class WorkbookService {
 
     private final WorkbookRepository workbookRepository;
+
+    private final WorkbookQuestionRepository workbookQuestionRepository;
+    private final QuestionRepository questionRepository;
 
     //모든 workbook 조회
     @Transactional(readOnly = true)
@@ -41,10 +48,17 @@ public class WorkbookService {
         Workbook wb = Workbook.builder()
                 .workbookCreatedBy(workbookRequestReq.getWorkbookCreatedBy())
                 .workbookName(workbookRequestReq.getWorkbookName())
-                .questionList(changeListToString(questionIds))
                 .build();
 
         workbookRepository.save(wb);
+
+        Long[] longs = workbookRequestReq.getQuestionId().toArray(new Long[0]);
+        for (long l : longs){
+            Question q = questionRepository.findQuestionByQuestionId(l).orElseThrow(() -> {
+                throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+            });
+            workbookQuestionRepository.save(WorkbookQuestion.builder().workbook(wb).question(q).build());
+        }
     }
 
     public void modifyWorkbook(WorkbookRequestReq workbookRequestReq, Long workbookId) {
@@ -55,7 +69,8 @@ public class WorkbookService {
 
         checkWorkbookWithCreatedByAndName(workbookRequestReq);
 
-        workbook.changeWorkbook(workbookRequestReq.getWorkbookName(), changeListToString(questionIds));
+//        workbook.changeWorkbook(workbookRequestReq.getWorkbookName(), changeListToString(questionIds));
+        workbook.changeWorkbook(workbookRequestReq.getWorkbookName());
     }
 
     private Workbook getWorkbookWithWorkbookId(Long workbookId) {

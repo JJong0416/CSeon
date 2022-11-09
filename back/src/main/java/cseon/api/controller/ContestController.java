@@ -1,6 +1,7 @@
 package cseon.api.controller;
 
 import cseon.api.dto.response.ContestInfoRes;
+import cseon.api.dto.response.ContestRes;
 import cseon.api.service.ContestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +24,10 @@ public class ContestController {
     @GetMapping("/{contestId}/ranking")
     public ResponseEntity<ContestInfoRes> test(@PathVariable("contestId") Long contestId){
         return ResponseEntity.ok(contestService.SearchRankingInfo(contestId));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<ContestRes>> takeContestWithInfo() {
+        return ResponseEntity.ok(contestService.getAllContestRes());
     }
 }
