@@ -2,7 +2,7 @@ import { instance, createHeaders } from "./index";
 
 function getQuestion(questionId, token, success, error) {
   instance
-    .get(`/question/${questionId}`, questionId, {
+    .get(`/question/${questionId}`, {
       headers: createHeaders(token),
     })
     .then(success)
@@ -11,7 +11,7 @@ function getQuestion(questionId, token, success, error) {
 
 function getQuestionListWithBoth(label, keyword, token, success, error) {
   instance
-    .get(`/question/both/${label}/${keyword}`, label, keyword, {
+    .get(`/question/both/${label}/${keyword}`, {
       headers: createHeaders(token),
     })
     .then(success)
@@ -20,7 +20,7 @@ function getQuestionListWithBoth(label, keyword, token, success, error) {
 
 function getQuestionListWithLabel(label, token, success, error) {
   instance
-    .get(`/question/label/${label}`, label, {
+    .get(`/question/label/${label}`, {
       headers: createHeaders(token),
     })
     .then(success)
@@ -29,7 +29,7 @@ function getQuestionListWithLabel(label, token, success, error) {
 
 function getQuestionListWithKeyword(keyword, token, success, error) {
   instance
-    .get(`/question/keyword/${keyword}`, keyword, {
+    .get(`/question/keyword/${keyword}`, {
       headers: createHeaders(token),
     })
     .then(success)
