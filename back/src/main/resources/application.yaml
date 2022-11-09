@@ -66,6 +66,6 @@ spring:
       database: cseon
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: as5681
+    username: a606
+    password: ssafya606
     url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
