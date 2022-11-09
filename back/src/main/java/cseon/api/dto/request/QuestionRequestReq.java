@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -50,7 +49,7 @@ public class QuestionRequestReq {
         this.accountId = accountId;
     }
 
-    public void updateQuestionInfo(Long accountId, Long questionId){
+    public void updateQuestionInfo(Long accountId, Long questionId) {
         this.accountId = accountId;
         this.questionId = questionId;
     }

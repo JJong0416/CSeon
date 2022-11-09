@@ -13,7 +13,7 @@ public class DtoResponse<T> extends MessageResponse {
         this.responseDto = dto;
     }
 
-    public static <T> DtoResponse<T> of(HttpStatus httpStatus, String message, T dto){
+    public static <T> DtoResponse<T> of(HttpStatus httpStatus, String message, T dto) {
         return new DtoResponse<>(httpStatus, message, dto);
     }
 }

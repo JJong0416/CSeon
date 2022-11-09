@@ -53,7 +53,9 @@ public enum ErrorCode {
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
 
     //500 INTERNAL_SERVER_ERROR: 내부 서버 오류
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),
+
+    INTERNAL_KAKAO_ERROR(HttpStatus.BAD_GATEWAY, "카카오 서버 오류입니다");
 
 
     private final HttpStatus status;

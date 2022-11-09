@@ -33,17 +33,15 @@ public class AdminService {
         List<AccountRequestQuestion> requestList = accountRequestQuestionRepository.findAll();
 
         // requestList 안의 내용을 questionDto로 변경
-        List<QuestionDto> res = requestList.stream()
+        return requestList.stream()
                 .map(accountRequestQuestion -> new QuestionDto(accountRequestQuestion.getRequestQuestionId(),
                         accountRequestQuestion.getRequestQuestionTitle(),
                         accountRequestQuestion.getAccount().getAccountId()))
                 .collect(Collectors.toList());
-
-        return res;
     }
 
     public QuestionDto getRequestQuestion(Long requestQuestionId) {
-        AccountRequestQuestion accountRequestQuestion =
+        var accountRequestQuestion =
                 accountRequestQuestionRepository.findById(requestQuestionId)
                         .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 

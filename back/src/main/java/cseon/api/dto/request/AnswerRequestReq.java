@@ -5,9 +5,12 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Getter
-public class AnswerRequestReq {
+public class AnswerRequestReq implements Serializable {
+
+    private static final long serialVersionUID = 1233L;
 
     @NotNull
     private final Long questionId;
@@ -26,7 +29,7 @@ public class AnswerRequestReq {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return questionId + " " + checkNumber + " " + isAnswer;
     }
 }

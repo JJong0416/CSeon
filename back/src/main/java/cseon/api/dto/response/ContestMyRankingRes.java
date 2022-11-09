@@ -10,12 +10,12 @@ public class ContestMyRankingRes {
 
     private final Double myScore;
 
-    private final Boolean IsExistMeInLeaderboard;
+    private final Boolean isExistMeInLeaderboard;
 
     @Builder
-    public ContestMyRankingRes(Long myRank, Double myScore, Boolean isExistMeInLeaderboard){
+    public ContestMyRankingRes(Long myRank, Double myScore, Boolean isExistMeInLeaderboard) {
         this.myRank = myRank;
         this.myScore = myScore;
-        this.IsExistMeInLeaderboard = isExistMeInLeaderboard;
+        this.isExistMeInLeaderboard = isExistMeInLeaderboard;
     }
 }
