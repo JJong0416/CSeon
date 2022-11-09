@@ -107,9 +107,7 @@ public class ContestService {
         List<ContestRes> ctList = new ArrayList<>();
         for (Contest c : contests){
             ZonedDateTime nowKr = ZonedDateTime.now();
-            boolean check = false;
-            if (nowKr.isAfter(c.getContestEnd()))
-                check = true;
+            boolean check = nowKr.isAfter(c.getContestEnd());
             ctList.add(ContestRes.builder().contestTitle(c.getContestName()).
                     startTime(c.getContestStart()).
                     endTime(c.getContestEnd()).
