@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @Tag(name = "MyPage", description = "계정 관리 API")
-public class AccountController {
+public class AccountInfoController {
 
     private final AccountService accountService;
 

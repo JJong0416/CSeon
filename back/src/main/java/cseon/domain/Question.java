@@ -25,7 +25,7 @@ public class Question {
     @Column(name = "question_exp", length = 200, nullable = false)
     private String questionExp;
 
-    @OneToMany(mappedBy = "questionId")
+    @OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
     private List<QuestionLabel> labels;
 
     @Builder
