@@ -10,7 +10,7 @@ public enum RequestQuestionType {
     private final String desc;
     private final Integer stateCode;
 
-    RequestQuestionType(String desc, Integer stateCode){
+    RequestQuestionType(String desc, Integer stateCode) {
         this.desc = desc;
         this.stateCode = stateCode;
     }

@@ -6,6 +6,7 @@ public interface CommonType {
      */
 
     String getDesc();
+
     Integer getStateCode();
 
 }

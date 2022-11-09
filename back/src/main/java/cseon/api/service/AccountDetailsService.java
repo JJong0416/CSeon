@@ -16,7 +16,7 @@ public class AccountDetailsService {
 
     @Transactional
     public void signup(AccountSignUpReq accountSignUpReq) {
-        Account account = Account.builder()
+        var account = Account.builder()
                 .accountName(accountSignUpReq.getAccountName())
                 .accountRole(accountSignUpReq.getAccountRole())
                 .successCount(accountSignUpReq.getAccountSuccessCount())

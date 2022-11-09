@@ -50,7 +50,7 @@ public class AccountService {
                 .collect(Collectors.toList());
 
         // 3. BadgeName을 가져오기 위해 DB를 찔러준다.
-        Badge badge = readBadge(account.getUsingBadgeId());
+        var badge = readBadge(account.getUsingBadgeId());
         // 3. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
         return AccountDetailsRes.builder()
                 .accountRole(account.getAccountRole())
@@ -65,11 +65,11 @@ public class AccountService {
     public List<BadgeResponseRes> getMyBadge() {
         String accountName = getAccountName();
 
-        Account account = hasAccountWithAccountName(accountName);
+        var account = hasAccountWithAccountName(accountName);
 
         List<AccountBadge> accountBadges = accountBadgeRepository.findAccountBadgeByAccount(account);
 
-        List<BadgeResponseRes> badges = accountBadges.stream()
+        return accountBadges.stream()
                 .map(AccountBadge::getBadgeId)
                 .map(this::readBadge)
                 .map(badge -> BadgeResponseRes.builder()
@@ -77,8 +77,6 @@ public class AccountService {
                         .badgeName(badge.getBadgeName())
                         .badgeExp(badge.getBadgeExp()).build())
                 .collect(Collectors.toList());
-
-        return badges;
     }
 
     private Account hasAccountWithAccountName(String accountName) {

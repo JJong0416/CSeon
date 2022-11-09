@@ -19,7 +19,7 @@ public class ContestController {
     private final ContestService contestService;
 
     @GetMapping("/{contestId}/ranking")
-    public ResponseEntity<ContestInfoRes> test(@PathVariable("contestId") Long contestId){
+    public ResponseEntity<ContestInfoRes> test(@PathVariable("contestId") Long contestId) {
         return ResponseEntity.ok(contestService.SearchRankingInfo(contestId));
     }
 }

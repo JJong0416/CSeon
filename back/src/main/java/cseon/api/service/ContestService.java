@@ -2,6 +2,7 @@ package cseon.api.service;
 
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
+import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 
 @Service
 @RequiredArgsConstructor
-public class ContestService {
+public class ContestService extends RedisConst {
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -34,7 +35,7 @@ public class ContestService {
 
         // 2. 1위부터 10위까지 가지고 온다.
         Set<ZSetOperations.TypedTuple<String>> typedTuples =
-                ZSetOperations.reverseRangeWithScores(redisId, 0, 9);
+                ZSetOperations.reverseRangeWithScores(redisId, TOP_RANKING_LOW, TOP_RANKING_HIGH);
 
         // 3. 그래도 서버에 문제가 있다면, 바로 CustomException 터트려준다.
         checkRedisCondition(typedTuples);

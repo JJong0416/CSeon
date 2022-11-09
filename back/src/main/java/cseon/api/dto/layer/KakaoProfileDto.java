@@ -7,7 +7,7 @@ import lombok.ToString;
 public class KakaoProfileDto {
     private Long id;
     private Properties properties;
-    private KakaoAccount kakao_account;
+    private KakaoAccount kakaoAccount;
 
     @Getter
     @ToString

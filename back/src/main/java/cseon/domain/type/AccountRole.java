@@ -10,7 +10,7 @@ public enum AccountRole {
     private final String desc;
     private final Integer stateCode;
 
-    AccountRole(String desc, Integer stateCode){
+    AccountRole(String desc, Integer stateCode) {
         this.desc = desc;
         this.stateCode = stateCode;
     }
