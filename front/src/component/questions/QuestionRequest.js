@@ -10,8 +10,11 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RegistRequestQuestion } from "../../api/admin";
 
 export default function QuestionRequest() {
+  const token = useSelector((state) => state.AccountInfo.accessToken);
   const [title, setTitle] = useState("");
   const [answer0, setAnswer0] = useState("");
   const [answer1, setAnswer1] = useState("");
@@ -33,6 +36,21 @@ export default function QuestionRequest() {
     console.log("answerList:", answer0, answer1, answer2, answer3);
     console.log("exp:", explain);
     // axios 호출해서 DB에 저장(2022.11.08)
+    let requestQuestionInfo = {
+      title: title,
+      rightanswer: rightAnswer,
+      explain: explain,
+    };
+    RegistRequestQuestion(
+      requestQuestionInfo,
+      token,
+      (res) => {
+        console.log(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
 
   const AnswerForm = () => {

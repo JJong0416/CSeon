@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import RankComponent from "./RankComponent";
 export default function ContestDetail() {
   const [isCategorySelect, setIsCategorySelect] = useState(false);
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [contestTitle, setContestTitle] = useState("");
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");

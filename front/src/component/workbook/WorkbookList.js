@@ -22,7 +22,7 @@ import { getAllWorkbookList } from "../../api/workbook";
 
 export default function WorkbookList() {
   const dispatch = new useDispatch();
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

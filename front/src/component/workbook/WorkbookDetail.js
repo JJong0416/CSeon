@@ -15,7 +15,7 @@ import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
 export default function WorkbookDetail() {
   const Swal = require("sweetalert2");
   const dispatch = useDispatch();
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [questionId, setQuestionId] = useState(1);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");

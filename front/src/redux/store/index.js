@@ -12,7 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import storageSession from "redux-persist/lib/storage/session";
 
-import userInfoReducer from "../UserInfo";
+import accountInfoReducer from "../AccountInfo";
 import questionInfoReducer from "../QuestionInfo";
 import workbookInfoReducer from "../WorkbookInfo";
 
@@ -24,7 +24,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  UserInfo: userInfoReducer,
+  AccountInfo: accountInfoReducer,
   QuestionInfo: questionInfoReducer,
   WorkbookInfo: workbookInfoReducer,
 });

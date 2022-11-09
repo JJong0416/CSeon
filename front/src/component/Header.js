@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_LOGOUT } from "../redux/UserInfo";
+import { SET_LOGOUT } from "../redux/AccountInfo";
 
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accountRole = useSelector(
-    (state) => state.UserInfo.accountInfo.accountRole
+    (state) => state.AccountInfo.accountInfo.accountRole
   ); //
   const ClickQuestions = () => {
     navigate("/questionslist");
@@ -39,7 +39,6 @@ export default function Header() {
           alt="메인 로고"
           src={require("../assets/메인로고2.png")}
           style={{ width: "18%", padding: "2vh 4vh" }}
-          onClick={ClickHome}
         />
 
         <nav>

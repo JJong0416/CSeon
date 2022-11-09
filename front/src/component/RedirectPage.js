@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { SET_LOGIN, SET_TOKEN } from "../redux/UserInfo";
+import { SET_LOGIN, SET_TOKEN } from "../redux/AccountInfo";
 import {useDispatch} from "react-redux";
 
 function RedirectPage() {

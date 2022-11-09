@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { getUserProfile } from "../api/user";
 
 export default function MyPage() {
-  const token = useSelector((state) => state.UserInfo.accessToken);
+  const token = useSelector((state) => state.AccountInfo.accessToken);
 
   useEffect(() => {
     console.log("Mypage render..");

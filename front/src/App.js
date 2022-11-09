@@ -17,7 +17,7 @@ import MyPage from "./component/MyPage";
 import WorkbookCreate from "./component/workbook/WorkbookCreate";
 
 function App() {
-  const isloggedin = useSelector((state) => state.UserInfo.loggedIn);
+  const isloggedin = useSelector((state) => state.AccountInfo.loggedIn);
   return (
     <div className="App">
       <BrowserRouter>

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const tokenSlice = createSlice({
-  name: "userInfo",
+  name: "accountInfo",
   initialState: {
     accessToken: null,
     accountInfo: {

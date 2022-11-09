@@ -8,7 +8,7 @@ import BasicButton from "../BasicButton";
 import WestIcon from "@mui/icons-material/West";
 import { useNavigate } from "react-router";
 export default function QuestionsDetail() {
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [questionId, setQuestionId] = useState(1);
   const [questionTitle, setQuestionTitle] = useState("");

@@ -60,7 +60,7 @@ export default function SideBar(props) {
     (state) => state.QuestionInfo.questionIndex
   ); // redux 상태관리
   console.log(props);
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [workbookId, setWorkbookId] = useState(1);
 
   useEffect(() => {

@@ -20,7 +20,7 @@ import { useNavigate } from "react-router";
 import { getWorkbookList } from "../../api/workbook";
 import { useDispatch, useSelector } from "react-redux";
 export default function ContestList() {
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
