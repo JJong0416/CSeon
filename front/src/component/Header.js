@@ -1,12 +1,14 @@
 import * as React from "react";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGOUT } from "../redux/UserInfo";
 
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+  const accountRole = useSelector(
+    (state) => state.UserInfo.accountInfo.accountRole
+  ); //
   const ClickQuestions = () => {
     navigate("/questionslist");
   };
@@ -47,7 +49,9 @@ export default function Header() {
             <li onClick={ClickContest}>실시간 대회</li>
             <li>
               <button onClick={Logout}>로그아웃</button>
-              <button onClick={ClickMypage}>마이페이지</button>
+              {accountRole == "USER" ? (
+                <button onClick={ClickMypage}>마이페이지</button>
+              ) : null}
             </li>
           </ul>
         </nav>

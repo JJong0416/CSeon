@@ -7,5 +7,10 @@ function getUserProfile(token, success, error) {
     .then(success)
     .catch(error);
 }
-
-export { getUserProfile };
+function getUserType(token, success, error) {
+  instance
+    .get("/accountInfo", { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
+}
+export { getUserProfile, getUserType };

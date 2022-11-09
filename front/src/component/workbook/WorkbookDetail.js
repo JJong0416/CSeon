@@ -24,7 +24,7 @@ export default function WorkbookDetail() {
     (state) => state.QuestionInfo.questionIndex
   );
   const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
-  const [questionInfo, setQuestionInfo] = useState([]);
+  const [questionList, setQuestionList] = useState([]);
 
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
@@ -68,10 +68,10 @@ export default function WorkbookDetail() {
   };
 
   const nextQuestion = () => {
-    if (questionIndex < questionInfo.length - 1) {
+    if (questionIndex < questionList.length - 1) {
       dispatch(SET_QUESTION_INDEX(questionIndex + 1));
     } else {
-      dispatch(SET_QUESTION_INDEX(questionInfo.length - 1));
+      dispatch(SET_QUESTION_INDEX(questionList.length - 1));
     }
     console.log("next move:", questionIndex);
   };
@@ -84,8 +84,8 @@ export default function WorkbookDetail() {
       Token,
       (res) => {
         console.log("res.data:", res.data);
-        setQuestionInfo(res.data.questionInfo.split(", "));
-        setQuestionId(res.data.questionInfo.split(", ")[questionIndex]);
+        setQuestionList(res.data.questionList.split(","));
+        setQuestionId(res.data.questionList.split(",")[questionIndex]);
         console.log(questionId, "----------------------");
         getQuestion(
           questionId,
@@ -115,29 +115,29 @@ export default function WorkbookDetail() {
 
   useEffect(() => {
     console.log("questionIndex changed...", questionIndex);
-    console.log("questionInfo:", questionInfo);
-    // if (questionInfo.length !== 0) {
-    getQuestion(
-      questionInfo[questionIndex],
-      Token,
-      (res) => {
-        console.log(res.data);
-        setQuestionTitle(res.data.questionTitle);
-        setQuestionExp(res.data.questionExp);
-        setAnswerRes([
-          res.data.answerRes.answers,
-          res.data.answerRes.rightAnswer,
-        ]);
-        setAnswerList(res.data.answerRes.answers);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-    const newArr = Array(answerList.length).fill(false);
-    setIsCategorySelect(newArr);
-    console.log(newArr);
-    // }
+    console.log("questionInfo:", questionList);
+    if (questionList.length !== 0) {
+      getQuestion(
+        questionList[questionIndex],
+        Token,
+        (res) => {
+          console.log(res.data);
+          setQuestionTitle(res.data.questionTitle);
+          setQuestionExp(res.data.questionExp);
+          setAnswerRes([
+            res.data.answerRes.answers,
+            res.data.answerRes.rightAnswer,
+          ]);
+          setAnswerList(res.data.answerRes.answers);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      const newArr = Array(answerList.length).fill(false);
+      setIsCategorySelect(newArr);
+      console.log(newArr);
+    }
   }, [questionIndex]);
 
   return (
@@ -151,7 +151,7 @@ export default function WorkbookDetail() {
         >
           <SideBar
             handleQuestionIndex={handleQuestionIndex}
-            questionInfo={questionInfo}
+            questionList={questionList}
           ></SideBar>
         </div>
 

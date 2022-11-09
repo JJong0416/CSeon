@@ -1,12 +1,23 @@
 import { useSelector } from "react-redux/es/exports";
 import { useEffect } from "react";
-
+import { getUserType } from "../api/user";
+import { SET_ACCOUNT_INFO } from "../redux/UserInfo";
+import { useDispatch } from "react-redux";
 export default function MainPage() {
   const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    console.log("token:", token);
-    // getProfile();
+    console.log("mainpage render..");
+    getUserType(
+      token,
+      (res) => {
+        console.log(res);
+        dispatch(SET_ACCOUNT_INFO(res.data));
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }, []);
   return (
     <div>

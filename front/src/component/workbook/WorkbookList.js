@@ -1,4 +1,5 @@
 import {
+  Button,
   IconButton,
   InputAdornment,
   Paper,
@@ -46,16 +47,19 @@ export default function WorkbookList() {
     dispatch(SET_WORKBOOK_INDEX(id));
     navigate("/workbookdetail");
   };
-  const ClickSearchBtn = ()=>{
-    console.log("search keywork: ",search);
-  }
+  const ClickSearchBtn = () => {
+    console.log("search keywork: ", search);
+  };
+  const clickWorkbookCreate = () => {
+    navigate("/workbookcreate");
+  };
 
   useEffect(() => {
-    console.log("workbooklist rendering...")
+    console.log("workbooklist rendering...");
     getAllWorkbookList(
       Token,
       (res) => {
-        console.log("res.data:",res.data);
+        console.log("res.data:", res.data);
         // setQuestionTitle(res.data.questionTitle);
         // setQuestionExp(res.data.questionExp);
         // setAnswerRes([
@@ -108,7 +112,7 @@ export default function WorkbookList() {
           }}
         />
       </div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ mb: 4 }}>
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -128,7 +132,7 @@ export default function WorkbookList() {
                   </TableCell> */}
                   <TableCell>{id}</TableCell>
                   <TableCell align="left">{name}</TableCell>
-                  <TableCell align="left" onClick={()=>ClickTitle(id)}>
+                  <TableCell align="left" onClick={() => ClickTitle(id)}>
                     {title}
                   </TableCell>
                 </TableRow>
@@ -147,6 +151,18 @@ export default function WorkbookList() {
           </TableFooter>
         </Table>
       </TableContainer>
+      <Button
+        size="small"
+        variant="contained"
+        style={{
+          backgroundColor: "#64b5f6",
+          float: "right",
+          margin: "0vh 4vh 4vh 0vh",
+        }}
+        onClick={clickWorkbookCreate}
+      >
+        문제집 만들기
+      </Button>
     </div>
   );
 }
