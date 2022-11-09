@@ -11,12 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@Tag(name = "문제집", description = "문제집 관련 api입니다")
 @RestController
 @RequestMapping("/api/workbook")
 @RequiredArgsConstructor
+@Tag(name = "문제집", description = "문제집 관련 api입니다")
 public class WorkbookController {
 
     private final WorkbookService workbookService;

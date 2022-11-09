@@ -27,7 +27,7 @@ public class QuestionLabel {
     private Label labelId;
 
     @Builder
-    public QuestionLabel(Question question, Label label){
+    public QuestionLabel(Question question, Label label) {
         this.questionId = question;
         this.labelId = label;
     }

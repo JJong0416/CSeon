@@ -9,13 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountDetailsService {
 
     private final AccountRepository accountRepository;
 
     @Transactional
     public void signup(AccountSignUpReq accountSignUpReq) {
-        Account account = Account.builder()
+        var account = Account.builder()
                 .accountName(accountSignUpReq.getAccountName())
                 .accountRole(accountSignUpReq.getAccountRole())
                 .successCount(accountSignUpReq.getAccountSuccessCount())

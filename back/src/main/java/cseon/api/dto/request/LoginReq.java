@@ -1,5 +1,6 @@
 package cseon.api.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,7 @@ public class LoginReq {
     @NotBlank
     private final String accountEmail;
 
+    @Builder
     public LoginReq(String accountName, String accountEmail) {
         this.accountName = accountName;
         this.accountEmail = accountEmail;

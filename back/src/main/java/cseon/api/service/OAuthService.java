@@ -5,6 +5,7 @@ import cseon.api.dto.request.AccountSignUpReq;
 import cseon.api.dto.request.LoginReq;
 import cseon.api.repository.AccountRepository;
 import cseon.common.exception.CustomException;
+import cseon.common.exception.ErrorCode;
 import cseon.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -46,14 +46,13 @@ public class OAuthService {
     public LoginReq kakaoLoginOrRegister(String code) {
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
-        String accountEmail = kakaoProfile.getKakao_account().getEmail();
-        String[] accountName = accountEmail.split("@");
-
+        String[] accountName = kakaoProfile.getKakaoAccount()
+                .getEmail()
+                .split("@");
 
         Optional<Account> kakaoUser = findKakaoUser(accountName[0]);
 
         if (kakaoUser.isPresent()) {
-            log.info("kakaoUser가 존재할 경우");
             return new LoginReq(kakaoUser.get().getAccountName(), kakaoUser.get().getAccountName());
         }
 
@@ -65,7 +64,6 @@ public class OAuthService {
     }
 
     /* 현재 userRepository에 해당하는 카카오 아이디 찾아오기 */
-    @Transactional(readOnly = true)
     protected Optional<Account> findKakaoUser(String accountName) throws CustomException {
         return accountRepository.findAccountByAccountName(accountName);
     }
@@ -91,6 +89,11 @@ public class OAuthService {
                 kakaoRequest,
                 KakaoProfileDto.class
         );
+
+        Optional.ofNullable(exchange.getBody()).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.INTERNAL_KAKAO_ERROR);
+        });
+
         return exchange.getBody();
     }
 
@@ -119,6 +122,11 @@ public class OAuthService {
                 kakaoRequest,
                 HashMap.class
         );
+
+        Optional.ofNullable(responseEntity.getBody()).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.INTERNAL_KAKAO_ERROR);
+        });
+
         return (String) responseEntity.getBody().get(ACCESS_TOKEN);
     }
 }

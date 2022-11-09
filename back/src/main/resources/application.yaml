@@ -45,6 +45,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -57,6 +58,7 @@ spring:
         show_sql: true
     defer-datasource-initialization: true
     open-in-view: false
+
   data:
     mongodb:
       host: localhost

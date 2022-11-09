@@ -2,7 +2,6 @@ package cseon.domain.composite;
 
 import cseon.domain.Question;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
