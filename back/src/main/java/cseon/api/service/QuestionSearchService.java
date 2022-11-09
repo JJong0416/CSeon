@@ -42,22 +42,22 @@ public class QuestionSearchService {
     }
 
     public List<QuestionRes> takeQuestionWithLabel(String label) {
+
         Label findLabel = labelService.getLabelIdByName(label);
 
         return questionRepository.findQuestionsByLabels().stream()
-                .filter(getQuestionPredicate(findLabel))
+                .filter(getQuestionPredicateLabel(findLabel))
                 .map(QuestionSearchService::makeQuestionRes)
                 .collect(Collectors.toList());
     }
 
     // TODO: 2022-10-30 ElasticSearch를 통한 검색 성능 향상 필수
     public List<QuestionRes> takeQuestionsWithKeywordAndLabel(String keyword, String label) {
-        // 1. 먼저 해당 label Keyword를 통해 label을 가지고 온다.
+
         Label findLabel = labelService.getLabelIdByName(label);
 
-        // 3. Question과 QuestionLabel FetchJoin한 후, Stream을 통해 루프를 돌리면서 요청된 Label과 등록된 Label을 비교해서 있으면 가져온다.
         return questionRepository.findQuestionsByLabelAndKeyword(keyword).stream()
-                .filter(getQuestionPredicate(findLabel))
+                .filter(getQuestionPredicateLabel(findLabel))
                 .map(QuestionSearchService::makeQuestionRes)
                 .collect(Collectors.toList());
     }
@@ -103,7 +103,7 @@ public class QuestionSearchService {
                 .collect(Collectors.toList());
     }
 
-    private Predicate<Question> getQuestionPredicate(Label findLabel) {
+    private Predicate<Question> getQuestionPredicateLabel(Label findLabel) {
         return question -> question.getLabels().stream()
                 .anyMatch(questionLabel -> questionLabel.getLabelId().equals(findLabel));
     }

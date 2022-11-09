@@ -46,7 +46,7 @@ public class OAuthService {
     public LoginReq kakaoLoginOrRegister(String code) {
         KakaoProfileDto kakaoProfile = getKakaoProfile(code);
 
-        String[] accountName = kakaoProfile.getKakaoAccount()
+        String[] accountName = kakaoProfile.getKakao_account()
                 .getEmail()
                 .split("@");
 
