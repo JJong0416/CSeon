@@ -3,8 +3,6 @@ package com.cseon.vo;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class AnswerRequest {
     private String timestamp;

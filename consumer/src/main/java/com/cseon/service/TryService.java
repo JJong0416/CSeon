@@ -4,18 +4,19 @@ import com.cseon.domain.Tries;
 import com.cseon.repository.LogsRepository;
 import com.cseon.vo.AnswerRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.annotation.KafkaListener;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ConsumerService {
+public class TryService {
     private final LogsRepository logsRepository;
 
-    @KafkaListener(topics = "cseon.logs.try", groupId = "tries", containerFactory = "tryLogsKafkaListenerContainerFactory")
-    public void saveIndividualListener(String record){
+    public void saveLogs(ConsumerRecords<String, String> records) {
+        for(ConsumerRecord<String, String> record : records){
             // 0:accountName 1:timestamp 2:questionId, 3:checkNumber 4:isAnswer
-            String[] log = record.split(" ");
+            String[] log = record.value().split(" ");
 
             // Tries 찾기. null인 경우와 null이 아닌 경우
             Tries tries = logsRepository.findById(log[0])
@@ -32,5 +33,6 @@ public class ConsumerService {
 
             tries.addLogs(answerRequest);
             logsRepository.save(tries);
+        }
     }
 }
