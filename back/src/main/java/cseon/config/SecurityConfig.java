@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers(
                         "/api/mypage/**",
+                        "/api/accountInfo/**",
                         "/api/request/question",
                         "/api/question/**",
                         "/api/workbook/**").hasAnyRole("ADMIN","USER")

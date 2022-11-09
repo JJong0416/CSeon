@@ -1,6 +1,7 @@
 package cseon.api.controller;
 
 import cseon.api.dto.response.AccountDetailsRes;
+import cseon.api.dto.response.AccountTypeRes;
 import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +30,12 @@ public class AccountController {
     public ResponseEntity<AccountDetailsRes> showMyPage() {
         return ResponseEntity.ok(accountService.takeMyPage());
     }
+
+    /**
+     * 메인페이지에서 유저의 타입을 확인한다.
+     */
+    @GetMapping("/accountInfo")
+    public ResponseEntity<AccountTypeRes> getAccountInfo() { return ResponseEntity.ok(accountService.getAccountInfo()); }
 
     /**
      * 유저가 마이페이지에 들어가서 어떤 벳지가 있는지 확인을 한다.

@@ -1,6 +1,7 @@
 package cseon.api.service;
 
 import cseon.api.dto.response.AccountDetailsRes;
+import cseon.api.dto.response.AccountTypeRes;
 import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.dto.response.WorkbookRes;
 import cseon.api.repository.AccountBadgeRepository;
@@ -53,7 +54,6 @@ public class AccountService {
         Badge badge = readBadge(account.getUsingBadgeId());
         // 3. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
         return AccountDetailsRes.builder()
-                .accountRole(account.getAccountRole())
                 .accountSuccessCount(account.getSuccessCount())
                 .badgeName(badge.getBadgeName())
                 .workbooks(workbookRes)
@@ -92,5 +92,13 @@ public class AccountService {
         return badgeRepository.findById(badgeId).orElseThrow(() -> {
             throw new CustomException(ErrorCode.BADGE_NOT_FOUND);
         });
+    }
+
+    public AccountTypeRes getAccountInfo() {
+        Account account = hasAccountWithAccountName(getAccountName());
+        return AccountTypeRes.builder()
+                .accountRole(account.getAccountRole())
+                .accountName(account.getAccountName())
+                .build();
     }
 }

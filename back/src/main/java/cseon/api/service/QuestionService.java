@@ -83,7 +83,7 @@ public class QuestionService {
         });
 
         Answer answer =
-                answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
+                answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.FORMAL)
                 .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         AnswerRes answerRes = AnswerRes.builder()
@@ -92,7 +92,7 @@ public class QuestionService {
                 .build();
 
         // label의 이름들을 찾아서 담기
-        List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
+        List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(question);
         List<String> labels = null;
         if(!questionLabelList.isEmpty()){
             labels = questionLabelList.stream()
