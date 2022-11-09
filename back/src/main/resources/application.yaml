@@ -68,4 +68,4 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: a606
     password: ssafya606
-    url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://k7a606.p.ssafy.io:3306/cseon?serverTimezone=Asia/Seoul
