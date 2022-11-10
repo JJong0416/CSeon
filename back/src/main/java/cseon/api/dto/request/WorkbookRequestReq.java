@@ -14,7 +14,7 @@ public class WorkbookRequestReq {
     @Schema(description = "문제 목록", example = "[5, 60, 61, 80, 78, 54, 55, 80, 61, 60, 78]")
     private List<Long> questionId;
 
-    @Schema(description = "사용자 좋아요 목록 소설 식별자", example = "2")
+    @Schema(description = "workbook 이름", example = "2")
     private String workbookName;
 
     @Schema(description = "유저 식별자", example = "1")

@@ -2,19 +2,24 @@ package cseon.api.service;
 
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
+import cseon.api.dto.response.ContestRes;
+import cseon.api.dto.response.QuestionDto;
+import cseon.api.repository.ContestRepository;
+import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
+import cseon.domain.Contest;
+import cseon.domain.WorkbookQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
 
@@ -22,7 +27,10 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 @RequiredArgsConstructor
 public class ContestService extends RedisConst {
 
+    private final ContestRepository contestRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private final WorkbookQuestionRepository workbookQuestionRepository;
+    private final QuestionService questionService;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
         final String username = getAccountName();
@@ -92,4 +100,41 @@ public class ContestService extends RedisConst {
             throw new CustomException(ErrorCode.CONTEST_NOT_EXIST_SERVER);
         }
     }
+
+
+    @Transactional(readOnly = true)
+    public List<ContestRes> getAllContestRes () {
+        List<Contest> contests = contestRepository.findAllContests()
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
+                });
+        List<ContestRes> ctList = new ArrayList<>();
+        for (Contest c : contests){
+            ZonedDateTime nowKr = ZonedDateTime.now();
+            boolean check = nowKr.isAfter(c.getContestEnd());
+            ctList.add(ContestRes.builder().contestTitle(c.getContestName()).
+                    startTime(c.getContestStart()).
+                    endTime(c.getContestEnd()).
+                    isExpired(check)
+                    .build());
+        }
+        return ctList;
+    }
+
+    public List<QuestionDto> searchContestQuestionInfo(Long contestId){
+        Contest ctst = contestRepository.findContestByContestId(contestId).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
+        });
+        List<WorkbookQuestion> questions = workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(ctst.getWorkbookId()).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+        });
+
+        List<QuestionDto> questionDtoList = new ArrayList<>();
+        for (WorkbookQuestion l : questions){
+            System.out.println(l.getQuestionId().getQuestionId());
+               questionDtoList.add(questionService.getQuestion(l.getQuestionId().getQuestionId()));
+        }
+        return questionDtoList;
+    }
+
 }

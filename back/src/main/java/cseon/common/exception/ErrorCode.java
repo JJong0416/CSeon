@@ -21,7 +21,7 @@ public enum ErrorCode {
     //404 : NOT_FOUND_EXCEPTION : 리소스를 찾을 수 없음
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
 
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."),
+    CONTEST_NOT_FOUND(HttpStatus.NOT_FOUND, "대회를 찾을 수 없습니다."),
 
     WORKBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "문제집을 찾을 수 없습니다."),
 
