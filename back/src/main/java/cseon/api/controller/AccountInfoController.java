@@ -34,7 +34,9 @@ public class AccountInfoController {
      * 메인페이지에서 유저의 타입을 확인한다.
      */
     @GetMapping("/accountInfo")
-    public ResponseEntity<AccountTypeRes> getAccountInfo() { return ResponseEntity.ok(accountService.getAccountInfo()); }
+    public ResponseEntity<AccountTypeRes> getAccountInfo() {
+        return ResponseEntity.ok(accountService.getAccountInfo());
+    }
 
     /**
      * 유저가 마이페이지에 들어가서 어떤 벳지가 있는지 확인을 한다.

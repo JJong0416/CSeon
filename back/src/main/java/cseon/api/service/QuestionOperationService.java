@@ -28,17 +28,14 @@ public class QuestionOperationService {
 
     private final AccountRequestQuestionRepository accountRequestQuestionRepository;
     private final AnswerRepository answerRepository;
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     private final KafkaProducerProvider kafkaProducerProvider;
 
 
     @Transactional
     public void requestQuestionAddBoard(QuestionRequestReq questionRequestReq) {
 
-        Account account = accountRepository.findAccountByAccountName(getAccountName())
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
-                });
+        Account account = accountService.getAccountEntity();
 
         // 1. 가져온 값을 바탕으로 질문지를 생성해서,
         AccountRequestQuestion requestQuestion = AccountRequestQuestion.builder()

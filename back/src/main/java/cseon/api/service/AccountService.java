@@ -79,6 +79,22 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public Account getAccountEntity() {
+        return accountRepository.findAccountByAccountName(getAccountName()).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public AccountTypeRes getAccountInfo() {
+        Account account = hasAccountWithAccountName(getAccountName());
+        return AccountTypeRes.builder()
+                .accountRole(account.getAccountRole())
+                .accountName(account.getAccountName())
+                .build();
+    }
+
     private Account hasAccountWithAccountName(String accountName) {
         return accountRepository.findAccountByAccountName(accountName)
                 .orElseThrow(() -> {
@@ -90,13 +106,5 @@ public class AccountService {
         return badgeRepository.findById(badgeId).orElseThrow(() -> {
             throw new CustomException(ErrorCode.BADGE_NOT_FOUND);
         });
-    }
-
-    public AccountTypeRes getAccountInfo() {
-        Account account = hasAccountWithAccountName(getAccountName());
-        return AccountTypeRes.builder()
-                .accountRole(account.getAccountRole())
-                .accountName(account.getAccountName())
-                .build();
     }
 }

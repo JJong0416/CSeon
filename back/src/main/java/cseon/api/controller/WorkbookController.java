@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/workbook")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class WorkbookController {
 
     @Operation(summary = "전체 문제집", description = "전체 문제집을 가져오는 메소드입니다.")
     @GetMapping
-    public ResponseEntity<?> workbookList() {
+    public ResponseEntity<List<Workbook>> workbookList() {
         return ResponseEntity.ok().body(workbookService.getAllWorkbook());
     }
 

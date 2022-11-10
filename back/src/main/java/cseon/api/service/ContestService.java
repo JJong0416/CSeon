@@ -30,7 +30,7 @@ public class ContestService extends RedisConst {
     private final ContestRepository contestRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final WorkbookQuestionRepository workbookQuestionRepository;
-    private final QuestionService questionService;
+    private final QuestionSearchService questionSearchService;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
         final String username = getAccountName();
@@ -103,13 +103,14 @@ public class ContestService extends RedisConst {
 
 
     @Transactional(readOnly = true)
-    public List<ContestRes> getAllContestRes () {
+    public List<ContestRes> getAllContestRes() {
         List<Contest> contests = contestRepository.findAllContests()
                 .orElseThrow(() -> {
                     throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
                 });
+
         List<ContestRes> ctList = new ArrayList<>();
-        for (Contest c : contests){
+        for (Contest c : contests) {
             ZonedDateTime nowKr = ZonedDateTime.now();
             boolean check = nowKr.isAfter(c.getContestEnd());
             ctList.add(ContestRes.builder().contestTitle(c.getContestName()).
@@ -121,20 +122,24 @@ public class ContestService extends RedisConst {
         return ctList;
     }
 
-    public List<QuestionDto> searchContestQuestionInfo(Long contestId){
-        Contest ctst = contestRepository.findContestByContestId(contestId).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
-        });
-        List<WorkbookQuestion> questions = workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(ctst.getWorkbookId()).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
-        });
+    @Transactional(readOnly = true)
+    public List<QuestionDto> searchContestQuestionInfo(Long contestId) {
+        Contest findContest =
+                contestRepository.findContestByContestId(contestId).orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
+                });
+
+        List<WorkbookQuestion> questions =
+                workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(findContest.getWorkbookId()).orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+                });
 
         List<QuestionDto> questionDtoList = new ArrayList<>();
-        for (WorkbookQuestion l : questions){
+
+        for (WorkbookQuestion l : questions) {
             System.out.println(l.getQuestionId().getQuestionId());
-               questionDtoList.add(questionService.getQuestion(l.getQuestionId().getQuestionId()));
+            questionDtoList.add(questionSearchService.takeDetailsQuestion(l.getQuestionId().getQuestionId()));
         }
         return questionDtoList;
     }
-
 }
