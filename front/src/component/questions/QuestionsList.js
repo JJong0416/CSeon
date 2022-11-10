@@ -23,6 +23,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
 import {
   getAllQuestionList,
+  getQuestionListWithBoth,
+  getQuestionListWithKeyword,
   getQuestionListWithLabel,
 } from "../../api/question";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,20 +38,19 @@ export default function QuestionsList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [list, setList] = useState([]);
-  const labels = ["OS", "JAVA", "DB", "NETWORK", "DATASTRUCTURE"];
+  const labels = ["JAVA", "DATABASE", "SPRING", "JPA"]; // 라벨 테이블에서 API로 가져오기(2022.11.10)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   const handleLabelChange = (e) => {
     //axios
     console.log(e.target.value);
-    if (e.target.value !== "NONE") {
-      console.log("label api 호출");
-      getQuestionListWithLabel(
-        e.target.value,
+    if (e.target.value === "NONE") {
+      console.log("allquestion api 호출");
+      getAllQuestionList(
         token,
         (res) => {
-          console.log("getQuestionListWithLabel res.data: ", res.data);
+          console.log("getAllQuestionList res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -57,11 +58,12 @@ export default function QuestionsList() {
         }
       );
     } else {
-      console.log("allquestion api 호출");
-      getAllQuestionList(
+      console.log("label api 호출");
+      getQuestionListWithLabel(
+        e.target.value,
         token,
         (res) => {
-          console.log("getAllQuestionList res.data: ", res.data);
+          console.log("getQuestionListWithLabel res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -101,7 +103,37 @@ export default function QuestionsList() {
   const clickQuestionCreate = () => {
     navigate("/questionrequest");
   };
-
+  const ClickSearchBtn = () => {
+    console.log(selectedLabel, search);
+    if (search !== "") {
+      if (selectedLabel === "NONE") {
+        getQuestionListWithKeyword(
+          search,
+          token,
+          (res) => {
+            console.log("getQuestionListWithKeyword res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } else {
+        getQuestionListWithBoth(
+          selectedLabel,
+          search,
+          token,
+          (res) => {
+            console.log("getQuestionListWithBoth res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
+    }
+  };
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
@@ -141,6 +173,7 @@ export default function QuestionsList() {
                     type="button"
                     sx={{ p: "10px" }}
                     aria-label="search"
+                    onClick={ClickSearchBtn}
                   >
                     <SearchIcon />
                   </IconButton>
