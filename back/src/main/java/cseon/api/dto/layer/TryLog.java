@@ -25,13 +25,13 @@ public class TryLog implements Serializable {
     private final LocalDateTime timestamp = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
     @Builder
-    public TryLog(String accountName, AnswerRequestReq answerRequestReq){
+    public TryLog(String accountName, AnswerRequestReq answerRequestReq) {
         this.accountName = accountName;
         this.answerRequestReq = answerRequestReq;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return accountName + " " + answerRequestReq.toString() + timestamp;
     }
 }

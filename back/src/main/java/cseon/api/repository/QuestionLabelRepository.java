@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface QuestionLabelRepository extends JpaRepository<QuestionLabel, Long> {
 
-    List<QuestionLabel> findAllByQuestionId(Question questionId);
+    List<QuestionLabel> findAllByQuestionId(Question question);
 
 }
