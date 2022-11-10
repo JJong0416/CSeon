@@ -188,31 +188,29 @@ export default function QuestionsList() {
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
-              <TableCell align="right">Id</TableCell>
-              <TableCell align="right">Label</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Solved</TableCell>
+              <TableCell align="left">Id</TableCell>
+              {/* <TableCell align="right">Label</TableCell> */}
+              <TableCell align="left">Title</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ questionId, label, questionTitle, solved }, i) => (
+              .map(({ questionId, label, questionTitle }, i) => (
                 <TableRow key={questionId}>
                   <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
                   </TableCell>
-                  <TableCell align="right">{questionId}</TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left">{questionId}</TableCell>
+                  {/* <TableCell align="right">
                     {label.map((l) => ({ l }))}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell
-                    align="right"
+                    align="left"
                     onClick={() => ClickTitle(questionId)}
                   >
                     {questionTitle}
                   </TableCell>
-                  <TableCell align="right">{solved}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

@@ -60,28 +60,11 @@ export default function WorkbookList() {
       Token,
       (res) => {
         console.log("res.data:", res.data);
-        // setQuestionTitle(res.data.questionTitle);
-        // setQuestionExp(res.data.questionExp);
-        // setAnswerRes([
-        //   res.data.answerRes.answers,
-        //   res.data.answerRes.rightAnswer,
-        // ]);
-        // console.log(res.data.answerRes);
-        // console.log(answerRes[0]);
-        // setAnswerList(res.data.answerRes.answers);
+        setList(res.data);
       },
       (err) => {
         console.log(err);
       }
-    );
-    setList(
-      Array(53)
-        .fill()
-        .map(() => ({
-          id: 1,
-          name: "만든 유저 이름",
-          title: "XX의 문제집",
-        }))
     );
   }, []);
   return (
@@ -125,15 +108,15 @@ export default function WorkbookList() {
           <TableBody>
             {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ id, name, title }, i) => (
-                <TableRow key={id}>
+              .map(({ workbookId, workbookCreatedBy, workbookName }, i) => (
+                <TableRow key={workbookId}>
                   {/* <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
                   </TableCell> */}
-                  <TableCell>{id}</TableCell>
-                  <TableCell align="left">{name}</TableCell>
-                  <TableCell align="left" onClick={() => ClickTitle(id)}>
-                    {title}
+                  <TableCell>{workbookId}</TableCell>
+                  <TableCell align="left">{workbookCreatedBy}</TableCell>
+                  <TableCell align="left" onClick={() => ClickTitle(workbookId)}>
+                    {workbookName}
                   </TableCell>
                 </TableRow>
               ))}
