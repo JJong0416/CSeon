@@ -113,10 +113,12 @@ public class ContestService extends RedisConst {
         for (Contest c : contests) {
             ZonedDateTime nowKr = ZonedDateTime.now();
             boolean check = nowKr.isAfter(c.getContestEnd());
-            ctList.add(ContestRes.builder().contestTitle(c.getContestName()).
-                    startTime(c.getContestStart()).
-                    endTime(c.getContestEnd()).
-                    isExpired(check)
+            ctList.add(ContestRes.builder()
+                    .contestId(c.getContestId())
+                    .contestTitle(c.getContestName())
+                    .startTime(c.getContestStart())
+                    .endTime(c.getContestEnd())
+                    .isExpired(check)
                     .build());
         }
         return ctList;

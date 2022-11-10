@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 
 @Getter
 public class ContestRes {
-
+    private final Long contestId;
     private final String contestTitle;
 
     private final ZonedDateTime startTime;
@@ -17,7 +17,8 @@ public class ContestRes {
     private final boolean isExpired;
 
     @Builder
-    public ContestRes(String contestTitle, ZonedDateTime startTime, ZonedDateTime endTime, boolean isExpired){
+    public ContestRes(Long contestId, String contestTitle, ZonedDateTime startTime, ZonedDateTime endTime, boolean isExpired){
+        this.contestId = contestId;
         this.contestTitle = contestTitle;
         this.startTime = startTime;
         this.endTime = endTime;
