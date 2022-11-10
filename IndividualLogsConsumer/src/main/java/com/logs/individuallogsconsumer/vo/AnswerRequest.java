@@ -1,4 +1,4 @@
-package com.cseon.vo;
+package com.logs.individuallogsconsumer.vo;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,6 @@ public class AnswerRequest {
     private Long questionId;
     private Integer checkNumber;
     private Boolean isAnswer;
-
 
     @Builder
     public AnswerRequest(String timestamp, Long questionId, Integer checkNumber, Boolean isAnswer){
