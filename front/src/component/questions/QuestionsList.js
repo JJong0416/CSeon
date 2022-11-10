@@ -21,17 +21,55 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
+import {
+  getAllQuestionList,
+  getQuestionListWithLabel,
+} from "../../api/question";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_QUESTION_ID } from "../../redux/QuestionInfo";
+
 export default function QuestionsList() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.AccountInfo.accessToken);
   const [selectedLabel, setSelectedLabel] = useState("NONE");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [list, setList] = useState([]);
+  const labels = ["OS", "JAVA", "DB", "NETWORK", "DATASTRUCTURE"];
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const handleLabelChange = (event) => {
-    setSelectedLabel(event.target.value);
+  const handleLabelChange = (e) => {
+    //axios
+    console.log(e.target.value);
+    if (e.target.value !== "NONE") {
+      console.log("label api 호출");
+      getQuestionListWithLabel(
+        e.target.value,
+        token,
+        (res) => {
+          console.log("getQuestionListWithLabel res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      console.log("allquestion api 호출");
+      getAllQuestionList(
+        token,
+        (res) => {
+          console.log("getAllQuestionList res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+    setSelectedLabel(e.target.value);
   };
   const handleChangeRowsPerPage = (event) => {
     console.log("handle", event.target);
@@ -39,28 +77,28 @@ export default function QuestionsList() {
     setPage(0);
   };
   useEffect(() => {
-    setList(
-      Array(60)
-        .fill()
-        .map(() => ({
-          id: 11,
-          label: "Java",
-          title: "java문제 제목제목",
-          solved: "X",
-        }))
+    getAllQuestionList(
+      token,
+      (res) => {
+        console.log("getAllQuestionList res.data: ", res.data);
+        setList(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
     );
   }, []);
   const [search, setSearch] = useState("");
   const onChange = (e) => {
-    console.log(e.target.value);
+    console.log("keyword changed..", e.target.value);
     setSearch(e.target.value);
   };
-  const ClickTitle = () => {
-    //redux에 세팅 or props
+  const ClickTitle = (questionId) => {
+    console.log("ClickTitle questionId: ", questionId);
+    dispatch(SET_QUESTION_ID(questionId));
     navigate("/questionsdetail");
   };
   const clickQuestionCreate = () => {
-    //redux에 세팅 or props
     navigate("/questionrequest");
   };
 
@@ -83,9 +121,9 @@ export default function QuestionsList() {
               <MenuItem value={"NONE"}>
                 <em>선택 안함</em>
               </MenuItem>
-              <MenuItem value={"OS"}>운영체제</MenuItem>
-              <MenuItem value={"JAVA"}>자바</MenuItem>
-              <MenuItem value={"DATASTRUCTURE"}>자료 구조</MenuItem>
+              {labels.map((label) => (
+                <MenuItem value={label}>{label}</MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField
@@ -111,8 +149,6 @@ export default function QuestionsList() {
             }}
           />{" "}
         </Box>
-
-        {/* <input type="text" value={search} onChange={onChange} /> */}
       </div>
       <TableContainer component={Paper} sx={{ mb: 4 }}>
         <Table size="small">
@@ -128,15 +164,20 @@ export default function QuestionsList() {
           <TableBody>
             {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ id, label, title, solved }, i) => (
-                <TableRow key={id}>
+              .map(({ questionId, label, questionTitle, solved }, i) => (
+                <TableRow key={questionId}>
                   <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
                   </TableCell>
-                  <TableCell align="right">{id}</TableCell>
-                  <TableCell align="right">{label}</TableCell>
-                  <TableCell align="right" onClick={ClickTitle}>
-                    {title}
+                  <TableCell align="right">{questionId}</TableCell>
+                  <TableCell align="right">
+                    {label.map((l) => ({ l }))}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    onClick={() => ClickTitle(questionId)}
+                  >
+                    {questionTitle}
                   </TableCell>
                   <TableCell align="right">{solved}</TableCell>
                 </TableRow>

@@ -11,7 +11,7 @@ export default function MainPage() {
     getUserType(
       token,
       (res) => {
-        console.log(res);
+        console.log("getUserType res.data: ",res.data);
         dispatch(SET_ACCOUNT_INFO(res.data));
       },
       (err) => {

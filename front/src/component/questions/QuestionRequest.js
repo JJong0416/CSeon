@@ -37,9 +37,10 @@ export default function QuestionRequest() {
     console.log("exp:", explain);
     // axios 호출해서 DB에 저장(2022.11.08)
     let requestQuestionInfo = {
-      title: title,
-      rightanswer: rightAnswer,
-      explain: explain,
+      questionTitle: title,
+      questionExp: explain,
+      answers:[answer0, answer1, answer2, answer3],
+      rightAnswer: rightAnswer,
     };
     RegistRequestQuestion(
       requestQuestionInfo,
