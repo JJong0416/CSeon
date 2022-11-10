@@ -1,4 +1,5 @@
 import {
+  Button,
   IconButton,
   InputAdornment,
   InputBase,
@@ -19,9 +20,12 @@ import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
 import { getWorkbookList } from "../../api/workbook";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllContestList } from "../../api/contest";
 export default function ContestList() {
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [contestList, setContestList] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [users, setUsers] = useState([]);
@@ -35,24 +39,16 @@ export default function ContestList() {
     setPage(0);
   };
   useEffect(() => {
-    // getWorkbookList(
-    //   Token,
-    //   (res) => {
-    //     console.log(res.data);
-    //     setQuestionTitle(res.data.questionTitle);
-    //     setQuestionExp(res.data.questionExp);
-    //     setAnswerRes([
-    //       res.data.answerRes.answers,
-    //       res.data.answerRes.rightAnswer,
-    //     ]);
-    //     console.log(res.data.answerRes);
-    //     console.log(answerRes[0]);
-    //     setAnswerList(res.data.answerRes.answers);
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //   }
-    // );
+    getAllContestList(
+      Token,
+      (res) => {
+        console.log(res.data);
+        setContestList(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
     faker.seed(123);
     faker.locale = "ko";
     setUsers(
@@ -108,28 +104,39 @@ export default function ContestList() {
           <TableHead>
             <TableRow>
               <TableCell>No</TableCell>
-              <TableCell align="right">Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Count</TableCell>
+
+              <TableCell align="right">대회명</TableCell>
+              <TableCell align="right">대회 기간</TableCell>
+              <TableCell align="right">대회 상태</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users
+            {contestList
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ id, name, title, count }, i) => (
-                <TableRow key={id}>
-                  <TableCell component="th" scope="row">
-                    {page * rowsPerPage + i + 1}
-                  </TableCell>
-                  <TableCell align="right">{id}</TableCell>
-                  <TableCell align="right">{name}</TableCell>
-                  <TableCell align="right" onClick={ClickTitle}>
-                    {title}
-                  </TableCell>
-                  <TableCell align="right">{count}</TableCell>
-                </TableRow>
-              ))}
+              .map(
+                (
+                  { contestId, contestTitle, endTime, expired, startTime },
+                  i
+                ) => (
+                  <TableRow key={contestId}>
+                    <TableCell component="th" scope="row">
+                      {page * rowsPerPage + i + 1}
+                    </TableCell>
+                    <TableCell align="right">{contestTitle}</TableCell>
+                    <TableCell align="right">
+                      {startTime} ~ <br></br>
+                      {endTime}
+                    </TableCell>
+                    <TableCell align="right" onClick={ClickTitle}>
+                      {expired ? (
+                        <Button>결과 보기</Button>
+                      ) : (
+                        <Button>참여하기</Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
           </TableBody>
           <TableFooter>
             <TableRow>
