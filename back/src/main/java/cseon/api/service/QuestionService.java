@@ -1,7 +1,5 @@
 package cseon.api.service;
 
-import cseon.api.dto.layer.TryLog;
-import cseon.api.dto.request.AnswerRequestReq;
 import cseon.api.dto.request.QuestionRequestReq;
 import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
@@ -13,7 +11,6 @@ import cseon.common.provider.KafkaProducerProvider;
 import cseon.domain.*;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,15 +61,15 @@ public class QuestionService {
         answerRepository.save(answer);
     }
 
-    @Transactional
-    public void selectAnswer(AnswerRequestReq answerRequestReq) {
-        TryLog tryLog = TryLog.builder()
-                .accountName(getAccountName())
-                .answerRequestReq(answerRequestReq)
-                .build();
-
-        kafkaProducerProvider.getKafkaProducer().send(new ProducerRecord<>("cseon.logs.try", tryLog.toString()));
-    }
+//    @Transactional
+//    public void selectAnswer(AnswerRequestReq answerRequestReq) {
+//        TryLog tryLog = TryLog.builder()
+//                .accountName(getAccountName())
+//                .answerRequestReq(answerRequestReq)
+//                .build();
+//
+//        kafkaProducerProvider.getKafkaProducer().send(new ProducerRecord<>("cseon.logs.try", tryLog.toString()));
+//    }
 
     @Transactional(readOnly = true)
     public QuestionDto getQuestion(Long questionId) {
@@ -80,18 +77,22 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow(() -> {
             throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
         });
-
         Answer answer =
                 answerRepository.findByQuestionIdAndRequest(questionId, RequestQuestionType.INFORMAL)
                         .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
+        System.out.println("hello1");
         AnswerRes answerRes = AnswerRes.builder()
                 .answers(answer.getAnswers())
                 .rightAnswer(answer.getRightAnswer())
                 .build();
+        System.out.println("hello2");
+
 
         // label의 이름들을 찾아서 담기
-        List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(questionId);
+        List<QuestionLabel> questionLabelList = questionLabelRepository.findAllByQuestionId(question);
+        System.out.println("hello3");
+
         List<String> labels = null;
         if (!questionLabelList.isEmpty()) {
             labels = questionLabelList.stream()
@@ -99,6 +100,7 @@ public class QuestionService {
                     .map(Label::getLabelName)
                     .collect(Collectors.toList());
         }
+
 
         return new QuestionDto(question.getQuestionId(), question.getQuestionTitle(), question.getQuestionExp(), answerRes, labels);
     }

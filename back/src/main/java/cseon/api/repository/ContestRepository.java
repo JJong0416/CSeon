@@ -14,4 +14,6 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
 
     @Query(value = "select w from Contest w")
     Optional<List<Contest>> findAllContests();
+
+    Optional<Contest> findContestByContestId(Long contestId);
 }

@@ -2,6 +2,7 @@ package cseon.api.controller;
 
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
+import cseon.api.dto.response.QuestionDto;
 import cseon.api.service.ContestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,12 @@ public class ContestController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ContestRes>> takeContestWithInfo() {
+    public ResponseEntity<List<ContestRes>> takeAllContests() {
         return ResponseEntity.ok(contestService.getAllContestRes());
+    }
+
+    @GetMapping("/{contestId}/question")
+    public ResponseEntity<List<QuestionDto>> takeContestQuestionInfo(@PathVariable("contestId") Long contestId){
+        return ResponseEntity.ok(contestService.searchContestQuestionInfo(contestId));
     }
 }

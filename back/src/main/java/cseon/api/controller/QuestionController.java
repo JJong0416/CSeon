@@ -35,9 +35,9 @@ public class QuestionController {
     }
 
     /** 유저들이 푼 문제들을 기록한다. */
-    @PostMapping("/logs")
-    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestReq answerRequestReq) {
-        questionService.selectAnswer(answerRequestReq);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/logs")
+//    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestReq answerRequestReq) {
+//        questionService.selectAnswer(answerRequestReq);
+//        return ResponseEntity.ok().build();
+//    }
 }
