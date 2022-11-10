@@ -8,9 +8,9 @@ import BasicButton from "../BasicButton";
 import WestIcon from "@mui/icons-material/West";
 import { useNavigate } from "react-router";
 export default function QuestionsDetail() {
+  const questionId = useSelector((state)=>state.QuestionInfo.questionId);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [isCategorySelect, setIsCategorySelect] = useState(false);
-  const [questionId, setQuestionId] = useState(1);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
@@ -44,7 +44,6 @@ export default function QuestionsDetail() {
     // 사용자 로그 찍는거
   };
   useEffect(() => {
-    const questionId = 1;
     getQuestion(
       questionId,
       Token,
