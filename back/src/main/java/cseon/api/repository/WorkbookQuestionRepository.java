@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface WorkbookQuestionRepository extends JpaRepository<WorkbookQuestion, Long> {
 
-//    @Query(value = "select wq from WorkbookQuestion wq join fetch wq.questionId")
-        Optional<List<WorkbookQuestion>> findWorkbookQuestionsByWorkbookId(Workbook workbookId);
+    //    @Query(value = "select wq from WorkbookQuestion wq join fetch wq.questionId")
+    Optional<List<WorkbookQuestion>> findWorkbookQuestionsByWorkbookId(Workbook workbookId);
 }

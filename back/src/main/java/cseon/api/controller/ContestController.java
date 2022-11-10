@@ -33,7 +33,7 @@ public class ContestController {
     }
 
     @GetMapping("/{contestId}/question")
-    public ResponseEntity<List<QuestionDto>> takeContestQuestionInfo(@PathVariable("contestId") Long contestId){
+    public ResponseEntity<List<QuestionDto>> takeContestQuestionInfo(@PathVariable("contestId") Long contestId) {
         return ResponseEntity.ok(contestService.searchContestQuestionInfo(contestId));
     }
 }

@@ -1,6 +1,5 @@
 package cseon.api.dto.response;
 
-import cseon.domain.type.AccountRole;
 import lombok.Builder;
 import lombok.Getter;
 

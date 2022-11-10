@@ -12,11 +12,11 @@ import javax.annotation.PostConstruct;
 @Component
 @RequiredArgsConstructor
 public class KafkaProducerProvider {
-//    private final KafkaProducerConfig kafkaProducerConfig;
-//    private KafkaProducer<String, String> kafkaProducer;
-//
-//    @PostConstruct
-//    protected void init(){
-//        this.kafkaProducer = new KafkaProducer<String, String>(kafkaProducerConfig.kafkaProducerConfigs());
-//    }
+    private final KafkaProducerConfig kafkaProducerConfig;
+    private KafkaProducer<String, String> kafkaProducer;
+
+    @PostConstruct
+    protected void init() {
+        this.kafkaProducer = new KafkaProducer<String, String>(kafkaProducerConfig.kafkaProducerConfigs());
+    }
 }

@@ -11,8 +11,7 @@ public class AccountTypeRes {
 
     @Builder
     public AccountTypeRes(
-            AccountRole accountRole, String accountName
-    ) {
+            AccountRole accountRole, String accountName) {
         this.accountRole = accountRole;
         this.accountName = accountName;
     }
