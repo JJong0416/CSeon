@@ -9,11 +9,14 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { RegistRequestQuestion } from "../../api/accountquestion";
+import { getRequestQuestion, AdoptRequestQuestion } from "../../api/admin";
 
-export default function QuestionRequest() {
+export default function RequestQuestionDetail() {
+  const requestquestionId = useSelector(
+    (state) => state.QuestionInfo.requestquestionId
+  );
   const token = useSelector((state) => state.AccountInfo.accessToken);
   const [title, setTitle] = useState("");
   const [answer0, setAnswer0] = useState("");
@@ -23,6 +26,7 @@ export default function QuestionRequest() {
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [rightAnswer, setRightAnswer] = useState(0);
   const [explain, setExplain] = useState("");
+  const [creator, setCreator] = useState("");
   const [labels, setLables] = useState([]);
   const handleClick = (idx) => {
     const newArr = Array(4).fill(false);
@@ -31,28 +35,26 @@ export default function QuestionRequest() {
     setRightAnswer(idx);
   };
   const ClickRegisterRequest = () => {
-    console.log("등록 요청");
-    console.log("token: ", token);
+    console.log("등록");
     console.log("title:", title);
     console.log("right answer:", rightAnswer);
     console.log("answerList:", answer0, answer1, answer2, answer3);
     console.log("exp:", explain);
     console.log("labels: ", labels);
     // axios 호출해서 DB에 저장(2022.11.08)
-    let questionRequestReq = {
-      // questionId : 1,
+    let requestQuestionInfo = {
       questionTitle: title,
       questionExp: explain,
-      answers:[answer0, answer1, answer2, answer3],
+      answers: [answer0, answer1, answer2, answer3],
       rightAnswer: rightAnswer,
-      // accountId: 1,
-      // labels: labels,
+      // accountId: creator,
+      labels: labels,
     };
-    RegistRequestQuestion(
-      questionRequestReq,
+    AdoptRequestQuestion(
+      requestQuestionInfo,
       token,
       (res) => {
-        console.log(res.data);
+        console.log("AdoptRequestQuestion res.data: ", res.data);
       },
       (err) => {
         console.log(err);
@@ -110,7 +112,27 @@ export default function QuestionRequest() {
     }
     return result;
   };
-
+  useEffect(() => {
+    getRequestQuestion(
+      requestquestionId,
+      token,
+      (res) => {
+        console.log("getRequestQuestion res.data: ", res.data);
+        setTitle(res.data.responseDto.questionTitle);
+        setExplain(res.data.responseDto.questionExp);
+        setAnswer0(res.data.responseDto.answerRes.answers[0]);
+        setAnswer1(res.data.responseDto.answerRes.answers[1]);
+        setAnswer2(res.data.responseDto.answerRes.answers[2]);
+        setAnswer3(res.data.responseDto.answerRes.answers[3]);
+        setRightAnswer(res.data.responseDto.answerRes.rightAnswer);
+        setCreator(res.data.responseDto.accountId);
+        setLables(res.data.responseDto.labels);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, []);
   return (
     <Box style={{ width: "100%", marginTop: "3vh" }}>
       <h1 style={{ wordBreak: "break-all" }}>
@@ -143,7 +165,7 @@ export default function QuestionRequest() {
           style={{ backgroundColor: "#64b5f6" }}
           onClick={ClickRegisterRequest}
         >
-          등록 요청
+          등록
         </Button>
       </div>
     </Box>

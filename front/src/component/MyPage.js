@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getUserProfile } from "../api/user";
+import { getUserProfile } from "../api/accountinfo";
 import { useDispatch } from "react-redux";
 import { Box } from "@mui/system";
 import {

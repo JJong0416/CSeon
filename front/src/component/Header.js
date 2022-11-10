@@ -8,7 +8,7 @@ export default function Header() {
   const navigate = useNavigate();
   const accountRole = useSelector(
     (state) => state.AccountInfo.accountInfo.accountRole
-  ); //
+  );
   const ClickQuestions = () => {
     navigate("/questionslist");
   };
@@ -48,7 +48,7 @@ export default function Header() {
             <li onClick={ClickContest}>실시간 대회</li>
             <li>
               <button onClick={Logout}>로그아웃</button>
-              {accountRole == "USER" ? (
+              {accountRole === "USER" ? (
                 <button onClick={ClickMypage}>마이페이지</button>
               ) : null}
             </li>

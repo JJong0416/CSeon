@@ -34,6 +34,9 @@ export default function QuestionsList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.AccountInfo.accessToken);
+  const accountRole = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountRole
+  );
   const [selectedLabel, setSelectedLabel] = useState("NONE");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -103,6 +106,9 @@ export default function QuestionsList() {
   const clickQuestionCreate = () => {
     navigate("/questionrequest");
   };
+  const clickQuestionConfirm = () =>{
+    navigate("/requestquestionlist");
+  }
   const ClickSearchBtn = () => {
     console.log(selectedLabel, search);
     if (search !== "") {
@@ -189,14 +195,13 @@ export default function QuestionsList() {
             <TableRow>
               <TableCell>No</TableCell>
               <TableCell align="left">Id</TableCell>
-              {/* <TableCell align="right">Label</TableCell> */}
               <TableCell align="left">Title</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ questionId, label, questionTitle }, i) => (
+              .map(({ questionId, questionTitle }, i) => (
                 <TableRow key={questionId}>
                   <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
@@ -227,18 +232,33 @@ export default function QuestionsList() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <Button
-        size="small"
-        variant="contained"
-        style={{
-          backgroundColor: "#64b5f6",
-          float: "right",
-          margin: "0vh 4vh 4vh 0vh",
-        }}
-        onClick={clickQuestionCreate}
-      >
-        문제 만들기
-      </Button>
+      {accountRole === "USER" ? (
+        <Button
+          size="small"
+          variant="contained"
+          style={{
+            backgroundColor: "#64b5f6",
+            float: "right",
+            margin: "0vh 4vh 4vh 0vh",
+          }}
+          onClick={clickQuestionCreate}
+        >
+          문제 만들기
+        </Button>
+      ) : (
+        <Button
+          size="small"
+          variant="contained"
+          style={{
+            backgroundColor: "#64b5f6",
+            float: "right",
+            margin: "0vh 4vh 4vh 0vh",
+          }}
+          onClick={clickQuestionConfirm}
+        >
+          요청문제확인
+        </Button>
+      )}
     </div>
   );
 }

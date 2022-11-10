@@ -17,7 +17,7 @@ function getRequestQuestion(requestQuestionId, token, success, error) {
     .catch(error);
 }
 
-function RegistRequestQuestion(requestQuestionInfo, token, success, error) {
+function AdoptRequestQuestion(requestQuestionInfo, token, success, error) {
   instance
     .post(`/admin/request`, requestQuestionInfo, {
       headers: createHeaders(token),
@@ -26,4 +26,4 @@ function RegistRequestQuestion(requestQuestionInfo, token, success, error) {
     .catch(error);
 }
 
-export { getRequestQuestionList, getRequestQuestion, RegistRequestQuestion };
+export { getRequestQuestionList, getRequestQuestion, AdoptRequestQuestion };

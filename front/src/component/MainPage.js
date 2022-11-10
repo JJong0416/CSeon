@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux/es/exports";
 import { useEffect } from "react";
-import { getUserType } from "../api/user";
+import { getUserType } from "../api/accountinfo";
 import { SET_ACCOUNT_INFO } from "../redux/AccountInfo";
 import { useDispatch } from "react-redux";
 export default function MainPage() {
