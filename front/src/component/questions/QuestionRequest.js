@@ -46,7 +46,7 @@ export default function QuestionRequest() {
       answers:[answer0, answer1, answer2, answer3],
       rightAnswer: rightAnswer,
       // accountId: 1,
-      // labels: labels,
+      labels: labels,
     };
     RegistRequestQuestion(
       questionRequestReq,

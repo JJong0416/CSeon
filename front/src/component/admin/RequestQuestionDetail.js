@@ -18,6 +18,7 @@ export default function RequestQuestionDetail() {
     (state) => state.QuestionInfo.requestquestionId
   );
   const token = useSelector((state) => state.AccountInfo.accessToken);
+  const [questionId, setQuestionId] = useState("");
   const [title, setTitle] = useState("");
   const [answer0, setAnswer0] = useState("");
   const [answer1, setAnswer1] = useState("");
@@ -36,6 +37,7 @@ export default function RequestQuestionDetail() {
   };
   const ClickRegisterRequest = () => {
     console.log("등록");
+    console.log("questionId: ", questionId);
     console.log("title:", title);
     console.log("right answer:", rightAnswer);
     console.log("answerList:", answer0, answer1, answer2, answer3);
@@ -43,11 +45,12 @@ export default function RequestQuestionDetail() {
     console.log("labels: ", labels);
     // axios 호출해서 DB에 저장(2022.11.08)
     let requestQuestionInfo = {
+      questionId: questionId,
       questionTitle: title,
       questionExp: explain,
       answers: [answer0, answer1, answer2, answer3],
       rightAnswer: rightAnswer,
-      // accountId: creator,
+      accountId: creator,
       labels: labels,
     };
     AdoptRequestQuestion(
@@ -102,6 +105,7 @@ export default function RequestQuestionDetail() {
                   placeholder="보기를 작성해주세요."
                   multiline
                   rows={4}
+                  value={i===0?answer0: i===1?answer1:i===2?answer2:answer3}
                   onChange={(e) => OnChangeAnswer(e, i)}
                 />
               </Typography>
@@ -118,6 +122,7 @@ export default function RequestQuestionDetail() {
       token,
       (res) => {
         console.log("getRequestQuestion res.data: ", res.data);
+        setQuestionId(res.data.responseDto.questionId);
         setTitle(res.data.responseDto.questionTitle);
         setExplain(res.data.responseDto.questionExp);
         setAnswer0(res.data.responseDto.answerRes.answers[0]);
@@ -141,6 +146,7 @@ export default function RequestQuestionDetail() {
           helperText="100자 이하로 작성해주세요."
           placeholder="질문을 작성해주세요."
           style={{ width: "70%" }}
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />{" "}
       </h1>
@@ -156,6 +162,7 @@ export default function RequestQuestionDetail() {
         placeholder="해설을 작성해주세요."
         multiline
         rows={4}
+        value={explain}
         onChange={(e) => setExplain(e.target.value)}
       />
       <div style={{ marginBottom: "4vh" }}>
