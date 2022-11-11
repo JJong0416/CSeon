@@ -1,27 +1,18 @@
 package cseon.api.service;
 
-import cseon.api.dto.response.ContestInfoRes;
-import cseon.api.dto.response.ContestMyRankingRes;
-import cseon.api.dto.response.ContestRes;
-import cseon.api.dto.response.QuestionDto;
+import cseon.api.dto.response.*;
 import cseon.api.repository.ContestRepository;
 import cseon.api.repository.WorkbookQuestionRepository;
-import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.Contest;
 import cseon.domain.WorkbookQuestion;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.*;
-
-import static cseon.common.utils.SecurityUtils.getAccountName;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +21,18 @@ public class ContestOperationService{
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
     private final QuestionSearchService questionSearchService;
+
+    @Transactional(readOnly = true)
+    public ContestResultRes takeContestResultWithContestInfo(Long contestId, ContestInfoRes contestInfoRes){
+
+        Contest findContest = takeDetailsContest(contestId);
+
+        return ContestResultRes.builder()
+                .contestId(contestId)
+                .contestName(findContest.getContestName())
+                .contestInfoRes(contestInfoRes)
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public List<ContestRes> getAllContestRes() {
@@ -55,10 +58,8 @@ public class ContestOperationService{
 
     @Transactional(readOnly = true)
     public List<QuestionDto> searchContestQuestionInfo(Long contestId) {
-        Contest findContest =
-                contestRepository.findContestByContestId(contestId).orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
-                });
+
+        Contest findContest = takeDetailsContest(contestId);
 
         List<WorkbookQuestion> questions =
                 workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(findContest.getWorkbookId()).orElseThrow(() -> {
@@ -72,4 +73,11 @@ public class ContestOperationService{
         }
         return questionDtoList;
     }
+
+    private Contest takeDetailsContest(Long contestId) {
+        return contestRepository.findContestByContestId(contestId).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
+        });
+    }
+
 }

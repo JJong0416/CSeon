@@ -19,7 +19,7 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 
 @Service
 @RequiredArgsConstructor
-public class ContestRedisService extends RedisConst{
+public class ContestRealTimeService extends RedisConst {
 
     private final RedisTemplate<String, String> redisTemplate;
 

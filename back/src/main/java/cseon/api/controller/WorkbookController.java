@@ -1,6 +1,7 @@
 package cseon.api.controller;
 
 import cseon.api.dto.request.WorkbookRequestReq;
+import cseon.api.dto.response.WorkbookRes;
 import cseon.api.service.WorkbookService;
 import cseon.domain.Workbook;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,10 +22,18 @@ public class WorkbookController {
 
     private final WorkbookService workbookService;
 
+    /**
+     * 찾고자 하는 문제집의 키워들를 통해서 문제집 검색을 한다.
+     */
+    @GetMapping("/{keyword}")
+    public ResponseEntity<List<WorkbookRes>> takeWorkbookWithKeyword(@PathVariable("keyword") String keyword){
+        return ResponseEntity.ok().body(workbookService.takeWorkbookWithKeyword(keyword));
+    }
+
     @Operation(summary = "전체 문제집", description = "전체 문제집을 가져오는 메소드입니다.")
     @GetMapping
     public ResponseEntity<List<Workbook>> workbookList() {
-        return ResponseEntity.ok().body(workbookService.getAllWorkbook());
+        return ResponseEntity.ok().body(workbookService.takeAllQuestion());
     }
 
     @Operation(summary = "특정 문제집", description = "특정 문제집만 가져오는 메소드입니다.")
