@@ -1,6 +1,7 @@
 package cseon.api.service;
 
 import cseon.api.dto.request.WorkbookRequestReq;
+import cseon.api.dto.response.WorkbookRes;
 import cseon.api.repository.QuestionRepository;
 import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.api.repository.WorkbookRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +30,18 @@ public class WorkbookService {
 
     //모든 workbook 조회
     @Transactional(readOnly = true)
-    public List<Workbook> getAllWorkbook() {
-        return workbookRepository.findAllWorkbooks()
-                .orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
-                });
+    public List<Workbook> takeAllQuestion() {
+        return workbookRepository.findAllWorkbooks().orElseThrow(() -> {
+            throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+        });
     }
 
     @Transactional(readOnly = true)
+    public List<WorkbookRes> takeWorkbookWithKeyword(String keyword) {
+        return workbookRepository.findWorkbooksByWorkbookNameContaining(keyword).stream()
+                .map(makeWorkbookToWorkbookRes())
+                .collect(Collectors.toList());
+    }
     public Workbook getWorkbook(Long workbookId) {
         return getWorkbookWithWorkbookId(workbookId);
     }
@@ -53,7 +60,7 @@ public class WorkbookService {
         workbookRepository.save(wb);
 
         Long[] longs = workbookRequestReq.getQuestionId().toArray(new Long[0]);
-        for (long l : longs){
+        for (long l : longs) {
             Question q = questionRepository.findQuestionByQuestionId(l).orElseThrow(() -> {
                 throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
             });
@@ -69,7 +76,6 @@ public class WorkbookService {
 
         checkWorkbookWithCreatedByAndName(workbookRequestReq);
 
-//        workbook.changeWorkbook(workbookRequestReq.getWorkbookName(), changeListToString(questionIds));
         workbook.changeWorkbook(workbookRequestReq.getWorkbookName());
     }
 
@@ -87,11 +93,12 @@ public class WorkbookService {
         }
     }
 
-    private String changeListToString(List<Long> ids) {
-        StringBuilder sb = new StringBuilder();
-        for (Long l : ids) {
-            sb.append(l).append(" ");
-        }
-        return sb.toString();
+    private Function<Workbook, WorkbookRes> makeWorkbookToWorkbookRes() {
+        return workbook -> WorkbookRes.builder()
+                .workbookId(workbook.getWorkbookId())
+                .workbookName(workbook.getWorkbookName())
+                .workbookCreateBy(workbook.getWorkbookCreatedBy())
+                .build();
+
     }
 }
