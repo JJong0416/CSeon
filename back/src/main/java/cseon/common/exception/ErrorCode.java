@@ -21,7 +21,7 @@ public enum ErrorCode {
     //404 : NOT_FOUND_EXCEPTION : 리소스를 찾을 수 없음
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
 
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "키워드를 찾을 수 없습니다."),
+    CONTEST_NOT_FOUND(HttpStatus.NOT_FOUND, "대회를 찾을 수 없습니다."),
 
     WORKBOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "문제집을 찾을 수 없습니다."),
 
@@ -35,6 +35,8 @@ public enum ErrorCode {
     NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "해당 내용을 찾을 수 없습니다."),
 
     PICTURE_NOT_FOUND(HttpStatus.NOT_FOUND, "사진을 찾을 수 없습니다."),
+
+    CONTEST_NOT_EXIST_SERVER(HttpStatus.INTERNAL_SERVER_ERROR, "대회 설정에 대한 오류입니다."),
 
     //405 METHOD_NOT_ALLOWED: 허용되지 않은 Request Method 호출
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 메서드입니다."),
@@ -51,7 +53,10 @@ public enum ErrorCode {
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
 
     //500 INTERNAL_SERVER_ERROR: 내부 서버 오류
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),
+
+    INTERNAL_KAKAO_ERROR(HttpStatus.BAD_GATEWAY, "카카오 서버 오류입니다");
+
 
     private final HttpStatus status;
 

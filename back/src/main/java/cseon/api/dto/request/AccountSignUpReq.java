@@ -16,16 +16,19 @@ public class AccountSignUpReq {
     private final String accountName;
 
     @NotBlank
-    private final AccountRole accountRole = AccountRole.USER;
+    private final AccountRole accountRole;
 
     @NotNull
-    private final Integer accountSuccessCount = 0;
+    private final Integer accountSuccessCount;
 
     @NotNull
-    private final Long usingBadgeId = 0L;
+    private final Long usingBadgeId;
 
     @Builder
     public AccountSignUpReq(String accountName) {
         this.accountName = accountName;
+        this.accountRole = AccountRole.USER;
+        this.accountSuccessCount = 0;
+        this.usingBadgeId = 0L;
     }
 }

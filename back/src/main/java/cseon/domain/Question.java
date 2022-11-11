@@ -25,17 +25,17 @@ public class Question {
     @Column(name = "question_exp", length = 200, nullable = false)
     private String questionExp;
 
-    @OneToMany(mappedBy = "questionId")
+    @OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
     private List<QuestionLabel> labels;
 
     @Builder
-    public Question(Long questionId, String questionTitle, String questionExp){
+    public Question(Long questionId, String questionTitle, String questionExp) {
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
         this.questionId = questionId;
     }
 
-    public void accountChangeQuestion(String questionTitle, String questionExp){
+    public void accountChangeQuestion(String questionTitle, String questionExp) {
         this.questionTitle = questionTitle;
         this.questionExp = questionExp;
     }

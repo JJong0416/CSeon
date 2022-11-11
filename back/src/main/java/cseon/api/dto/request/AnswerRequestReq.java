@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Getter
 public class AnswerRequestReq implements Serializable {
 
+    private static final long serialVersionUID = 1233L;
+
     @NotNull
     private final Long questionId;
 
@@ -27,7 +29,7 @@ public class AnswerRequestReq implements Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return questionId + " " + checkNumber + " " + isAnswer;
     }
 }
