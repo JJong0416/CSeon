@@ -3,7 +3,7 @@ package cseon.api.controller;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
 import cseon.api.dto.response.QuestionDto;
-import cseon.api.service.ContestService;
+import cseon.api.service.ContestOperationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +20,20 @@ import java.util.List;
 @Tag(name = "대회", description = "대회 관련 API")
 public class ContestController {
 
-    private final ContestService contestService;
+    private final ContestOperationService contestOperationService;
 
     @GetMapping("/{contestId}/ranking")
     public ResponseEntity<ContestInfoRes> test(@PathVariable("contestId") Long contestId) {
-        return ResponseEntity.ok(contestService.SearchRankingInfo(contestId));
+        return ResponseEntity.ok(contestOperationService.SearchRankingInfo(contestId));
     }
 
     @GetMapping("")
     public ResponseEntity<List<ContestRes>> takeAllContests() {
-        return ResponseEntity.ok(contestService.getAllContestRes());
+        return ResponseEntity.ok(contestOperationService.getAllContestRes());
     }
 
     @GetMapping("/{contestId}/question")
     public ResponseEntity<List<QuestionDto>> takeContestQuestionInfo(@PathVariable("contestId") Long contestId) {
-        return ResponseEntity.ok(contestService.searchContestQuestionInfo(contestId));
+        return ResponseEntity.ok(contestOperationService.searchContestQuestionInfo(contestId));
     }
 }
