@@ -127,7 +127,7 @@ public class AdminService {
 
         // 라벨 다른 부분 수정
         List<String> after = questionRequestReq.getLabels();
-        List<QuestionLabel> before = questionLabelRepository.findAllByQuestionId(questionRequestReq.getQuestionId());
+        List<QuestionLabel> before = questionLabelRepository.findAllByQuestionId(question);
 
         if (after == null && before == null) {
             // 변경 x

@@ -32,16 +32,13 @@ public class LogsService {
                             .isAnswer(Boolean.parseBoolean(log[4]))
                     .build());
 
-            System.out.println("check line 1");
             AccountSolved accountSolved = solvedRepository.findById(log[0])
                     .orElseGet(
                             () -> new AccountSolved(log[0])
                     );
 
-            System.out.println("check line 2");
             accountSolved.check(Long.parseLong(log[2]), Boolean.parseBoolean(log[4]));
 
-            System.out.println("check line 3");
             solvedRepository.save(accountSolved);
         }
 

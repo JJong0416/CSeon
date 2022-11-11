@@ -26,7 +26,6 @@ public class AccountSolved {
         if(correctQuestion.contains(questionId))
             return;
 
-        System.out.println("isAnswer check");
         if(isAnswer){
             correctQuestion.add(questionId);
             if(wrongQuestion.contains(questionId))

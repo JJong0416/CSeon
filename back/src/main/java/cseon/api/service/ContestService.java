@@ -1,5 +1,7 @@
 package cseon.api.service;
 
+import cseon.api.dto.layer.AccountContestAnswerDto;
+import cseon.api.dto.request.ContestAnswerReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
 import cseon.api.dto.response.ContestRes;
@@ -9,9 +11,11 @@ import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
+import cseon.common.provider.KafkaProducerProvider;
 import cseon.domain.Contest;
 import cseon.domain.WorkbookQuestion;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
@@ -31,6 +36,7 @@ public class ContestService extends RedisConst {
     private final RedisTemplate<String, String> redisTemplate;
     private final WorkbookQuestionRepository workbookQuestionRepository;
     private final QuestionSearchService questionSearchService;
+    private final KafkaProducerProvider kafkaProducerProvider;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
         final String username = getAccountName();
@@ -143,5 +149,23 @@ public class ContestService extends RedisConst {
             questionDtoList.add(questionSearchService.takeDetailsQuestion(l.getQuestionId().getQuestionId()));
         }
         return questionDtoList;
+    }
+
+    @Transactional
+    public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
+
+        // 틀림 0 시작. 맞음 50000 시작.
+        Long score = contestAnswerReq.getIsAnswer() ? 50000L : 0L;
+
+        ZonedDateTime now = ZonedDateTime.now();
+        score += Math.abs(ChronoUnit.MILLIS.between(now, contestAnswerReq.getEndTime()));
+
+        AccountContestAnswerDto accountContestAnswerDto =
+                new AccountContestAnswerDto(contestAnswerReq.getContestId(), score);
+
+        kafkaProducerProvider.getKafkaProducer().send(
+                new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
+
+        return true;
     }
 }
