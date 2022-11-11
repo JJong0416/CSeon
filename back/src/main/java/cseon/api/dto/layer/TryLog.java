@@ -31,7 +31,7 @@ public class TryLog implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return accountName + " " + answerRequestReq.toString() + timestamp;
+    public String toString(){
+        return accountName + " " + timestamp + " " + answerRequestReq.toString();
     }
 }

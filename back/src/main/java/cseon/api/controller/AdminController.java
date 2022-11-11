@@ -29,7 +29,7 @@ public class AdminController extends ControllerConstant {
      */
     @Operation(summary = "요청 문제 리스트", description = "요청된 문제들의 리스트를 전부 가져옵니다.")
     @GetMapping("/request")
-    public ResponseEntity<?> getRequestQuestionList() {
+    public ResponseEntity<DtoResponse> getRequestQuestionList() {
         List<QuestionDto> res = adminService.getRequestQuestionList();
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, SUCCESS, res));
     }
@@ -39,7 +39,7 @@ public class AdminController extends ControllerConstant {
      */
     @Operation(summary = "요청 문제 상세 정보", description = "선택한 요청 문제에 대한 상세 정보를 가져옵니다.")
     @GetMapping("/request/{requestQuestionId}")
-    public ResponseEntity<?> getRequestQuestion(@PathVariable("requestQuestionId") Long requestQuestionId) {
+    public ResponseEntity<DtoResponse> getRequestQuestion(@PathVariable("requestQuestionId") Long requestQuestionId) {
         QuestionDto res = adminService.getRequestQuestion(requestQuestionId);
         return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, SUCCESS, res));
     }
@@ -49,7 +49,7 @@ public class AdminController extends ControllerConstant {
      */
     @Operation(summary = "등록 허가", description = "요청된 문제를 정식 문제로 채택합니다.")
     @PostMapping("/request")
-    public ResponseEntity<?> allowRequestQuestionFromAccount(@RequestBody QuestionRequestReq questionRequestReq) {
+    public ResponseEntity<MessageResponse> allowRequestQuestionFromAccount(@RequestBody QuestionRequestReq questionRequestReq) {
         boolean res = adminService.allowQuestion(questionRequestReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
     }
@@ -59,7 +59,7 @@ public class AdminController extends ControllerConstant {
      */
     @Operation(summary = "문제 변경", description = "정식 문제의 변경 사항을 적용시킵니다.")
     @PutMapping("/question")
-    public ResponseEntity<?> modifyQuestion(@RequestBody QuestionRequestReq questionRequestReq) {
+    public ResponseEntity<MessageResponse> modifyQuestion(@RequestBody QuestionRequestReq questionRequestReq) {
         boolean res = adminService.modifyQuestion(questionRequestReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
     }
