@@ -17,7 +17,7 @@ public class LogsService {
     private final TryRepository tryRepository;
     private final SolvedRepository solvedRepository;
 
-    @KafkaListener(topics = "cseon.logs.try", groupId = "tester", concurrency = "3")
+    @KafkaListener(topics = "cseon.logs.try", groupId = "history", concurrency = "3")
     public void onMessage(ConsumerRecords<String, String> records, Acknowledgment ack) {
         for(ConsumerRecord<String, String> record : records){
 
