@@ -8,13 +8,17 @@ import BasicButton from "../BasicButton";
 import WestIcon from "@mui/icons-material/West";
 import { useNavigate } from "react-router";
 export default function QuestionsDetail() {
-  const questionId = useSelector((state)=>state.QuestionInfo.questionId);
+  const questionId = useSelector((state) => state.QuestionInfo.questionId);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
+  const [questionLog, setQuestionLog] = useState([
+    { time: "2022-04-21", isRight: false, selected: 2 },
+    { time: "2022-04-21", isRight: true, selected: 3 },
+  ]);
   const navigate = useNavigate();
   const clickQuestionList = () => {
     //redux에 세팅 or props
@@ -28,17 +32,88 @@ export default function QuestionsDetail() {
 
     console.log("answerRes", answerRes[1], questionExp);
 
+    var data2 = [];
+    for (var i = 0; i < questionLog.length; i++) {
+      var isCorrect = "";
+      if (questionLog[i].isRight) {
+        isCorrect = "O";
+      } else {
+        isCorrect = "X";
+      }
+      data2.push(
+        "<tr>",
+        '<td align="center">' + questionLog[i].time + "</td>",
+
+        '<td align="center">' + isCorrect + "</td>",
+        '<td align="center">' + questionLog[i].selected + "</td>",
+        "</tr>"
+      );
+    }
     if (answerRes[1] !== idx) {
       Swal.fire({
-        icon: "error",
         title: "틀렸습니다.",
-        text: questionExp,
+        icon: "error",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "해설 보기",
+        denyButtonText: `풀이 내역보기`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire(questionExp, "", "info");
+        } else if (result.isDenied) {
+          Swal.fire({
+            html:
+              `<table id="table" border=1>
+            <thead>
+                <tr>
+                    <th>푼 날짜</th>
+                    <th>정답 여부</th>
+                    <th>선택한 답</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+       ` +
+              data2.join("") +
+              `         
+    </tbody>
+    </table>`,
+          });
+        }
       });
     } else if (answerRes[1] === idx) {
       Swal.fire({
-        icon: "success",
         title: "맞았습니다.",
-        text: questionExp,
+        icon: "success",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "해설 보기",
+        denyButtonText: `풀이 내역보기`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire(questionExp, "", "info");
+        } else if (result.isDenied) {
+          Swal.fire({
+            html:
+              `<table id="table" border=1>
+            <thead>
+                <tr>
+                    <th>푼 날짜</th>
+                    <th>정답 여부</th>
+                    <th>선택한 답</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+       ` +
+              data2.join("") +
+              `         
+    </tbody>
+    </table>`,
+          });
+        }
       });
     }
     // 사용자 로그 찍는거

@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 // import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import App from "./App";
+import "./index.css";
 
 // ReactDOM.createRoot(document.getElementById('root')).render(
 //   <React.StrictMode>
@@ -9,26 +9,25 @@ import './index.css'
 //   </React.StrictMode>
 // )
 
-import ReactDOM from 'react-dom/client';  // react 18
+import ReactDOM from "react-dom/client"; // react 18
 // import ReactDOM from 'react-dom'; // react ~17
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from "./reportWebVitals";
 
 // redux
-import { Provider } from 'react-redux';
-import store, {persistor} from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from "react-redux";
+import store, { persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode > // 개발 모드에서 오류를 잘 잡기 위해 두번씩 렌더링
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>
   // </React.StrictMode>
-);  // 18~
+); // 18~
 
 // ReactDOM.render(
 //   <React.StrictMode >

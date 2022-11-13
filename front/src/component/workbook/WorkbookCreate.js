@@ -17,8 +17,14 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
+
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
+import {
+  getAllQuestionList,
+  getQuestionListWithKeyword,
+} from "../../api/question";
+import { registerWorkbook } from "../../api/workbook";
 function not(a, b) {
   return a.filter((value) => b.indexOf(value) === -1);
 }
@@ -28,13 +34,28 @@ function intersection(a, b) {
 }
 
 export default function WorkbookCreate() {
+  const accountName = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountName
+  );
   const [checked, setChecked] = useState([]);
-  const [left, setLeft] = useState([0, 1, 2, 3, 8, 9, 10]);
-  const [right, setRight] = useState([4, 5, 6, 7, 11, 12]);
-
+  const [left, setLeft] = useState([]);
+  const [right, setRight] = useState([]);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
-
+  const [title, setTitle] = useState("");
+  useEffect(() => {
+    getAllQuestionList(
+      Token,
+      (res) => {
+        console.log(res.data);
+        setLeft(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, []);
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -44,7 +65,9 @@ export default function WorkbookCreate() {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
+    console.log(value);
+    console.log(left);
+    console.log("dd" + right);
     setChecked(newChecked);
   };
 
@@ -69,7 +92,46 @@ export default function WorkbookCreate() {
     setLeft(left.concat(right));
     setRight([]);
   };
+  const [search, setSearch] = useState("");
+  const onChange = (e) => {
+    console.log("keyword changed..", e.target.value);
+    setSearch(e.target.value);
+  };
 
+  const ClickSearchBtn = () => {
+    if (search !== "") {
+      getQuestionListWithKeyword(
+        search,
+        Token,
+        (res) => {
+          console.log("getQuestionListWithKeyword res.data: ", res.data);
+          setLeft(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+  };
+  const ClickRegisterRequest = () => {
+    let workbookRequest = {
+      questionId: right.map((question) => question.questionId),
+      workbookName: title,
+      workbookCreatedBy: accountName,
+    };
+    registerWorkbook(
+      workbookRequest,
+      Token,
+      (res) => {
+        console.log("registerWorkbook res.data: ", res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    console.log(right + "dfsafsdfs");
+    console.log(title + "workbookname");
+  };
   const customList = (items) => (
     <Paper sx={{ height: "60vh", overflow: "auto" }}>
       <List dense component="div" role="list">
@@ -78,7 +140,7 @@ export default function WorkbookCreate() {
 
           return (
             <ListItem
-              key={value}
+              key={value.questionId}
               role="listitem"
               button
               onClick={handleToggle(value)}
@@ -93,7 +155,10 @@ export default function WorkbookCreate() {
                   }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={`List item ${value + 1}`} />
+              <ListItemText
+                id={labelId}
+                primary={` ${value.questionTitle + 1}`}
+              />
             </ListItem>
           );
         })}
@@ -111,6 +176,7 @@ export default function WorkbookCreate() {
           helperText="100자 이하로 작성해주세요."
           placeholder="문제집 제목을 작성해주세요."
           style={{ width: "70%" }}
+          onChange={(e) => setTitle(e.target.value)}
         />{" "}
       </h1>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -118,19 +184,21 @@ export default function WorkbookCreate() {
           <div
             style={{
               float: "left",
-              width: "50%",
-              border: "1px solid black",
-              margin: "4vh",
+              width: "45%",
+
+              margin: "5vh",
             }}
           >
-            <Grid item>
+            <Grid item style={{ border: "1px solid black" }}>
               {" "}
               <TextField
+                sx={{ m: 4, width: "50vh" }}
                 focused
                 color="info"
                 placeholder="문제 검색하기"
                 id="outlined-start-adornment"
-                sx={{ m: 4, width: "60vh" }}
+                value={search}
+                onChange={onChange}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -138,6 +206,7 @@ export default function WorkbookCreate() {
                         type="button"
                         sx={{ p: "10px" }}
                         aria-label="search"
+                        onClick={ClickSearchBtn}
                       >
                         <SearchIcon />
                       </IconButton>
@@ -198,12 +267,21 @@ export default function WorkbookCreate() {
           <div
             style={{
               float: "right",
-              width: "50%",
-              border: "1px solid black",
-              margin: "4vh",
+              width: "45%",
+              margin: "5vh",
             }}
           >
-            <Grid item>{customList(right)}</Grid>
+            <Grid item style={{ border: "1px solid black" }}>
+              {customList(right)}
+            </Grid>
+            <Button
+              size="large"
+              variant="contained"
+              style={{ margin: "4vh" }}
+              onClick={ClickRegisterRequest}
+            >
+              만들기
+            </Button>
           </div>
         </Box>
       </Grid>

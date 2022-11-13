@@ -13,4 +13,11 @@ function getAllWorkbookList(token, success, error) {
     .then(success)
     .catch(error);
 }
-export { getWorkbook, getAllWorkbookList };
+
+function registerWorkbook(workbookRequest, token, success, error) {
+  instance
+    .post(`/workbook`, workbookRequest, { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
+}
+export { getWorkbook, getAllWorkbookList, registerWorkbook };
