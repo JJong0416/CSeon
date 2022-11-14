@@ -6,15 +6,13 @@ import {
   Divider,
   FormHelperText,
   Grid,
-  Table,
   TextField,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router";
-import { RegistRequestQuestion } from "../../api/accountquestion";
+import { getRequestQuestion, AdoptRequestQuestion } from "../../api/admin";
 import { getLabels } from "../../api/label";
 
 const StyledTable = styled.table`
@@ -43,32 +41,24 @@ const StyledTable = styled.table`
   }
 `;
 
-export default function QuestionRequest() {
-  const navigate = useNavigate();
+export default function RequestQuestionDetail() {
+  const requestquestionId = useSelector(
+    (state) => state.QuestionInfo.requestquestionId
+  );
   const token = useSelector((state) => state.AccountInfo.accessToken);
+  const [questionId, setQuestionId] = useState("");
   const [title, setTitle] = useState("");
   const [answer0, setAnswer0] = useState("");
   const [answer1, setAnswer1] = useState("");
   const [answer2, setAnswer2] = useState("");
   const [answer3, setAnswer3] = useState("");
   const [isCategorySelect, setIsCategorySelect] = useState(false);
-  const [rightAnswer, setRightAnswer] = useState(-1);
+  const [rightAnswer, setRightAnswer] = useState(0);
   const [explain, setExplain] = useState("");
+  const [creator, setCreator] = useState("");
   const [labels, setLables] = useState([]);
   const [selectedlabels, setSelectedlabels] = useState([]);
 
-  useEffect(() => {
-    getLabels(
-      token,
-      (res) => {
-        console.log("GetLabels res.data: ", res.data);
-        setLables(res.data.split(", "));
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }, []);
   const handleClick = (idx) => {
     const newArr = Array(4).fill(false);
     newArr[idx] = true;
@@ -76,39 +66,28 @@ export default function QuestionRequest() {
     setRightAnswer(idx);
   };
   const ClickRegisterRequest = () => {
-    console.log("등록 요청");
-    console.log("token: ", token);
-    console.log("title:", title);
-    console.log("right answer:", rightAnswer);
-    console.log("answerList:", answer0, answer1, answer2, answer3);
-    console.log("exp:", explain);
-    console.log("selectedlabels: ", selectedlabels);
+    console.log("등록");
     // axios 호출해서 DB에 저장(2022.11.08)
-    let questionRequestReq = {
-      // questionId : 1,
+    let requestQuestionInfo = {
+      questionId: questionId,
       questionTitle: title,
       questionExp: explain,
       answers: [answer0, answer1, answer2, answer3],
       rightAnswer: rightAnswer,
-      // accountId: 1,
+      accountId: creator,
       labels: selectedlabels,
     };
-    if (rightAnswer === -1) {
-      alert("정답 체크해주세요");
-    } else {
-      RegistRequestQuestion(
-        questionRequestReq,
-        token,
-        (res) => {
-          console.log(res.data);
-          alert("등록 요청 성공!");
-          navigate("/questionslist");
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    }
+    console.log("requestQuestionInfo : ", requestQuestionInfo);
+    AdoptRequestQuestion(
+      requestQuestionInfo,
+      token,
+      (res) => {
+        console.log("AdoptRequestQuestion res.data: ", res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
 
   const AnswerForm = () => {
@@ -151,6 +130,15 @@ export default function QuestionRequest() {
                   placeholder="보기를 작성해주세요."
                   multiline
                   rows={4}
+                  value={
+                    i === 0
+                      ? answer0
+                      : i === 1
+                      ? answer1
+                      : i === 2
+                      ? answer2
+                      : answer3
+                  }
                   onChange={(e) => OnChangeAnswer(e, i)}
                 />
               </Typography>
@@ -161,6 +149,41 @@ export default function QuestionRequest() {
     }
     return result;
   };
+  useEffect(() => {
+    getLabels(
+      token,
+      (res) => {
+        console.log("GetLabels res.data: ", res.data);
+        setLables(res.data.split(", "));
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    getRequestQuestion(
+      requestquestionId,
+      token,
+      (res) => {
+        console.log("getRequestQuestion res.data: ", res.data);
+        setQuestionId(res.data.responseDto.questionId);
+        setTitle(res.data.responseDto.questionTitle);
+        setExplain(res.data.responseDto.questionExp);
+        setAnswer0(res.data.responseDto.answerRes.answers[0]);
+        setAnswer1(res.data.responseDto.answerRes.answers[1]);
+        setAnswer2(res.data.responseDto.answerRes.answers[2]);
+        setAnswer3(res.data.responseDto.answerRes.answers[3]);
+        setRightAnswer(res.data.responseDto.answerRes.rightAnswer);
+        setCreator(res.data.responseDto.accountId);
+        // setLables(res.data.responseDto.labels);
+        const newArr = Array(4).fill(false);
+        newArr[res.data.responseDto.answerRes.rightAnswer] = true;
+        setIsCategorySelect(newArr);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, []);
   // 체크박스 단일 선택
   const handleSingleCheck = (checked, label) => {
     if (checked) {
@@ -184,7 +207,6 @@ export default function QuestionRequest() {
       setSelectedlabels([]);
     }
   };
-
   return (
     <Box style={{ width: "100%", marginTop: "3vh" }}>
       <StyledTable>
@@ -225,6 +247,7 @@ export default function QuestionRequest() {
           helperText="100자 이하로 작성해주세요."
           placeholder="질문을 작성해주세요."
           style={{ width: "70%" }}
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />{" "}
       </h1>
@@ -240,6 +263,7 @@ export default function QuestionRequest() {
         placeholder="해설을 작성해주세요."
         multiline
         rows={4}
+        value={explain}
         onChange={(e) => setExplain(e.target.value)}
       />
       <div style={{ marginBottom: "4vh" }}>
@@ -249,7 +273,7 @@ export default function QuestionRequest() {
           style={{ backgroundColor: "#64b5f6" }}
           onClick={ClickRegisterRequest}
         >
-          등록 요청
+          등록
         </Button>
       </div>
     </Box>

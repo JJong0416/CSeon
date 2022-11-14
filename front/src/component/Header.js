@@ -1,23 +1,14 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { SET_LOGOUT } from "../redux/UserInfo";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  // color: theme.palette.text.secondary,
-}));
+import { useDispatch, useSelector } from "react-redux";
+import { SET_LOGOUT } from "../redux/AccountInfo";
 
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const accountRole = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountRole
+  );
   const ClickQuestions = () => {
     navigate("/questionslist");
   };
@@ -27,8 +18,8 @@ export default function Header() {
   const ClickWorkbook = () => {
     navigate("/workbooklist");
   };
-  const ClickCompetition = () => {
-    navigate("/competitionlist");
+  const ClickContest = () => {
+    navigate("/contestlist");
   };
   const ClickMypage = () => {
     navigate("/mypage");
@@ -48,17 +39,18 @@ export default function Header() {
           alt="메인 로고"
           src={require("../assets/메인로고2.png")}
           style={{ width: "18%", padding: "2vh 4vh" }}
-          onClick={ClickHome}
         />
 
         <nav>
           <ul>
             <li onClick={ClickQuestions}>문제 풀기</li>
             <li onClick={ClickWorkbook}>문제집</li>
-            <li onClick={ClickCompetition}>실시간 대회</li>
+            <li onClick={ClickContest}>실시간 대회</li>
             <li>
               <button onClick={Logout}>로그아웃</button>
-              <button onClick={ClickMypage}>마이페이지</button>
+              {accountRole === "USER" ? (
+                <button onClick={ClickMypage}>마이페이지</button>
+              ) : null}
             </li>
           </ul>
         </nav>
@@ -83,7 +75,7 @@ export default function Header() {
     //       <Item onClick={ClickWorkbook}>문제집</Item>
     //     </Grid>
     //     <Grid item xs={2}>
-    //       <Item onClick={ClickCompetition}>실시간 대회</Item>
+    //       <Item onClick={ClickContest}>실시간 대회</Item>
     //     </Grid>
     //     <Grid item xs={3}>
     //       <Item>

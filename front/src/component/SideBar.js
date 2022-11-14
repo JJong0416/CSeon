@@ -19,7 +19,8 @@ import { SET_QUESTION_INDEX } from "../redux/QuestionInfo";
 export default function SideBar(props) {
   function renderRow(props) {
     const { data, index } = props;
-    console.log(props);
+    const current = index === questionIndex;
+    console.log(current);
 
     const Clicklistitem = () => {
       //
@@ -32,11 +33,21 @@ export default function SideBar(props) {
         key={index}
         component="div"
         disablePadding
-        style={{
-          borderBottom: "solid #9DCFFF 1px",
-          width: "90%",
-          margin: "auto",
-        }}
+        style={
+          current
+            ? {
+                borderBottom: "solid #9DCFFF 1px",
+                width: "90%",
+                margin: "auto",
+                backgroundColor: "#9DCFFF",
+              }
+            : {
+                borderBottom: "solid #9DCFFF 1px",
+                width: "90%",
+                margin: "auto",
+                backgroundColor: "white",
+              }
+        }
       >
         <ListItemButton onClick={Clicklistitem}>
           <ListItemText primary={data[index] + `번문제`} />
@@ -49,7 +60,7 @@ export default function SideBar(props) {
     (state) => state.QuestionInfo.questionIndex
   ); // redux 상태관리
   console.log(props);
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [workbookId, setWorkbookId] = useState(1);
 
   useEffect(() => {
