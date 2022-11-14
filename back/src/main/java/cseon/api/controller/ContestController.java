@@ -31,6 +31,11 @@ public class ContestController {
         return ResponseEntity.ok(contestOperationService.getAllContestRes());
     }
 
+    @GetMapping("/{contestId}/valid-time")
+    public ResponseEntity<String> canParticipateContest(@PathVariable("contestId") Long contestId){
+        return ResponseEntity.ok(contestOperationService.canParticipateContestWithContestId(contestId));
+    }
+
     @GetMapping("/{contestId}/ranking")
     public ResponseEntity<ContestInfoRes> test(@PathVariable("contestId") Long contestId) {
         return ResponseEntity.ok(contestRealTimeService.SearchRankingInfo(contestId));

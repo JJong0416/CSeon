@@ -89,7 +89,7 @@ public class AdminService {
         answerRepository.save(answer);
 
         // QuestionLabel 추가
-        for(String labelName : questionRequestReq.getLabels()){
+        for (String labelName : questionRequestReq.getLabels()) {
             questionLabelRepository.save(QuestionLabel.builder()
                     .question(question)
                     .label(labelService.getLabelIdByName(labelName))
@@ -143,20 +143,20 @@ public class AdminService {
                     .map(labelService::getLabelIdByName)
                     .collect(Collectors.toList());
 
-            for(Label label : labels){
+            for (Label label : labels) {
                 questionLabelRepository.save(QuestionLabel.builder()
-                                .question(question)
-                                .label(label)
-                                .build());
+                        .question(question)
+                        .label(label)
+                        .build());
             }
-        } else{
+        } else {
             // 원래 값과 들어온 값 비교
             List<Label> afterList = after.stream()
                     .map(labelService::getLabelIdByName)
                     .collect(Collectors.toList());
 
             HashMap<Long, Boolean> exist = new HashMap<>();
-            for(QuestionLabel questionLabel : before)
+            for (QuestionLabel questionLabel : before)
                 exist.put(questionLabel.getLabelId().getLabelId(), false);
 
             for (Label label : afterList) {
