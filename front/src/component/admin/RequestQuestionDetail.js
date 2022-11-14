@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import {
   Button,
   Card,
@@ -12,6 +13,33 @@ import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getRequestQuestion, AdoptRequestQuestion } from "../../api/admin";
+import { getLabels } from "../../api/label";
+
+const StyledTable = styled.table`
+  text-align: center;
+  border-collapse: collapse;
+  thead {
+    tr {
+      th {
+        padding: 10px 15px;
+        background-color: #888;
+        color: #fff;
+        font-weight: 700;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        padding: 7px 15px;
+        border-bottom: 1px solid #eee;
+      }
+    }
+  }
+  .second-row {
+    width: 150px;
+  }
+`;
 
 export default function RequestQuestionDetail() {
   const requestquestionId = useSelector(
@@ -29,6 +57,8 @@ export default function RequestQuestionDetail() {
   const [explain, setExplain] = useState("");
   const [creator, setCreator] = useState("");
   const [labels, setLables] = useState([]);
+  const [selectedlabels, setSelectedlabels] = useState([]);
+
   const handleClick = (idx) => {
     const newArr = Array(4).fill(false);
     newArr[idx] = true;
@@ -37,12 +67,6 @@ export default function RequestQuestionDetail() {
   };
   const ClickRegisterRequest = () => {
     console.log("등록");
-    console.log("questionId: ", questionId);
-    console.log("title:", title);
-    console.log("right answer:", rightAnswer);
-    console.log("answerList:", answer0, answer1, answer2, answer3);
-    console.log("exp:", explain);
-    console.log("labels: ", labels);
     // axios 호출해서 DB에 저장(2022.11.08)
     let requestQuestionInfo = {
       questionId: questionId,
@@ -51,8 +75,9 @@ export default function RequestQuestionDetail() {
       answers: [answer0, answer1, answer2, answer3],
       rightAnswer: rightAnswer,
       accountId: creator,
-      labels: labels,
+      labels: selectedlabels,
     };
+    console.log("requestQuestionInfo : ", requestQuestionInfo);
     AdoptRequestQuestion(
       requestQuestionInfo,
       token,
@@ -105,7 +130,15 @@ export default function RequestQuestionDetail() {
                   placeholder="보기를 작성해주세요."
                   multiline
                   rows={4}
-                  value={i===0?answer0: i===1?answer1:i===2?answer2:answer3}
+                  value={
+                    i === 0
+                      ? answer0
+                      : i === 1
+                      ? answer1
+                      : i === 2
+                      ? answer2
+                      : answer3
+                  }
                   onChange={(e) => OnChangeAnswer(e, i)}
                 />
               </Typography>
@@ -117,6 +150,16 @@ export default function RequestQuestionDetail() {
     return result;
   };
   useEffect(() => {
+    getLabels(
+      token,
+      (res) => {
+        console.log("GetLabels res.data: ", res.data);
+        setLables(res.data.split(", "));
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
     getRequestQuestion(
       requestquestionId,
       token,
@@ -131,15 +174,73 @@ export default function RequestQuestionDetail() {
         setAnswer3(res.data.responseDto.answerRes.answers[3]);
         setRightAnswer(res.data.responseDto.answerRes.rightAnswer);
         setCreator(res.data.responseDto.accountId);
-        setLables(res.data.responseDto.labels);
+        // setLables(res.data.responseDto.labels);
+        const newArr = Array(4).fill(false);
+        newArr[res.data.responseDto.answerRes.rightAnswer] = true;
+        setIsCategorySelect(newArr);
       },
       (err) => {
         console.log(err);
       }
     );
   }, []);
+  // 체크박스 단일 선택
+  const handleSingleCheck = (checked, label) => {
+    if (checked) {
+      // 단일 선택 시 체크된 아이템을 배열에 추가
+      setSelectedlabels((prev) => [...prev, label]);
+    } else {
+      // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+      setSelectedlabels(selectedlabels.filter((el) => el !== label));
+    }
+  };
+
+  // 체크박스 전체 선택
+  const handleAllCheck = (checked) => {
+    if (checked) {
+      // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 selectedlabels 상태 업데이트
+      const idArray = [];
+      labels.forEach((label) => idArray.push(label));
+      setSelectedlabels(idArray);
+    } else {
+      // 전체 선택 해제 시 selectedlabels 를 빈 배열로 상태 업데이트
+      setSelectedlabels([]);
+    }
+  };
   return (
     <Box style={{ width: "100%", marginTop: "3vh" }}>
+      <StyledTable>
+        <thead>
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                name="select-all"
+                onChange={(e) => handleAllCheck(e.target.checked)}
+                // 데이터 개수와 체크된 아이템의 개수가 다를 경우 선택 해제 (하나라도 해제 시 선택 해제)
+                checked={selectedlabels.length === labels.length ? true : false}
+              />
+            </th>
+            <th className="second-row">라벨 목록</th>
+          </tr>
+        </thead>
+        <tbody>
+          {labels?.map((label, key) => (
+            <tr key={key}>
+              <td>
+                <input
+                  type="checkbox"
+                  name={`select-${label}`}
+                  onChange={(e) => handleSingleCheck(e.target.checked, label)}
+                  // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
+                  checked={selectedlabels.includes(label) ? true : false}
+                />
+              </td>
+              <td className="second-row">{label}</td>
+            </tr>
+          ))}
+        </tbody>
+      </StyledTable>
       <h1 style={{ wordBreak: "break-all" }}>
         Q.{" "}
         <TextField
