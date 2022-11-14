@@ -1,6 +1,7 @@
 package cseon.api.controller;
 
 import cseon.api.dto.request.AnswerRequestReq;
+import cseon.api.dto.response.LogRes;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.dto.response.QuestionRes;
 import cseon.api.service.QuestionOperationService;
@@ -78,7 +79,7 @@ public class QuestionController extends ControllerConstant {
     }
 
     @GetMapping("/logs/{questionId}")
-    public ResponseEntity<DtoResponse> getLogs(@PathVariable("questionId") Long questionId){
-        return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, SUCCESS, questionOperationService.getLogs(questionId)));
+    public ResponseEntity<List<LogRes>> getLogs(@PathVariable("questionId") Long questionId){
+        return ResponseEntity.ok(questionOperationService.getLogs(questionId));
     }
 }
