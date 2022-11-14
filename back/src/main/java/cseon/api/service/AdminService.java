@@ -1,6 +1,6 @@
 package cseon.api.service;
 
-import cseon.api.dto.request.QuestionRequestReq;
+import cseon.api.dto.request.QuestionReq;
 import cseon.api.dto.response.AnswerRes;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.*;
@@ -69,27 +69,27 @@ public class AdminService {
     }
 
     @Transactional
-    public boolean allowQuestion(QuestionRequestReq questionRequestReq) {
+    public boolean allowQuestion(QuestionReq questionReq) {
 
         // requestQuestionDto를 question에 추가
         Question question = Question.builder()
-                .questionTitle(questionRequestReq.getQuestionTitle())
-                .questionExp(questionRequestReq.getQuestionExp())
+                .questionTitle(questionReq.getQuestionTitle())
+                .questionExp(questionReq.getQuestionExp())
                 .build();
 
         Long id = questionRepository.save(question).getQuestionId();
 
         // answer의 questionId, request 변경
         Answer answer =
-                answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), RequestQuestionType.INFORMAL)
+                answerRepository.findByQuestionIdAndRequest(questionReq.getQuestionId(), RequestQuestionType.INFORMAL)
                         .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
-        answer.allowAnswer(id, questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
+        answer.allowAnswer(id, questionReq.getAnswers(), questionReq.getRightAnswer());
 
         answerRepository.save(answer);
 
         // QuestionLabel 추가
-        for (String labelName : questionRequestReq.getLabels()) {
+        for (String labelName : questionReq.getLabels()) {
             questionLabelRepository.save(QuestionLabel.builder()
                     .question(question)
                     .label(labelService.getLabelIdByName(labelName))
@@ -97,36 +97,36 @@ public class AdminService {
         }
 
         // requestQuestion db에서 삭제
-        accountRequestQuestionRepository.deleteById(questionRequestReq.getQuestionId());
+        accountRequestQuestionRepository.deleteById(questionReq.getQuestionId());
 
         // 해당 account success 증가
-        accountRepository.updateAccountSuccess(questionRequestReq.getAccountId());
+        accountRepository.updateAccountSuccess(questionReq.getAccountId());
 
         return true;
     }
 
     // TODO: 2022-11-06 Dirty Check 공부해보세요 :) .save() 를 해도 될 지 안해도 될지!?
     @Transactional
-    public Boolean modifyQuestion(QuestionRequestReq questionRequestReq) {
+    public Boolean modifyQuestion(QuestionReq questionReq) {
 
         Question question =
-                questionRepository.findById(questionRequestReq.getQuestionId())
+                questionRepository.findById(questionReq.getQuestionId())
                         .orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 
         Answer answer =
-                answerRepository.findByQuestionIdAndRequest(questionRequestReq.getQuestionId(), RequestQuestionType.FORMAL)
+                answerRepository.findByQuestionIdAndRequest(questionReq.getQuestionId(), RequestQuestionType.FORMAL)
                         .orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
 
         // question 덮어쓰기
-        question.accountChangeQuestion(questionRequestReq.getQuestionTitle(), questionRequestReq.getQuestionExp());
+        question.accountChangeQuestion(questionReq.getQuestionTitle(), questionReq.getQuestionExp());
         questionRepository.save(question);
 
         // answer 덮어쓰기
-        answer.modifyAnswer(questionRequestReq.getAnswers(), questionRequestReq.getRightAnswer());
+        answer.modifyAnswer(questionReq.getAnswers(), questionReq.getRightAnswer());
         answerRepository.save(answer);
 
         // 라벨 다른 부분 수정
-        List<String> after = questionRequestReq.getLabels();
+        List<String> after = questionReq.getLabels();
         List<QuestionLabel> before = questionLabelRepository.findAllByQuestionId(question);
 
         if (after == null && before == null) {

@@ -1,6 +1,6 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.QuestionRequestReq;
+import cseon.api.dto.request.QuestionReq;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.service.AdminService;
 import cseon.common.constant.ControllerConstant;
@@ -49,8 +49,8 @@ public class AdminController extends ControllerConstant {
      */
     @Operation(summary = "등록 허가", description = "요청된 문제를 정식 문제로 채택합니다.")
     @PostMapping("/request")
-    public ResponseEntity<MessageResponse> allowRequestQuestionFromAccount(@RequestBody QuestionRequestReq questionRequestReq) {
-        boolean res = adminService.allowQuestion(questionRequestReq);
+    public ResponseEntity<MessageResponse> allowRequestQuestionFromAccount(@RequestBody QuestionReq questionReq) {
+        boolean res = adminService.allowQuestion(questionReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
     }
 
@@ -59,8 +59,8 @@ public class AdminController extends ControllerConstant {
      */
     @Operation(summary = "문제 변경", description = "정식 문제의 변경 사항을 적용시킵니다.")
     @PutMapping("/question")
-    public ResponseEntity<MessageResponse> modifyQuestion(@RequestBody QuestionRequestReq questionRequestReq) {
-        boolean res = adminService.modifyQuestion(questionRequestReq);
+    public ResponseEntity<MessageResponse> modifyQuestion(@RequestBody QuestionReq questionReq) {
+        boolean res = adminService.modifyQuestion(questionReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
     }
 }

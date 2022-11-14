@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class WorkbookRequestReq {
+public class WorkbookReq {
 
     private List<Long> questionId;
 
@@ -15,7 +15,7 @@ public class WorkbookRequestReq {
     private String workbookCreatedBy;
 
     @Builder
-    WorkbookRequestReq(List<Long> questionId, String workbookCreatedBy, String workbookName){
+    WorkbookReq(List<Long> questionId, String workbookCreatedBy, String workbookName){
         this.questionId = questionId;
         this.workbookCreatedBy = workbookCreatedBy;
         this.workbookName = workbookName;

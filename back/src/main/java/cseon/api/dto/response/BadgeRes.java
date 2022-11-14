@@ -6,7 +6,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotNull;
 
 @Getter
-public class BadgeResponseRes {
+public class BadgeRes {
 
     @NotNull
     private final Long badgeId;
@@ -18,7 +18,7 @@ public class BadgeResponseRes {
     private final String badgeExp;
 
     @Builder
-    public BadgeResponseRes(Long badgeId, String badgeName, String badgeExp) {
+    public BadgeRes(Long badgeId, String badgeName, String badgeExp) {
         this.badgeId = badgeId;
         this.badgeName = badgeName;
         this.badgeExp = badgeExp;
