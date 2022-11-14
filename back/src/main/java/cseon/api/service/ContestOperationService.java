@@ -1,29 +1,42 @@
 package cseon.api.service;
 
-import cseon.api.dto.response.*;
+import cseon.api.dto.response.ContestInfoRes;
+import cseon.api.dto.response.ContestRes;
+import cseon.api.dto.response.ContestResultRes;
+import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.ContestRepository;
 import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.Contest;
 import cseon.domain.WorkbookQuestion;
+import cseon.domain.type.ContestStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ContestOperationService{
+public class ContestOperationService {
 
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
     private final QuestionSearchService questionSearchService;
 
     @Transactional(readOnly = true)
-    public ContestResultRes takeContestResultWithContestInfo(Long contestId, ContestInfoRes contestInfoRes){
+    public String canParticipateContestWithContestId(Long contestId) {
+
+        Contest findContest = takeDetailsContest(contestId);
+
+        return checkContestStatus(findContest.getContestStart(), findContest.getContestEnd());
+    }
+
+    @Transactional(readOnly = true)
+    public ContestResultRes takeContestResultWithContestInfo(Long contestId, ContestInfoRes contestInfoRes) {
 
         Contest findContest = takeDetailsContest(contestId);
 
@@ -41,19 +54,15 @@ public class ContestOperationService{
                     throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
                 });
 
-        List<ContestRes> ctList = new ArrayList<>();
-        for (Contest c : contests) {
-            ZonedDateTime nowKr = ZonedDateTime.now();
-            boolean check = nowKr.isAfter(c.getContestEnd());
-            ctList.add(ContestRes.builder()
-                    .contestId(c.getContestId())
-                    .contestTitle(c.getContestName())
-                    .startTime(c.getContestStart())
-                    .endTime(c.getContestEnd())
-                    .isExpired(check)
-                    .build());
-        }
-        return ctList;
+        return contests.stream()
+                .map(contest -> ContestRes.builder()
+                        .contestId(contest.getContestId())
+                        .contestTitle(contest.getContestName())
+                        .startTime(contest.getContestStart())
+                        .endTime(contest.getContestEnd())
+                        .isExpired(ZonedDateTime.now().isAfter(contest.getContestEnd()))
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -66,12 +75,10 @@ public class ContestOperationService{
                     throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
                 });
 
-        List<QuestionDto> questionDtoList = new ArrayList<>();
-
-        for (WorkbookQuestion l : questions) {
-            questionDtoList.add(questionSearchService.takeDetailsQuestion(l.getQuestionId().getQuestionId()));
-        }
-        return questionDtoList;
+        return questions.stream()
+                .map(question -> questionSearchService.takeDetailsQuestion(
+                        question.getQuestionId().getQuestionId()))
+                .collect(Collectors.toList());
     }
 
     private Contest takeDetailsContest(Long contestId) {
@@ -80,4 +87,15 @@ public class ContestOperationService{
         });
     }
 
+    private String checkContestStatus(ZonedDateTime startTime, ZonedDateTime endTime) {
+        final ZonedDateTime checkTime = ZonedDateTime.now();
+
+        if (checkTime.isBefore(startTime)) {
+            return ContestStatus.BEFORE_CONTEST.getDesc();
+        } else if (checkTime.isAfter(startTime) && checkTime.isBefore(endTime)) {
+            return ContestStatus.IN_PROGRESS.getDesc();
+        } else {
+            return ContestStatus.AFTER_CONTEST.getDesc();
+        }
+    }
 }
