@@ -69,9 +69,10 @@ public class ContestOperationService {
         Contest findContest = takeDetailsContest(contestId);
 
         List<WorkbookQuestion> questions =
-                workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(findContest.getWorkbookId()).orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
-                });
+                workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(findContest.getWorkbookId())
+                        .orElseThrow(() -> {
+                            throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+                        });
 
         return questions.stream()
                 .map(question -> questionSearchService.takeDetailsQuestion(
