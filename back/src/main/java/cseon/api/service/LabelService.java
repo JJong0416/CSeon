@@ -1,6 +1,5 @@
 package cseon.api.service;
 
-import cseon.api.dto.response.LabelInfoRes;
 import cseon.api.repository.LabelRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
@@ -9,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,12 +17,10 @@ public class LabelService {
 
     private final LabelRepository labelRepository;
 
-    public List<LabelInfoRes> takeAllLabels(){
+    public String takeAllLabels(){
         return labelRepository.findAll().stream()
-                .map(label -> LabelInfoRes.builder()
-                        .labelName(label.getLabelName())
-                        .build())
-                .collect(Collectors.toList());
+                .map(Label::getLabelName)
+                .collect(Collectors.joining(", "));
     }
 
 
