@@ -2,6 +2,7 @@ package cseon.domain;
 
 import cseon.domain.composite.ContestWorkbookId;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,12 @@ public class Contest {
 
     @Column(name = "contest_end", nullable = false)
     private ZonedDateTime contestEnd;
+
+    @Builder
+    Contest(Workbook workbook, String contestName, ZonedDateTime contestStart, ZonedDateTime contestEnd){
+        this.workbookId = workbook;
+        this.contestName = contestName;
+        this.contestStart = contestStart;
+        this.contestEnd = contestEnd;
+    }
 }

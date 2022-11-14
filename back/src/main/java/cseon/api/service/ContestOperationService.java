@@ -1,21 +1,26 @@
 package cseon.api.service;
 
+import cseon.api.dto.request.ContestReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
 import cseon.api.dto.response.ContestResultRes;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.ContestRepository;
 import cseon.api.repository.WorkbookQuestionRepository;
+import cseon.api.repository.WorkbookRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.Contest;
+import cseon.domain.Workbook;
 import cseon.domain.WorkbookQuestion;
 import cseon.domain.type.ContestStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +31,7 @@ public class ContestOperationService {
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
     private final QuestionSearchService questionSearchService;
+    private final WorkbookRepository workbookRepository;
 
     @Transactional(readOnly = true)
     public String canParticipateContestWithContestId(Long contestId) {
@@ -96,4 +102,27 @@ public class ContestOperationService {
             return ContestStatus.AFTER_CONTEST.getDesc();
         }
     }
+
+    public void createContest(ContestReq contestReq){
+        Workbook workbook =
+                workbookRepository.findWorkbookByWorkbookId(contestReq.getWorkbookId()).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+        });
+        ZonedDateTime zdtstart = ZonedDateTime
+                .parse(contestReq.getContestStart(), formatter);
+
+        ZonedDateTime zdtEnd = ZonedDateTime
+                .parse(contestReq.getContestEnd(), formatter);
+
+        contestRepository.save(Contest.builder()
+                .workbook(workbook).
+                contestStart(zdtstart)
+                .contestEnd(zdtEnd)
+                .contestName(contestReq.getContestName())
+                .build());
+    }
+
+    private final static DateTimeFormatter formatter
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a z");
+
 }
