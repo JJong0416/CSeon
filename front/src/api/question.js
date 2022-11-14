@@ -11,7 +11,7 @@ function getQuestion(questionId, token, success, error) {
 
 function getQuestionListWithBoth(label, keyword, token, success, error) {
   instance
-    .get(`/question/both/${label}/${keyword}`, {
+    .get(`/question/${label}/${keyword}`, {
       headers: createHeaders(token),
     })
     .then(success)

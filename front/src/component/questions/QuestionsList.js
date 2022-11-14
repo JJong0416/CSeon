@@ -151,16 +151,30 @@ export default function QuestionsList() {
         );
       }
     } else {
-      getAllQuestionList(
-        token,
-        (res) => {
-          console.log("getAllQuestionList res.data: ", res.data);
-          setList(res.data);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      if (selectedLabel === "NONE") {
+        getAllQuestionList(
+          token,
+          (res) => {
+            console.log("getAllQuestionList res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } else {
+        getQuestionListWithLabel(
+          selectedLabel,
+          token,
+          (res) => {
+            console.log("getQuestionListWithLabel res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
     }
   };
   return (
