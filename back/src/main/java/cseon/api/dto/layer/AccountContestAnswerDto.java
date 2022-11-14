@@ -5,6 +5,9 @@ import java.io.Serializable;
 
 @Getter
 public class AccountContestAnswerDto implements Serializable {
+
+    private static final long serialVersionUID = 1232L;
+
     private final Long contestId;
     private final String accountName;
     private final Double score;
