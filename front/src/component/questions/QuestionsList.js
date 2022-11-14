@@ -29,6 +29,7 @@ import {
 } from "../../api/question";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_QUESTION_ID } from "../../redux/QuestionInfo";
+import { getLabels } from "../../api/label";
 
 export default function QuestionsList() {
   const navigate = useNavigate();
@@ -41,7 +42,8 @@ export default function QuestionsList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [list, setList] = useState([]);
-  const labels = ["JAVA", "DATABASE", "SPRING", "JPA"]; // 라벨 테이블에서 API로 가져오기(2022.11.10)
+  // const labels = ["JAVA", "DATABASE", "SPRING", "JPA"]; // 라벨 테이블에서 API로 가져오기(2022.11.10)
+  const [labels, setLabels] = useState([]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -87,6 +89,16 @@ export default function QuestionsList() {
       (res) => {
         console.log("getAllQuestionList res.data: ", res.data);
         setList(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    getLabels(
+      token,
+      (res) => {
+        console.log("getLabels res.data: ", res.data);
+        setLabels(res.data.split(", "));
       },
       (err) => {
         console.log(err);
