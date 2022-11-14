@@ -103,6 +103,7 @@ public class ContestOperationService {
         }
     }
 
+    @Transactional
     public void createContest(ContestReq contestReq){
         Workbook workbook =
                 workbookRepository.findWorkbookByWorkbookId(contestReq.getWorkbookId()).orElseThrow(() -> {
