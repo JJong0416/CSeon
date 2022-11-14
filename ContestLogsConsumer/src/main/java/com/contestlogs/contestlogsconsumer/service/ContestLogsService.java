@@ -21,7 +21,7 @@ public class ContestLogsService {
             String[] info = record.value().split(" ");
 
             // 현재 점수 + 추가 점수
-            redisTemplate.opsForZSet().incrementScore(info[0], info[1], Double.parseDouble(info[2]));
+            redisTemplate.opsForZSet().add(info[0], info[1], Double.parseDouble(info[2]));
         }
 
         // Kafka offset commit
