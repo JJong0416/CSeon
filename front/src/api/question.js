@@ -45,10 +45,29 @@ function getAllQuestionList(token, success, error) {
     .catch(error);
 }
 
+function registerLogs(answerRequestReq, token, success, error) {
+  instance
+    .post(`/question/logs`, answerRequestReq, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
+
+function getLogs(questionId, token, success, error) {
+  instance
+    .get(`/question/logs/${questionId}`, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
 export {
   getQuestion,
   getQuestionListWithBoth,
   getQuestionListWithLabel,
   getQuestionListWithKeyword,
   getAllQuestionList,
+  registerLogs,
+  getLogs,
 };

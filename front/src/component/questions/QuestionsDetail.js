@@ -1,4 +1,4 @@
-import { getQuestion } from "../..//api/question";
+import { getQuestion, registerLogs, getLogs } from "../../api/question";
 import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -15,6 +15,7 @@ export default function QuestionsDetail() {
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
+
   const [questionLog, setQuestionLog] = useState([
     { time: "2022-04-21", isRight: false, selected: 2 },
     { time: "2022-04-21", isRight: true, selected: 3 },
@@ -33,22 +34,24 @@ export default function QuestionsDetail() {
     console.log("answerRes", answerRes[1], questionExp);
 
     var data2 = [];
-    for (var i = 0; i < questionLog.length; i++) {
-      var isCorrect = "";
-      if (questionLog[i].isRight) {
-        isCorrect = "O";
-      } else {
-        isCorrect = "X";
-      }
-      data2.push(
-        "<tr>",
-        '<td align="center">' + questionLog[i].time + "</td>",
 
-        '<td align="center">' + isCorrect + "</td>",
-        '<td align="center">' + questionLog[i].selected + "</td>",
-        "</tr>"
-      );
-    }
+    const answerRequestReq = {
+      questionId: questionId,
+      checkNumber: idx,
+      isAnswer: answerRes[1] !== idx ? false : true,
+    };
+
+    registerLogs(
+      answerRequestReq,
+      Token,
+      (res) => {
+        console.log(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
     if (answerRes[1] !== idx) {
       Swal.fire({
         title: "틀렸습니다.",
@@ -62,24 +65,61 @@ export default function QuestionsDetail() {
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
-          Swal.fire({
-            html:
-              `<table id="table" border=1>
-            <thead>
-                <tr>
-                    <th>푼 날짜</th>
-                    <th>정답 여부</th>
-                    <th>선택한 답</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-       ` +
-              data2.join("") +
-              `         
-    </tbody>
-    </table>`,
-          });
+          getLogs(
+            questionId,
+            Token,
+            (res) => {
+              console.log(res.data);
+              setQuestionLog(res.data.responseDto);
+              var data2 = [];
+              for (var i = res.data.responseDto.length - 1; i >= 0; i--) {
+                var isAnswer = "";
+                if (res.data.responseDto.isAnswer) {
+                  isAnswer = "O";
+                } else {
+                  isAnswer = "X";
+                }
+                data2.push(
+                  "<tr>",
+                  '<td align="center">' +
+                    res.data.responseDto[i].timestamp.split("T")[0] +
+                    " " +
+                    res.data.responseDto[i].timestamp
+                      .split("T")[1]
+                      .split(".")[0] +
+                    "</td>",
+
+                  '<td align="center">' + isAnswer + "</td>",
+                  '<td align="center">' +
+                    (res.data.responseDto[i].checkNumber + 1) +
+                    "</td>",
+                  "</tr>"
+                );
+
+                Swal.fire({
+                  html:
+                    `<table id="table" border=1>
+                  <thead>
+                      <tr>
+                          <th>푼 날짜</th>
+                          <th>정답 여부</th>
+                          <th>선택한 답</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+             ` +
+                    data2.join("") +
+                    `         
+          </tbody>
+          </table>`,
+                });
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     } else if (answerRes[1] === idx) {

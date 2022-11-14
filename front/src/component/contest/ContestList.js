@@ -32,7 +32,14 @@ export default function ContestList() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  const showResult = () => {
+    console.log("결과 보기");
+  };
 
+  const joinContest = () => {
+    navigate("/contestdetail");
+    console.log("참여하기");
+  };
   const handleChangeRowsPerPage = (event) => {
     console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -76,28 +83,7 @@ export default function ContestList() {
     <div>
       <div style={{ marginTop: "3vh" }}>
         {/* <input type="text" value={search} onChange={onChange} /> */}
-        <TextField
-          focused
-          color="info"
-          placeholder="대회 검색하기"
-          value={search}
-          onChange={onChange}
-          id="outlined-start-adornment"
-          sx={{ mb: 4, width: "40vh" }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  type="button"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <h2>실시간 대회</h2>
       </div>
       <TableContainer component={Paper}>
         <Table size="small">
@@ -115,7 +101,7 @@ export default function ContestList() {
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
               .map(
                 (
-                  { contestId, contestTitle, endTime, expired, startTime },
+                  { contestId, contestTitle, endTime, isExpired, startTime },
                   i
                 ) => (
                   <TableRow key={contestId}>
@@ -124,14 +110,21 @@ export default function ContestList() {
                     </TableCell>
                     <TableCell align="right">{contestTitle}</TableCell>
                     <TableCell align="right">
-                      {startTime} ~ <br></br>
-                      {endTime}
+                      {startTime.split("T")[0] +
+                        " " +
+                        startTime.split("T")[1].split("+")[0]}{" "}
+                      ~ <br></br>
+                      {endTime.split("T")[0] +
+                        " " +
+                        endTime.split("T")[1].split("+")[0]}
                     </TableCell>
-                    <TableCell align="right" onClick={ClickTitle}>
-                      {expired ? (
-                        <Button>결과 보기</Button>
+
+                    {/* <TableCell align="right" onClick={ClickTitle}> */}
+                    <TableCell align="right">
+                      {isExpired === "대회 종료" ? (
+                        <Button onClick={showResult}>결과 보기</Button>
                       ) : (
-                        <Button>참여하기</Button>
+                        <Button onClick={joinContest}>참여하기</Button>
                       )}
                     </TableCell>
                   </TableRow>
