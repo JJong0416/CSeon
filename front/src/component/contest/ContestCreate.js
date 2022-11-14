@@ -83,14 +83,47 @@ export default function ContestCreate() {
       setCheckedworkbook(-1);
     }
   };
+  const timesetting = (time) => {
+    function pad(n) { return n<10 ? "0"+n : n }
+    let year = time.$y;
+    let month = pad(time.$M + 1);
+    let day = pad(time.$D);
+    let hour = pad(time.$H);
+    let minute = pad(time.$m);
+    return (
+      year +
+      "-" +
+      month +
+      "-" +
+      day +
+      "T" +
+      hour +
+      ":" +
+      minute
+    );
+  };
+  function timestamp(){
+    var today = new Date();
+    today.setHours(today.getHours() + 9);
+    return today.toISOString().substring(0, 16);
+}
+
   const ClickContestRegist = () => {
     console.log("contestTitle: ", contestTitle);
-    console.log("startTime: ", startTime);
-    console.log("endTime: ", endTime);
+    let stime = timesetting(startTime);
+    let etime = timesetting(endTime);
+    let nowtime = timestamp();
+    console.log("startTime: ", stime);
+    console.log("endTime: ", etime);
+    console.log("nowTime: ",nowtime);
     console.log("checkedworkbookId: ", checkedworkbook);
     // 시간 올바른지 체킹하기
+    if (nowtime>=stime) alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)")
+    else if (stime>=etime) alert("대회 시간 다시 세팅해주세요~");
+    else{
+      // API 보내기
 
-    // API 보내기
+    }
   };
 
   useEffect(() => {
@@ -129,7 +162,6 @@ export default function ContestCreate() {
             label="DateTimePicker"
             value={startTime}
             onChange={(newValue) => {
-              console.log(newValue);
               setStartTime(newValue);
             }}
           />
