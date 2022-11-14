@@ -92,6 +92,7 @@ public class QuestionSearchService {
                 .questionTitle(question.getQuestionTitle())
                 .questionExp(question.getQuestionExp())
                 .answerRes(answerRes)
+                .contestTitle(question.getQuestionTitle())
                 .labels(labels)
                 .build();
     }
