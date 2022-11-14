@@ -20,4 +20,11 @@ function registerWorkbook(workbookRequest, token, success, error) {
     .then(success)
     .catch(error);
 }
-export { getWorkbook, getAllWorkbookList, registerWorkbook };
+
+function getWorkbookWithKeyWord(keyword, token, success, error) {
+  instance
+    .get(`/workbook/keyword/${keyword}`, { headers: createHeaders(token) })
+    .then(success)
+    .catch(error);
+}
+export { getWorkbook, getAllWorkbookList, registerWorkbook, getWorkbookWithKeyWord };

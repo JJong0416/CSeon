@@ -106,9 +106,9 @@ export default function QuestionsList() {
   const clickQuestionCreate = () => {
     navigate("/questionrequest");
   };
-  const clickQuestionConfirm = () =>{
+  const clickQuestionConfirm = () => {
     navigate("/requestquestionlist");
-  }
+  };
   const ClickSearchBtn = () => {
     console.log(selectedLabel, search);
     if (search !== "") {
@@ -138,6 +138,17 @@ export default function QuestionsList() {
           }
         );
       }
+    } else {
+      getAllQuestionList(
+        token,
+        (res) => {
+          console.log("getAllQuestionList res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   };
   return (

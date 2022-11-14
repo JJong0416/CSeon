@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_WORKBOOK_INDEX } from "../../redux/WorkbookInfo";
-import { getAllWorkbookList } from "../../api/workbook";
+import { getAllWorkbookList, getWorkbookWithKeyWord } from "../../api/workbook";
 
 export default function WorkbookList() {
   const dispatch = new useDispatch();
@@ -39,7 +39,7 @@ export default function WorkbookList() {
     setPage(0);
   };
   const onChange = (e) => {
-    // console.log(e.target.value);
+    console.log(e.target.value);
     setSearch(e.target.value);
   };
   const ClickTitle = (id) => {
@@ -49,6 +49,17 @@ export default function WorkbookList() {
   };
   const ClickSearchBtn = () => {
     console.log("search keywork: ", search);
+    getWorkbookWithKeyWord(
+      search,
+      Token,
+      (res) => {
+        console.log("getWorkbookWithKeyWord res.data: ", res.data);
+        setList(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
   const clickWorkbookCreate = () => {
     navigate("/workbookcreate");
@@ -115,7 +126,10 @@ export default function WorkbookList() {
                   </TableCell> */}
                   <TableCell>{workbookId}</TableCell>
                   <TableCell align="left">{workbookCreatedBy}</TableCell>
-                  <TableCell align="left" onClick={() => ClickTitle(workbookId)}>
+                  <TableCell
+                    align="left"
+                    onClick={() => ClickTitle(workbookId)}
+                  >
                     {workbookName}
                   </TableCell>
                 </TableRow>
