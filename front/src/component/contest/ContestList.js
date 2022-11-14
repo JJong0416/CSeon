@@ -22,6 +22,9 @@ import { getWorkbookList } from "../../api/workbook";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllContestList } from "../../api/contest";
 export default function ContestList() {
+  const accountRole = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountRole
+  );
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -78,6 +81,10 @@ export default function ContestList() {
     //redux에 세팅 or props
     navigate("/contestdetail");
   };
+
+  const ClickContetCreate = ()=>{
+    navigate("/contestcreate");
+  }
 
   return (
     <div>
@@ -144,6 +151,22 @@ export default function ContestList() {
           </TableFooter>
         </Table>
       </TableContainer>
+      {accountRole === "ADMIN" ? (
+        <Button
+          size="small"
+          variant="contained"
+          style={{
+            backgroundColor: "#64b5f6",
+            float: "right",
+            margin: "0vh 4vh 4vh 0vh",
+          }}
+          onClick={ClickContetCreate}
+        >
+          대회 생성
+        </Button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

@@ -49,17 +49,30 @@ export default function WorkbookList() {
   };
   const ClickSearchBtn = () => {
     console.log("search keywork: ", search);
-    getWorkbookWithKeyWord(
-      search,
-      Token,
-      (res) => {
-        console.log("getWorkbookWithKeyWord res.data: ", res.data);
-        setList(res.data);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    if (search !== "") {
+      getWorkbookWithKeyWord(
+        search,
+        Token,
+        (res) => {
+          console.log("getWorkbookWithKeyWord res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      getAllWorkbookList(
+        Token,
+        (res) => {
+          console.log("getAllWorkbookList res.data:", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   };
   const clickWorkbookCreate = () => {
     navigate("/workbookcreate");
@@ -70,7 +83,7 @@ export default function WorkbookList() {
     getAllWorkbookList(
       Token,
       (res) => {
-        console.log("res.data:", res.data);
+        console.log("getAllWorkbookList res.data:", res.data);
         setList(res.data);
       },
       (err) => {

@@ -20,7 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import SearchIcon from "@mui/icons-material/Search";
-import { getAllWorkbookList } from "../../api/workbook";
+import { getAllWorkbookList, getWorkbookWithKeyWord } from "../../api/workbook";
 export default function ContestCreate() {
   const dispatch = new useDispatch();
   const Token = useSelector((state) => state.AccountInfo.accessToken);
@@ -29,6 +29,10 @@ export default function ContestCreate() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
+  const [checkedworkbook, setCheckedworkbook] = useState(-1);
+  const [contestTitle, setContestTitle] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const onChange = (e) => {
     // console.log(e.target.value);
@@ -46,7 +50,49 @@ export default function ContestCreate() {
   };
   const ClickSearchBtn = () => {
     console.log("search keywork: ", search);
+    if (search !== "") {
+      getWorkbookWithKeyWord(
+        search,
+        Token,
+        (res) => {
+          console.log("getWorkbookWithKeyWord res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      getAllWorkbookList(
+        Token,
+        (res) => {
+          console.log("getAllWorkbookList res.data:", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   };
+  // 체크박스 선택
+  const handleSingleCheck = (checked, id) => {
+    if (checked) {
+      setCheckedworkbook(id);
+    } else {
+      setCheckedworkbook(-1);
+    }
+  };
+  const ClickContestRegist = () => {
+    console.log("contestTitle: ", contestTitle);
+    console.log("startTime: ", startTime);
+    console.log("endTime: ", endTime);
+    console.log("checkedworkbookId: ", checkedworkbook);
+    // 시간 올바른지 체킹하기
+
+    // API 보내기
+  };
+
   useEffect(() => {
     console.log("workbooklist rendering...");
     getAllWorkbookList(
@@ -68,7 +114,11 @@ export default function ContestCreate() {
           helperText="25자 이하로 작성해주세요."
           placeholder="대회명을 작성해주세요."
           style={{ width: "70%" }}
-        />{" "}
+          value={contestTitle}
+          onChange={(e) => {
+            setContestTitle(e.target.value);
+          }}
+        />
       </h1>
 
       <h1>
@@ -77,9 +127,10 @@ export default function ContestCreate() {
           <DateTimePicker
             renderInput={(props) => <TextField {...props} />}
             label="DateTimePicker"
-            value={value}
+            value={startTime}
             onChange={(newValue) => {
-              setValue(newValue);
+              console.log(newValue);
+              setStartTime(newValue);
             }}
           />
         </LocalizationProvider>
@@ -90,9 +141,9 @@ export default function ContestCreate() {
           <DateTimePicker
             renderInput={(props) => <TextField {...props} />}
             label="DateTimePicker"
-            value={value}
+            value={endTime}
             onChange={(newValue) => {
-              setValue(newValue);
+              setEndTime(newValue);
             }}
           />
         </LocalizationProvider>
@@ -154,6 +205,19 @@ export default function ContestCreate() {
                       <TableCell>{workbookId}</TableCell>
                       <TableCell align="left">{workbookCreatedBy}</TableCell>
                       <TableCell align="left">{workbookName}</TableCell>
+                      <TableCell align="left">
+                        <input
+                          type="checkbox"
+                          name={workbookName}
+                          onChange={(e) =>
+                            handleSingleCheck(e.target.checked, workbookId)
+                          }
+                          // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
+                          checked={
+                            checkedworkbook === workbookId ? true : false
+                          }
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
@@ -172,7 +236,7 @@ export default function ContestCreate() {
           </TableContainer>
         </div>{" "}
       </h1>
-      <Button variant="contained" size="large">
+      <Button variant="contained" size="large" onClick={ClickContestRegist}>
         만들기
       </Button>
     </Box>
