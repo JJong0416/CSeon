@@ -1,6 +1,7 @@
 package cseon.api.service;
 
 import cseon.api.dto.request.WorkbookRequestReq;
+import cseon.api.dto.response.WorkbookDetailRes;
 import cseon.api.dto.response.WorkbookRes;
 import cseon.api.repository.QuestionRepository;
 import cseon.api.repository.WorkbookQuestionRepository;
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 public class WorkbookService {
 
     private final WorkbookRepository workbookRepository;
-
     private final WorkbookQuestionRepository workbookQuestionRepository;
     private final QuestionRepository questionRepository;
 
@@ -42,8 +42,24 @@ public class WorkbookService {
                 .map(makeWorkbookToWorkbookRes())
                 .collect(Collectors.toList());
     }
-    public Workbook getWorkbook(Long workbookId) {
-        return getWorkbookWithWorkbookId(workbookId);
+
+    @Transactional(readOnly = true)
+    public WorkbookDetailRes getWorkbook(Long workbookId) {
+        Workbook workbook = workbookRepository.findById(workbookId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+                });
+
+        List<Long> questions = workbookQuestionRepository.findQuestionsByWorkbookId(workbook)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+                });
+
+        return WorkbookDetailRes.builder()
+                .workbookId(workbook.getWorkbookId())
+                .workbookName(workbook.getWorkbookName())
+                .questionIdList(questions)
+                .build();
     }
 
     public void createWorkbook(WorkbookRequestReq workbookRequestReq) {
