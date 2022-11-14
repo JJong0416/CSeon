@@ -22,11 +22,9 @@ public class AccountSolved {
     }
 
     public void check(Long questionId, Boolean isAnswer){
-        correctQuestion.forEach(id -> System.out.println(id));
         if(correctQuestion.contains(questionId))
             return;
 
-        System.out.println("isAnswer check");
         if(isAnswer){
             correctQuestion.add(questionId);
             if(wrongQuestion.contains(questionId))

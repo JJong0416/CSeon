@@ -21,5 +21,4 @@ public class LabelController {
         return ResponseEntity.ok(labelService.takeAllLabels());
     }
 
-
 }

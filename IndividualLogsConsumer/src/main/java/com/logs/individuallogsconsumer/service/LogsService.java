@@ -24,24 +24,25 @@ public class LogsService {
             // 0:accountName 1:timestamp 2:questionId, 3:checkNumber 4:isAnswer
             String[] log = record.value().split(" ");
 
-            tryRepository.save(Tries.builder()
-                            .accountName(log[0])
-                            .timestamp(log[1])
-                            .questionId(Long.parseLong(log[2]))
-                            .checkNumber(Integer.parseInt(log[3]))
-                            .isAnswer(Boolean.parseBoolean(log[4]))
-                    .build());
-
-            System.out.println("check line 1");
+            // 계정 당 틀린 문제, 맞은 문제 검색
             AccountSolved accountSolved = solvedRepository.findById(log[0])
                     .orElseGet(
                             () -> new AccountSolved(log[0])
                     );
 
-            System.out.println("check line 2");
+            // 틀린 문제, 맞은 문제 체크
             accountSolved.check(Long.parseLong(log[2]), Boolean.parseBoolean(log[4]));
 
-            System.out.println("check line 3");
+            // log 저장
+            tryRepository.save(Tries.builder()
+                    .accountName(log[0])
+                    .timestamp(log[1])
+                    .questionId(Long.parseLong(log[2]))
+                    .checkNumber(Integer.parseInt(log[3]))
+                    .isAnswer(Boolean.parseBoolean(log[4]))
+                    .build());
+
+            // 틀린 문제, 맞은 문제 저장
             solvedRepository.save(accountSolved);
         }
 

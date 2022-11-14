@@ -71,6 +71,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: as5681
+    password: wlxo8053535!
     url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
 

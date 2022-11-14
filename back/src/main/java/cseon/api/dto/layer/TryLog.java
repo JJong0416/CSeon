@@ -17,10 +17,8 @@ public class TryLog implements Serializable {
 
     @NotNull
     private final String accountName;
-
     @NotNull
     private final AnswerRequestReq answerRequestReq;
-
     @NotNull
     private final LocalDateTime timestamp = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
