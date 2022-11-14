@@ -98,7 +98,7 @@ public class ContestService extends RedisConst {
 
         if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
                 || ZSetOperations.rank(redisId, username) == null)
-            ZSetOperations.add(redisId, username, -1);
+            ZSetOperations.add(redisId, username, 0);
     }
 
     private void checkRedisCondition(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
@@ -154,11 +154,16 @@ public class ContestService extends RedisConst {
     @Transactional
     public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
 
-        // 틀림 0 시작. 맞음 50000 시작.
-        Long score = contestAnswerReq.getIsAnswer() ? 50000L : 0L;
+        Integer cor =
+                floor(redisTemplate.opsForZSet().score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 50000);
+
+        // 정답이면 score + 5
+        if(contestAnswerReq.getIsAnswer())
+            ++cor;
 
         ZonedDateTime now = ZonedDateTime.now();
-        score += Math.abs(ChronoUnit.MILLIS.between(now, contestAnswerReq.getEndTime()));
+        Double score = Double.valueOf(cor * 5);
+        score += Math.abs(ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
 
         AccountContestAnswerDto accountContestAnswerDto =
                 new AccountContestAnswerDto(contestAnswerReq.getContestId(), score);
@@ -167,5 +172,9 @@ public class ContestService extends RedisConst {
                 new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
 
         return true;
+    }
+
+    private Integer floor(Double d){
+        return d.intValue();
     }
 }

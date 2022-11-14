@@ -7,9 +7,9 @@ import java.io.Serializable;
 public class AccountContestAnswerDto implements Serializable {
     private final Long contestId;
     private final String accountName;
-    private final Long score;
+    private final Double score;
 
-    public AccountContestAnswerDto(Long contestId, Long score){
+    public AccountContestAnswerDto(Long contestId, Double score){
         this.contestId = contestId;
         this.accountName = getAccountName();
         this.score = score;
