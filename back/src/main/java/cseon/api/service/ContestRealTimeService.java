@@ -4,20 +4,14 @@ import cseon.api.dto.layer.AccountContestAnswerDto;
 import cseon.api.dto.request.ContestAnswerReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
-import cseon.api.dto.response.ContestRes;
-import cseon.api.dto.response.QuestionDto;
-import cseon.api.repository.ContestRepository;
-import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
-import cseon.domain.Contest;
-import cseon.domain.WorkbookQuestion;
+import cseon.common.provider.KafkaProducerProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,12 +26,8 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 
 @Service
 @RequiredArgsConstructor
-public class ContestService extends RedisConst {
-
-    private final ContestRepository contestRepository;
+public class ContestRealTimeService extends RedisConst {
     private final RedisTemplate<String, String> redisTemplate;
-    private final WorkbookQuestionRepository workbookQuestionRepository;
-    private final QuestionSearchService questionSearchService;
     private final KafkaProducerProvider kafkaProducerProvider;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
@@ -89,12 +79,13 @@ public class ContestService extends RedisConst {
                 .build();
     }
 
+
     private void InitMyRankingInRedis(
             String redisId, String username, ZSetOperations<String, String> ZSetOperations) {
 
         if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
                 || ZSetOperations.rank(redisId, username) == null)
-            ZSetOperations.add(redisId, username, 0);
+            ZSetOperations.add(redisId, username, -1);
     }
 
     private void checkRedisCondition(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
