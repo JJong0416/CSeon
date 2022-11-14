@@ -66,7 +66,7 @@ public class QuestionOperationService {
     public void selectAnswer(AnswerReq answerReq) {
         TryLog tryLog = TryLog.builder()
                 .accountName(getAccountName())
-                .answerRequestReq(answerReq)
+                .answerReq(answerReq)
                 .build();
 
         kafkaProducerProvider.getKafkaProducer().send(
