@@ -58,6 +58,8 @@ public class ContestOperationService {
                         .contestId(contest.getContestId())
                         .contestName(contest.getContestName())
                         .isExpired(checkContestStatus(contest.getContestStart(), contest.getContestEnd()))
+                        .startTime(contest.getContestStart())
+                        .endTime(contest.getContestEnd())
                         .build())
                 .collect(Collectors.toList());
     }
