@@ -53,8 +53,7 @@ public class WorkbookController {
     @Operation(summary = "문제집 수정하기", description = "문제집을 수정하는 메소드입니다.")
     @PatchMapping
     public ResponseEntity<HttpStatus> changeWorkbook(
-            @Parameter @RequestBody WorkbookRequestReq workbookRequestReq, Long workbookId
-    ) {
+            @Parameter @RequestBody WorkbookRequestReq workbookRequestReq, Long workbookId) {
         workbookService.modifyWorkbook(workbookRequestReq, workbookId);
         return ResponseEntity.ok().build();
     }
