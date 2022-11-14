@@ -1,8 +1,10 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getUserProfile } from "../api/accountinfo";
 import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/system";
+import { SET_WORKBOOK_INDEX } from "../redux/WorkbookInfo";
+import { SET_QUESTION_ID } from "../redux/QuestionInfo";
 import {
   Card,
   CardActionArea,
@@ -16,20 +18,26 @@ export default function MyPage() {
   const accountName = useSelector(
     (state) => state.AccountInfo.accountInfo.accountName
   );
+  const dispatch = new useDispatch();
   const correctList = [1, 2, 3, 4];
   const unCorrectList = [1, 2, 3, 4];
   const badges = ["현중배 1등", "요청 문제 정식 등록 10회"];
-  const workbooks = [
-    "지수의 첫번째 시크릿 문제집",
-    "지수의 두번째 시크릿 문제집",
-  ];
-
+  const [workbooks, setWorkbooks] = useState(null);
+  const goWorkbookDetail = (workbookId) => {
+    dispatch(SET_WORKBOOK_INDEX(workbookId));
+    console.log(workbookId);
+  };
+  const goQuestionDetail = (questionId) => {
+    dispatch(SET_QUESTION_ID(questionId));
+    console.log(questionId);
+  };
   useEffect(() => {
     console.log("Mypage render..");
     getUserProfile(
       token,
       (res) => {
         console.log(res);
+        setWorkbooks(res.data.workbooks);
       },
       (err) => {
         console.log(err);
@@ -64,7 +72,8 @@ export default function MyPage() {
             <Typography variant="h6" style={{ float: "left", padding: "2vh" }}>
               {correctList.map((questionId) => (
                 <a
-                  href="questiondetail"
+                  onClick={() => goQuestionDetail(questionId)}
+                  href="questionsdetail"
                   style={{ margin: "2vh", color: "green" }}
                 >
                   {questionId}
@@ -97,7 +106,8 @@ export default function MyPage() {
             <Typography variant="h6" style={{ float: "left", padding: "2vh" }}>
               {unCorrectList.map((questionId) => (
                 <a
-                  href="questiondetail"
+                  onClick={() => goQuestionDetail(questionId)}
+                  href="questionsdetail"
                   style={{ margin: "2vh", color: "red" }}
                 >
                   {questionId}
@@ -106,42 +116,7 @@ export default function MyPage() {
             </Typography>
           </CardContent>
         </Card>
-        {/* <Card
-          raised
-          sx={{
-            width: "100%",
-            margin: "0vh 4vh 4vh 4vh",
-          }}
-        >
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              style={{
-                backgroundColor: "lightgray",
-                textAlign: "left",
-                padding: "1vh 2vh",
-                fontFamily: "GangwonEdu_OTFBoldA",
-              }}
-            >
-              내 칭호들
-            </Typography>
-            <Typography
-              variant="h6"
-              style={{
-                float: "left",
-                padding: "2vh",
-              }}
-            >
-              {badges.map((badge) => (
-                <div style={{ margin: "2vh", backgroundColor: "#4fc3f7" }}>
-                  {badge}
-                </div>
-              ))}
-            </Typography>
-          </CardContent>
-        </Card> */}
+
         <Card
           raised
           sx={{
@@ -163,22 +138,25 @@ export default function MyPage() {
             >
               내가 만든 문제집들
             </Typography>
-            <Typography
-              variant="h6"
-              style={{
-                float: "left",
-                padding: "2vh",
-              }}
-            >
-              {workbooks.map((workbook) => (
-                <a
-                  href="workbookdetail"
-                  style={{ margin: "2vh", color: "black" }}
-                >
-                  {workbook}
-                </a>
-              ))}
-            </Typography>
+            {workbooks != null ? (
+              <Typography
+                variant="h6"
+                style={{
+                  float: "left",
+                  padding: "2vh",
+                }}
+              >
+                {workbooks.map((workbook) => (
+                  <a
+                    onClick={() => goWorkbookDetail(workbook.workbookId)}
+                    href="workbookdetail"
+                    style={{ margin: "2vh", color: "black" }}
+                  >
+                    {workbook.workbookName}
+                  </a>
+                ))}
+              </Typography>
+            ) : null}
           </CardContent>
         </Card>
       </Grid>

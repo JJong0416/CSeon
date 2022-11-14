@@ -9,10 +9,11 @@ import { getContestQuestions } from "../../api/contest";
 import { useNavigate } from "react-router";
 export default function ContestDetail() {
   const contestId = useSelector((state) => state.ContestInfo.contestId);
+  const contestName = useSelector((state) => state.ContestInfo.contestName);
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
-  const [contestTitle, setContestTitle] = useState("");
+
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
@@ -60,7 +61,7 @@ export default function ContestDetail() {
       (res) => {
         console.log(res.data);
         setContestQuestionList(res.data);
-        setContestTitle("현중배 제 1회 싸피컵");
+
         setQuestionTitle(res.data[index].questionTitle);
         setAnswerList(res.data[index].answerRes.answers);
         setRightAnswer(res.data[index].answerRes.rightAnswer);
@@ -97,7 +98,7 @@ export default function ContestDetail() {
             src="img/trophy.png"
             style={{ width: "5%", marginRight: "3vh" }}
           ></img>
-          {contestTitle}
+          {contestName}
           <img
             alt=""
             src="img/trophy.png"
