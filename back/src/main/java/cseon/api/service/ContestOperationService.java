@@ -56,7 +56,7 @@ public class ContestOperationService {
         return contests.stream()
                 .map(contest -> ContestRes.builder()
                         .contestId(contest.getContestId())
-                        .contestTitle(contest.getContestName())
+                        .contestName(contest.getContestName())
                         .isExpired(checkContestStatus(contest.getContestStart(), contest.getContestEnd()))
                         .build())
                 .collect(Collectors.toList());
