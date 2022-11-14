@@ -3,20 +3,22 @@ package cseon.api.service;
 import cseon.api.dto.layer.TryLog;
 import cseon.api.dto.request.AnswerRequestReq;
 import cseon.api.dto.request.QuestionRequestReq;
-import cseon.api.dto.response.AnswerRes;
-import cseon.api.dto.response.QuestionDto;
-import cseon.api.dto.response.QuestionRes;
-import cseon.api.repository.*;
-import cseon.common.exception.CustomException;
-import cseon.common.exception.ErrorCode;
+import cseon.api.dto.response.LogRes;
+import cseon.api.repository.AccountRequestQuestionRepository;
+import cseon.api.repository.AnswerRepository;
+import cseon.api.repository.LogRepository;
 import cseon.common.provider.KafkaProducerProvider;
-import cseon.domain.*;
+import cseon.domain.Account;
+import cseon.domain.AccountRequestQuestion;
+import cseon.domain.Answer;
+import cseon.domain.Tries;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ public class QuestionOperationService {
     private final AnswerRepository answerRepository;
     private final AccountService accountService;
     private final KafkaProducerProvider kafkaProducerProvider;
+    private final LogRepository logRepository;
 
 
     @Transactional
@@ -68,5 +71,21 @@ public class QuestionOperationService {
 
         kafkaProducerProvider.getKafkaProducer().send(
                 new ProducerRecord<>("cseon.logs.try", tryLog.toString()));
+    }
+
+    @Transactional
+    public List<LogRes> getLogs(Long questionId){
+        List<Tries> res =
+                logRepository.findAllByQuestionIdAndAccountName(questionId, getAccountName())
+                .orElseGet(() -> new ArrayList<>());
+
+
+        return res.stream()
+                .map(tries -> LogRes.builder()
+                        .timestamp(tries.getTimestamp())
+                        .checkNumber(tries.getCheckNumber())
+                        .isAnswer(tries.getIsAnswer())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
