@@ -5,6 +5,8 @@ import cseon.api.dto.response.QuestionDto;
 import cseon.api.dto.response.QuestionRes;
 import cseon.api.service.QuestionOperationService;
 import cseon.api.service.QuestionSearchService;
+import cseon.common.constant.ControllerConstant;
+import cseon.common.utils.DtoResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/question")
 @Tag(name = "질문", description = "문제 관련 API")
-public class QuestionController {
+public class QuestionController extends ControllerConstant {
 
     private final QuestionOperationService questionOperationService;
     private final QuestionSearchService questionSearchService;
@@ -73,5 +75,10 @@ public class QuestionController {
     public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestReq answerRequestReq) {
         questionOperationService.selectAnswer(answerRequestReq);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/logs/{questionId}")
+    public ResponseEntity<DtoResponse> getLogs(@PathVariable("questionId") Long questionId){
+        return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, SUCCESS, questionOperationService.getLogs(questionId)));
     }
 }
