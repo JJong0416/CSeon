@@ -4,14 +4,20 @@ import cseon.api.dto.layer.AccountContestAnswerDto;
 import cseon.api.dto.request.ContestAnswerReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
+import cseon.api.dto.response.ContestRes;
+import cseon.api.dto.response.QuestionDto;
+import cseon.api.repository.ContestRepository;
+import cseon.api.repository.WorkbookQuestionRepository;
 import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
-import cseon.common.provider.KafkaProducerProvider;
+import cseon.domain.Contest;
+import cseon.domain.WorkbookQuestion;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +32,12 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 
 @Service
 @RequiredArgsConstructor
-public class ContestRealTimeService extends RedisConst {
+public class ContestService extends RedisConst {
 
+    private final ContestRepository contestRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private final WorkbookQuestionRepository workbookQuestionRepository;
+    private final QuestionSearchService questionSearchService;
     private final KafkaProducerProvider kafkaProducerProvider;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
@@ -79,7 +88,6 @@ public class ContestRealTimeService extends RedisConst {
                 .isExistMeInLeaderboard(topRankingPlayer.containsKey(username))
                 .build();
     }
-
 
     private void InitMyRankingInRedis(
             String redisId, String username, ZSetOperations<String, String> ZSetOperations) {
