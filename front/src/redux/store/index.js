@@ -15,6 +15,7 @@ import storageSession from "redux-persist/lib/storage/session";
 import accountInfoReducer from "../AccountInfo";
 import questionInfoReducer from "../QuestionInfo";
 import workbookInfoReducer from "../WorkbookInfo";
+import contestInfoReducer from "../ContestInfo";
 
 const persistConfig = {
   key: "root",
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   AccountInfo: accountInfoReducer,
   QuestionInfo: questionInfoReducer,
   WorkbookInfo: workbookInfoReducer,
+  ContestInfo: contestInfoReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

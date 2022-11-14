@@ -20,7 +20,12 @@ import { faker } from "@faker-js/faker";
 import { useNavigate } from "react-router";
 import { getWorkbookList } from "../../api/workbook";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllContestList } from "../../api/contest";
+import {
+  getAllContestList,
+  checkValidation,
+  getContestQuestions,
+} from "../../api/contest";
+import { SET_CONTEST_ID } from "../../redux/ContestInfo";
 export default function ContestList() {
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const navigate = useNavigate();
@@ -29,16 +34,33 @@ export default function ContestList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [users, setUsers] = useState([]);
+  //const contestId = useSelector((state) => state.ContestInfo.contestId);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const showResult = () => {
+  const showResult = (contestId) => {
     console.log("결과 보기");
   };
 
-  const joinContest = () => {
-    navigate("/contestdetail");
-    console.log("참여하기");
+  const joinContest = (contestId) => {
+    dispatch(SET_CONTEST_ID(contestId));
+    checkValidation(
+      contestId,
+      Token,
+      (res) => {
+        console.log(res.data);
+        if (res.data === "대회 진행") {
+          navigate("/contestdetail");
+        } else {
+          alert("대회가 시작되지 않았음");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    //   navigate("/contestdetail");
   };
   const handleChangeRowsPerPage = (event) => {
     console.log("handle", event.target);
@@ -122,9 +144,13 @@ export default function ContestList() {
                     {/* <TableCell align="right" onClick={ClickTitle}> */}
                     <TableCell align="right">
                       {isExpired === "대회 종료" ? (
-                        <Button onClick={showResult}>결과 보기</Button>
+                        <Button onClick={() => showResult(contestId)}>
+                          결과 보기
+                        </Button>
                       ) : (
-                        <Button onClick={joinContest}>참여하기</Button>
+                        <Button onClick={() => joinContest(contestId)}>
+                          참여하기
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>

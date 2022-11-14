@@ -5,7 +5,11 @@ import { useState, useEffect } from "react";
 import BasicButton from "../BasicButton";
 import { useSelector } from "react-redux";
 import RankComponent from "./RankComponent";
+import { getContestQuestions } from "../../api/contest";
+import { useNavigate } from "react-router";
 export default function ContestDetail() {
+  const contestId = useSelector((state) => state.ContestInfo.contestId);
+  const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [contestTitle, setContestTitle] = useState("");
@@ -16,40 +20,11 @@ export default function ContestDetail() {
   const [selectedAnswer, setSelectedAnswer] = useState(0);
   const [contestQuestionList, setContestQuestionList] = useState([
     {
-      no: 0,
-      questionTitle: "1번문제",
-      questionExp: "1번문제 해설",
-      answerList: [
-        "1번보기1번보기1번보기1번보기1번보기",
-        "2번보기2번보기2번보기2번보기2번보기2번보기",
-        "3번보기3번보기3번보기3번보기3번보기3번보기3번보기",
-        "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기",
-      ],
-      rightAnswer: 2,
-    },
-    {
-      no: 1,
-      questionTitle: "2번문제",
-      questionExp: "2번문제 해설",
-      answerList: [
-        "1번보기1번보기1번보기1번보기1번보기22222",
-        "2번보기2번보기2번보기2번보기2번보기2번보기22222",
-        "3번보기3번보기3번보기3번보기3번보기3번보기3번보기22222222",
-        "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기222222",
-      ],
-      rightAnswer: 1,
-    },
-    {
-      no: 2,
-      questionTitle: "3번문제",
-      questionExp: "3번문제 해설",
-      answerList: [
-        "1번보기1번보기1번보기1번보기1번보기22222",
-        "2번보기",
-        "3번보기",
-        "4번 보기",
-      ],
-      rightAnswer: 0,
+      answerRes: { answers: [], rightAnswer: 0 },
+      labels: [],
+      questionExp: "",
+      questionId: 1,
+      questionTitle: "",
     },
   ]);
   const handleClick = (idx) => {
@@ -57,69 +32,51 @@ export default function ContestDetail() {
     newArr[idx] = true;
     setIsCategorySelect(newArr);
     console.log(newArr);
-
     // 사용자 로그 찍는거
     setSelectedAnswer(idx);
   };
+
   const submitAnswer = () => {
     console.log(selectedAnswer);
-    setIndex(index + 1);
+    if (index + 1 < contestQuestionList.length) {
+      setIndex(index + 1);
+    } else {
+      // 결과 페이지 또는 끝내기
+
+      if (window.confirm("마지막 문제입니다. 대회를 종료하시겠습니까?")) {
+        alert("수고하셨습니다.");
+        navigate("/mainpage");
+      }
+    }
+
     const newArr = Array(answerList.length).fill(false);
     setIsCategorySelect(newArr);
   };
 
   useEffect(() => {
-    setContestQuestionList([
-      {
-        no: 0,
-        questionTitle: "1번문제",
-        questionExp: "1번문제 해설",
-        answerList: [
-          "1번보기1번보기1번보기1번보기1번보기",
-          "2번보기2번보기2번보기2번보기2번보기2번보기",
-          "3번보기3번보기3번보기3번보기3번보기3번보기3번보기",
-          "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기",
-        ],
-        rightAnswer: 2,
+    getContestQuestions(
+      contestId,
+      Token,
+      (res) => {
+        console.log(res.data);
+        setContestQuestionList(res.data);
+        setContestTitle("현중배 제 1회 싸피컵");
+        setQuestionTitle(res.data[index].questionTitle);
+        setAnswerList(res.data[index].answerRes.answers);
+        setRightAnswer(res.data[index].answerRes.rightAnswer);
       },
-      {
-        no: 1,
-        questionTitle: "2번문제",
-        questionExp: "2번문제 해설",
-        answerList: [
-          "1번보기1번보기1번보기1번보기1번보기22222",
-          "2번보기2번보기2번보기2번보기2번보기2번보기22222",
-          "3번보기3번보기3번보기3번보기3번보기3번보기3번보기22222222",
-          "4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기4번 보기222222",
-        ],
-        rightAnswer: 1,
-      },
-      {
-        no: 2,
-        questionTitle: "3번문제",
-        questionExp: "3번문제 해설",
-        answerList: [
-          "1번보기1번보기1번보기1번보기1번보기22222",
-          "2번보기",
-          "3번보기",
-          "4번 보기",
-        ],
-        rightAnswer: 0,
-      },
-    ]);
-    setContestTitle("현중배 제 1회 싸피컵");
-    console.log();
-    setQuestionTitle(contestQuestionList[index].questionTitle);
-    setAnswerList(contestQuestionList[index].answerList);
-    setRightAnswer(contestQuestionList[index].rightAnswer);
-    // getProfile();
+      (err) => {
+        console.log(err);
+      }
+    );
   }, []);
 
   useEffect(() => {
     setQuestionTitle(contestQuestionList[index].questionTitle);
-    setAnswerList(contestQuestionList[index].answerList);
-    setRightAnswer(contestQuestionList[index].rightAnswer);
+    setAnswerList(contestQuestionList[index].answerRes.answers);
+    setRightAnswer(contestQuestionList[index].answerRes.rightAnswer);
   }, [index]);
+
   return (
     <div style={{ display: "block", width: "99%" }}>
       <div
@@ -163,55 +120,6 @@ export default function ContestDetail() {
                 Q. {questionTitle}
               </h1>
               <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
-                {/* <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        1번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        2번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        3번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        4번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid> */}
-
                 {answerList.map((elm, index) => {
                   return (
                     <BasicButton
