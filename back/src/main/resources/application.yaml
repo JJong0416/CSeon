@@ -8,7 +8,7 @@ jwt:
 
 kakao:
   client-secret: Fq2yn3jnwEJur8eRyJH6yKD57fMSL92J
-  redirect-uri: http://localhost:3000/oauth/redirect
+  redirect-uri: http://k7a606.p.ssafy.io:3000/oauth/redirect
   client-id: 237be15b2e18e8a188bff253550e714c
   token-uri: https://kauth.kakao.com/oauth/token
 
@@ -33,7 +33,7 @@ spring:
         registration:
           kakao:
             client-secret: Fq2yn3jnwEJur8eRyJH6yKD57fMSL92J
-            redirect-uri: http://localhost:3000/oauth/redirect
+            redirect-uri: http://k7a606.p.ssafy.io:3000/oauth/redirect
             authorization-grant-type: authorization_code
             client-id: 237be15b2e18e8a188bff253550e714c
             scope: profile_nickname, profile_image, account_email
@@ -65,12 +65,12 @@ spring:
 
   data:
     mongodb:
-      host: localhost
+      host: k7a606.p.ssafy.io
       port: 27017
       database: cseon
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: wlxo8053535!
-    url: jdbc:mysql://localhost:3306/cseon?serverTimezone=Asia/Seoul
+    username: a606
+    password: ssafya606
+    url: jdbc:mysql://k7a606.p.ssafy.io:3306/cseon?serverTimezone=Asia/Seoul
 
