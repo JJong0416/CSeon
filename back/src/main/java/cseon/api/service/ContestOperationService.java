@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ContestOperationService {
-
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
     private final QuestionSearchService questionSearchService;
