@@ -14,10 +14,10 @@ public class ContestRes {
 
     private final ZonedDateTime endTime;
 
-    private final boolean isExpired;
+    private final String isExpired;
 
     @Builder
-    public ContestRes(Long contestId, String contestTitle, ZonedDateTime startTime, ZonedDateTime endTime, boolean isExpired){
+    public ContestRes(Long contestId, String contestTitle, ZonedDateTime startTime, ZonedDateTime endTime, String isExpired){
         this.contestId = contestId;
         this.contestTitle = contestTitle;
         this.startTime = startTime;

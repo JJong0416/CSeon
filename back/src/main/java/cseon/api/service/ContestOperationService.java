@@ -58,9 +58,7 @@ public class ContestOperationService {
                 .map(contest -> ContestRes.builder()
                         .contestId(contest.getContestId())
                         .contestTitle(contest.getContestName())
-                        .startTime(contest.getContestStart())
-                        .endTime(contest.getContestEnd())
-                        .isExpired(ZonedDateTime.now().isAfter(contest.getContestEnd()))
+                        .isExpired(checkContestStatus(contest.getContestStart(), contest.getContestEnd()))
                         .build())
                 .collect(Collectors.toList());
     }
