@@ -1,6 +1,6 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.QuestionRequestReq;
+import cseon.api.dto.request.QuestionReq;
 import cseon.api.service.QuestionOperationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class AccountQuestionController {
      * 유저가 추가하고싶은 문제를 추가해서 요청한다.
      */
     @PostMapping
-    public ResponseEntity<HttpStatus> requestQuestionFromAccount(@Valid @RequestBody QuestionRequestReq questionRequestReq) {
-        questionOperationService.requestQuestionAddBoard(questionRequestReq);
+    public ResponseEntity<HttpStatus> requestQuestionFromAccount(@Valid @RequestBody QuestionReq questionReq) {
+        questionOperationService.requestQuestionAddBoard(questionReq);
         return ResponseEntity.ok().build();
     }
 }

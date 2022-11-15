@@ -1,13 +1,12 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.AnswerRequestReq;
+import cseon.api.dto.request.AnswerReq;
 import cseon.api.dto.response.LogRes;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.dto.response.QuestionRes;
 import cseon.api.service.QuestionOperationService;
 import cseon.api.service.QuestionSearchService;
 import cseon.common.constant.ControllerConstant;
-import cseon.common.utils.DtoResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -73,13 +72,13 @@ public class QuestionController extends ControllerConstant {
      * 유저들이 푼 문제들을 기록한다.
      */
     @PostMapping("/logs")
-    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerRequestReq answerRequestReq) {
-        questionOperationService.selectAnswer(answerRequestReq);
+    public ResponseEntity<HttpStatus> selectAnswer(@Valid @RequestBody AnswerReq answerReq) {
+        questionOperationService.selectAnswer(answerReq);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/logs/{questionId}")
     public ResponseEntity<List<LogRes>> getLogs(@PathVariable("questionId") Long questionId){
-        return ResponseEntity.ok(questionOperationService.getLogs(questionId));
+        return ResponseEntity.ok(questionOperationService.takeAllLogs(questionId));
     }
 }

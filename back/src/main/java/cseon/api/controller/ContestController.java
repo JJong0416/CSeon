@@ -1,5 +1,6 @@
 package cseon.api.controller;
 
+import cseon.api.dto.request.ContestReq;
 import cseon.api.dto.request.ContestAnswerReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
@@ -9,12 +10,14 @@ import cseon.common.constant.ControllerConstant;
 import cseon.common.utils.MessageResponse;
 import cseon.api.service.ContestOperationService;
 import cseon.api.service.ContestRealTimeService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,6 +33,12 @@ public class ContestController extends ControllerConstant{
     @GetMapping
     public ResponseEntity<List<ContestRes>> takeAllContests() {
         return ResponseEntity.ok(contestOperationService.getAllContestRes());
+    }
+
+    @PostMapping
+    public ResponseEntity<HttpStatus> newContest(@Valid @RequestBody ContestReq contestReq){
+        contestOperationService.createContest(contestReq);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{contestId}/valid-time")

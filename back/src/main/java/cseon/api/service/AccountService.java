@@ -2,7 +2,7 @@ package cseon.api.service;
 
 import cseon.api.dto.response.AccountDetailsRes;
 import cseon.api.dto.response.AccountTypeRes;
-import cseon.api.dto.response.BadgeResponseRes;
+import cseon.api.dto.response.BadgeRes;
 import cseon.api.dto.response.WorkbookRes;
 import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
@@ -65,7 +65,7 @@ public class AccountService {
 
 
     @Transactional(readOnly = true)
-    public List<BadgeResponseRes> getMyBadge() {
+    public List<BadgeRes> getMyBadge() {
         String accountName = getAccountName();
 
         var account = hasAccountWithAccountName(accountName);
@@ -75,7 +75,7 @@ public class AccountService {
         return accountBadges.stream()
                 .map(AccountBadge::getBadgeId)
                 .map(this::readBadge)
-                .map(badge -> BadgeResponseRes.builder()
+                .map(badge -> BadgeRes.builder()
                         .badgeId(badge.getBadgeId())
                         .badgeName(badge.getBadgeName())
                         .badgeExp(badge.getBadgeExp()).build())

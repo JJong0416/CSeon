@@ -1,14 +1,17 @@
 package cseon.api.service;
 
+import cseon.api.dto.request.ContestReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
 import cseon.api.dto.response.ContestResultRes;
 import cseon.api.dto.response.QuestionDto;
 import cseon.api.repository.ContestRepository;
 import cseon.api.repository.WorkbookQuestionRepository;
+import cseon.api.repository.WorkbookRepository;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
 import cseon.domain.Contest;
+import cseon.domain.Workbook;
 import cseon.domain.WorkbookQuestion;
 import cseon.domain.type.ContestStatus;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 public class ContestOperationService {
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
+
+    private final WorkbookRepository workbookRepository;
     private final QuestionSearchService questionSearchService;
 
     @Transactional(readOnly = true)
@@ -79,6 +84,31 @@ public class ContestOperationService {
                 .map(question -> questionSearchService.takeDetailsQuestion(
                         question.getQuestionId().getQuestionId()))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void createContest(ContestReq contestReq) {
+
+        Workbook workbook = takeWorkbookWithWorkbookId(contestReq.getWorkbookId());
+
+        ZonedDateTime startTime = ZonedDateTime.parse(contestReq.getContestStart());
+        ZonedDateTime endTime = ZonedDateTime.parse(contestReq.getContestEnd());
+
+        Contest contest = Contest.builder()
+                .workbook(workbook)
+                .contestName(contestReq.getContestName())
+                .contestStart(startTime)
+                .contestEnd(endTime)
+                .build();
+
+        contestRepository.save(contest);
+    }
+
+    private Workbook takeWorkbookWithWorkbookId(Long contestId) {
+        return workbookRepository.findWorkbookByWorkbookId(contestId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+                });
     }
 
     private Contest takeDetailsContest(Long contestId) {

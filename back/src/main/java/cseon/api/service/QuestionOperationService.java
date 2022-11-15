@@ -1,8 +1,8 @@
 package cseon.api.service;
 
 import cseon.api.dto.layer.TryLog;
-import cseon.api.dto.request.AnswerRequestReq;
-import cseon.api.dto.request.QuestionRequestReq;
+import cseon.api.dto.request.AnswerReq;
+import cseon.api.dto.request.QuestionReq;
 import cseon.api.dto.response.LogRes;
 import cseon.api.repository.AccountRequestQuestionRepository;
 import cseon.api.repository.AnswerRepository;
@@ -11,14 +11,12 @@ import cseon.common.provider.KafkaProducerProvider;
 import cseon.domain.Account;
 import cseon.domain.AccountRequestQuestion;
 import cseon.domain.Answer;
-import cseon.domain.Tries;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,15 +34,15 @@ public class QuestionOperationService {
 
 
     @Transactional
-    public void requestQuestionAddBoard(QuestionRequestReq questionRequestReq) {
+    public void requestQuestionAddBoard(QuestionReq questionReq) {
 
         Account account = accountService.getAccountEntity();
 
         // 1. 가져온 값을 바탕으로 질문지를 생성해서,
         AccountRequestQuestion requestQuestion = AccountRequestQuestion.builder()
                 .account(account)
-                .requestQuestionTitle(questionRequestReq.getQuestionTitle())
-                .requestQuestionExp(questionRequestReq.getQuestionExp())
+                .requestQuestionTitle(questionReq.getQuestionTitle())
+                .requestQuestionExp(questionReq.getQuestionExp())
                 .build();
 
         // 2. RDB에 저장한 흐,
@@ -54,8 +52,8 @@ public class QuestionOperationService {
         Answer answer = Answer.builder()
                 .questionId(rqId)
                 .request(RequestQuestionType.INFORMAL)
-                .answers(questionRequestReq.getAnswers())
-                .rightAnswer(questionRequestReq.getRightAnswer())
+                .answers(questionReq.getAnswers())
+                .rightAnswer(questionReq.getRightAnswer())
                 .build();
 
         // 4. MongoDB에 넣어준다.
@@ -63,10 +61,10 @@ public class QuestionOperationService {
     }
 
     @Transactional
-    public void selectAnswer(AnswerRequestReq answerRequestReq) {
+    public void selectAnswer(AnswerReq answerReq) {
         TryLog tryLog = TryLog.builder()
                 .accountName(getAccountName())
-                .answerRequestReq(answerRequestReq)
+                .answerReq(answerReq)
                 .build();
 
         kafkaProducerProvider.getKafkaProducer().send(
@@ -74,13 +72,9 @@ public class QuestionOperationService {
     }
 
     @Transactional
-    public List<LogRes> getLogs(Long questionId){
-        List<Tries> res =
-                logRepository.findAllByQuestionIdAndAccountName(questionId, getAccountName())
-                .orElseGet(() -> new ArrayList<>());
-
-
-        return res.stream()
+    public List<LogRes> takeAllLogs(Long questionId) {
+        return logRepository.findAllByQuestionIdAndAccountName(questionId, getAccountName())
+                .stream()
                 .map(tries -> LogRes.builder()
                         .timestamp(tries.getTimestamp())
                         .checkNumber(tries.getCheckNumber())

@@ -1,6 +1,6 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.WorkbookRequestReq;
+import cseon.api.dto.request.WorkbookReq;
 import cseon.api.dto.response.WorkbookDetailRes;
 import cseon.api.dto.response.WorkbookRes;
 import cseon.api.service.WorkbookService;
@@ -45,16 +45,16 @@ public class WorkbookController {
 
     @Operation(summary = "문제집 만들기", description = "문제집을 만드는 메소드입니다.")
     @PostMapping
-    public ResponseEntity<HttpStatus> newWorkbook(@Parameter @RequestBody WorkbookRequestReq workbookRequestReq) {
-        workbookService.createWorkbook(workbookRequestReq);
+    public ResponseEntity<HttpStatus> newWorkbook(@Parameter @RequestBody WorkbookReq workbookReq) {
+        workbookService.createWorkbook(workbookReq);
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "문제집 수정하기", description = "문제집을 수정하는 메소드입니다.")
     @PatchMapping
     public ResponseEntity<HttpStatus> changeWorkbook(
-            @Parameter @RequestBody WorkbookRequestReq workbookRequestReq, Long workbookId) {
-        workbookService.modifyWorkbook(workbookRequestReq, workbookId);
+            @Parameter @RequestBody WorkbookReq workbookReq, Long workbookId) {
+        workbookService.modifyWorkbook(workbookReq, workbookId);
         return ResponseEntity.ok().build();
     }
 }
