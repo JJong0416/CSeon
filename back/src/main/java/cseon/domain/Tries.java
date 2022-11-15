@@ -3,6 +3,7 @@ package cseon.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Document(collection = "tries")
 public class Tries {
 
-    @NotNull
+    @Id
     private String id;
 
     @NotNull

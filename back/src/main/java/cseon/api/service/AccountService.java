@@ -4,16 +4,10 @@ import cseon.api.dto.response.AccountDetailsRes;
 import cseon.api.dto.response.AccountTypeRes;
 import cseon.api.dto.response.BadgeResponseRes;
 import cseon.api.dto.response.WorkbookRes;
-import cseon.api.repository.AccountBadgeRepository;
-import cseon.api.repository.AccountRepository;
-import cseon.api.repository.BadgeRepository;
-import cseon.api.repository.WorkbookRepository;
+import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
-import cseon.domain.Account;
-import cseon.domain.AccountBadge;
-import cseon.domain.Badge;
-import cseon.domain.Workbook;
+import cseon.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +25,7 @@ public class AccountService {
     private final WorkbookRepository workbookRepository;
     private final AccountBadgeRepository accountBadgeRepository;
     private final BadgeRepository badgeRepository;
+    private final SolvedRepository solvedRepository;
 
 
     @Transactional(readOnly = true, rollbackFor = NullPointerException.class)
@@ -52,11 +47,19 @@ public class AccountService {
 
         // 3. BadgeName을 가져오기 위해 DB를 찔러준다.
         var badge = readBadge(account.getUsingBadgeId());
-        // 3. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
+
+        // 4. 맞은 문제 리스트, 틀린 문제 리스트를 가져온다.
+        SolvedQuestion lists = solvedRepository.findById(getAccountName())
+                .orElseGet(() -> new SolvedQuestion(getAccountName()));
+        lists.nullCheck();
+
+        // 5. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
         return AccountDetailsRes.builder()
                 .accountSuccessCount(account.getSuccessCount())
                 .badgeName(badge.getBadgeName())
                 .workbooks(workbookRes)
+                .correct(lists.getCorrectQuestion())
+                .wrong(lists.getWrongQuestion())
                 .build();
     }
 
