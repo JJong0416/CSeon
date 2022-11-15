@@ -21,6 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import SearchIcon from "@mui/icons-material/Search";
 import { getAllWorkbookList, getWorkbookWithKeyWord } from "../../api/workbook";
+import { createContest } from "../../api/contest";
 export default function ContestCreate() {
   const dispatch = new useDispatch();
   const Token = useSelector((state) => state.AccountInfo.accessToken);
@@ -84,29 +85,21 @@ export default function ContestCreate() {
     }
   };
   const timesetting = (time) => {
-    function pad(n) { return n<10 ? "0"+n : n }
+    function pad(n) {
+      return n < 10 ? "0" + n : n;
+    }
     let year = time.$y;
     let month = pad(time.$M + 1);
     let day = pad(time.$D);
     let hour = pad(time.$H);
     let minute = pad(time.$m);
-    return (
-      year +
-      "-" +
-      month +
-      "-" +
-      day +
-      "T" +
-      hour +
-      ":" +
-      minute
-    );
+    return year + "-" + month + "-" + day + "T" + hour + ":" + minute+"+09:00";
   };
-  function timestamp(){
+  function timestamp() {
     var today = new Date();
     today.setHours(today.getHours() + 9);
     return today.toISOString().substring(0, 16);
-}
+  }
 
   const ClickContestRegist = () => {
     console.log("contestTitle: ", contestTitle);
@@ -115,14 +108,30 @@ export default function ContestCreate() {
     let nowtime = timestamp();
     console.log("startTime: ", stime);
     console.log("endTime: ", etime);
-    console.log("nowTime: ",nowtime);
+    console.log("nowTime: ", nowtime);
     console.log("checkedworkbookId: ", checkedworkbook);
     // 시간 올바른지 체킹하기
-    if (nowtime>=stime) alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)")
-    else if (stime>=etime) alert("대회 시간 다시 세팅해주세요~");
-    else{
+    if (nowtime >= stime)
+      alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)");
+    else if (stime >= etime) alert("대회 시간 다시 세팅해주세요~");
+    else {
       // API 보내기
-
+      const contestReq = {
+        workbookId: checkedworkbook,
+        contestName: contestTitle,
+        contestStart: stime,
+        contestEnd: etime,
+      };
+      createContest(
+        contestReq,
+        Token,
+        (res) => {
+          console.log("createContest res.data: ", res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   };
 

@@ -27,4 +27,13 @@ function getContestQuestions(contestId, token, success, error) {
     .catch(error);
 }
 
-export { getAllContestList, checkValidation, getContestQuestions };
+function createContest(contestReq, token, success, error) {
+  instance
+    .post(`/contest`, contestReq, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
+
+export { getAllContestList, checkValidation, getContestQuestions, createContest };
