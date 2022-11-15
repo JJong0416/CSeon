@@ -79,6 +79,6 @@ public class QuestionController extends ControllerConstant {
 
     @GetMapping("/logs/{questionId}")
     public ResponseEntity<List<LogRes>> getLogs(@PathVariable("questionId") Long questionId){
-        return ResponseEntity.ok(questionOperationService.getLogs(questionId));
+        return ResponseEntity.ok(questionOperationService.takeAllLogs(questionId));
     }
 }

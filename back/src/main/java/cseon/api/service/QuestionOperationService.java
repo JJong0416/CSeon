@@ -11,14 +11,12 @@ import cseon.common.provider.KafkaProducerProvider;
 import cseon.domain.Account;
 import cseon.domain.AccountRequestQuestion;
 import cseon.domain.Answer;
-import cseon.domain.Tries;
 import cseon.domain.type.RequestQuestionType;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,13 +72,9 @@ public class QuestionOperationService {
     }
 
     @Transactional
-    public List<LogRes> getLogs(Long questionId){
-        List<Tries> res =
-                logRepository.findAllByQuestionIdAndAccountName(questionId, getAccountName())
-                .orElseGet(() -> new ArrayList<>());
-
-
-        return res.stream()
+    public List<LogRes> takeAllLogs(Long questionId) {
+        return logRepository.findAllByQuestionIdAndAccountName(questionId, getAccountName())
+                .stream()
                 .map(tries -> LogRes.builder()
                         .timestamp(tries.getTimestamp())
                         .checkNumber(tries.getCheckNumber())

@@ -95,16 +95,6 @@ public class ContestRealTimeService extends RedisConst {
         return true;
     }
 
-    private SortedMap<String, Double> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
-        SortedMap<String, Double> map = new TreeMap<>();
-
-        for (ZSetOperations.TypedTuple<String> typedTuple : typedTuples) {
-            if (map.put(typedTuple.getValue(), typedTuple.getScore()) != null)
-                throw new IllegalStateException("Duplicate key");
-        }
-        return map;
-    }
-
     private ContestMyRankingRes SearchMyRankingInfo(
             String redisId, String username, List<RankingRes> topRankingPlayer, ZSetOperations<String, String> ZSetOperations) {
         return ContestMyRankingRes.builder()

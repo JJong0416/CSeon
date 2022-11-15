@@ -1,6 +1,6 @@
 package cseon.api.dto.layer;
 
-import cseon.api.dto.request.AnswerRequestReq;
+import cseon.api.dto.request.AnswerReq;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,15 +19,15 @@ public class TryLog implements Serializable {
     private final String accountName;
 
     @NotNull
-    private final AnswerRequestReq answerRequestReq;
+    private final AnswerReq answerRequestReq;
 
     @NotNull
     private final LocalDateTime timestamp;
 
     @Builder
-    public TryLog(String accountName, AnswerRequestReq answerRequestReq) {
+    public TryLog(String accountName, AnswerReq answerReq) {
         this.accountName = accountName;
-        this.answerRequestReq = answerRequestReq;
+        this.answerRequestReq = answerReq;
         this.timestamp = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
     }
 

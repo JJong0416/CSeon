@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LogRepository extends MongoRepository<Tries, String> {
-    Optional<List<Tries>> findAllByQuestionIdAndAccountName(Long questionId, String accountName);
+    List<Tries> findAllByQuestionIdAndAccountName(Long questionId, String accountName);
 }
