@@ -13,7 +13,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -60,6 +59,30 @@ public class ContestRealTimeService extends RedisConst {
                 .build();
     }
 
+    public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+        InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
+
+        Integer cor =
+                floor(redisTemplate.opsForZSet().score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 50000);
+
+        // 정답이면 score 증가
+        if(contestAnswerReq.getIsAnswer())
+            ++cor;
+
+        ZonedDateTime now = ZonedDateTime.now();
+        Double score = Double.valueOf(cor * 5);
+        score += Math.abs(ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
+
+        AccountContestAnswerDto accountContestAnswerDto =
+                new AccountContestAnswerDto(contestAnswerReq.getContestId(), score);
+
+        kafkaProducerProvider.getKafkaProducer().send(
+                new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
+
+        return true;
+    }
+
     private SortedMap<String, Double> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
         SortedMap<String, Double> map = new TreeMap<>();
 
@@ -85,36 +108,13 @@ public class ContestRealTimeService extends RedisConst {
 
         if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
                 || ZSetOperations.rank(redisId, username) == null)
-            ZSetOperations.add(redisId, username, -1);
+            ZSetOperations.add(redisId, username, 0);
     }
 
     private void checkRedisCondition(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
         if (Objects.requireNonNull(typedTuples).isEmpty()) {
             throw new CustomException(ErrorCode.CONTEST_NOT_EXIST_SERVER);
         }
-    }
-
-    @Transactional
-    public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
-
-        Integer cor =
-                floor(redisTemplate.opsForZSet().score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 50000);
-
-        // 정답이면 score + 5
-        if(contestAnswerReq.getIsAnswer())
-            ++cor;
-
-        ZonedDateTime now = ZonedDateTime.now();
-        Double score = Double.valueOf(cor * 5);
-        score += Math.abs(ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
-
-        AccountContestAnswerDto accountContestAnswerDto =
-                new AccountContestAnswerDto(contestAnswerReq.getContestId(), score);
-
-        kafkaProducerProvider.getKafkaProducer().send(
-                new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
-
-        return true;
     }
 
     private Integer floor(Double d){
