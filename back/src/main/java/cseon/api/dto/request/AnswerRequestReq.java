@@ -15,7 +15,7 @@ public class AnswerRequestReq implements Serializable {
     @NotNull
     private final Long questionId;
 
-    @Size(min = 1, max = 4)
+    @NotNull
     private final Integer checkNumber;
 
     @NotNull
