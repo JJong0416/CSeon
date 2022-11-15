@@ -77,24 +77,12 @@ export default function ContestList() {
     getAllContestList(
       Token,
       (res) => {
-        console.log(res.data);
+        console.log("getAllContestList res.data: ",res.data);
         setContestList(res.data);
       },
       (err) => {
         console.log(err);
       }
-    );
-    faker.seed(123);
-    faker.locale = "ko";
-    setUsers(
-      Array(53)
-        .fill()
-        .map(() => ({
-          id: 11,
-          name: faker.name.lastName() + faker.name.firstName(),
-          title: "XX 대회",
-          count: 0,
-        }))
     );
   }, []);
   const [search, setSearch] = useState("");
@@ -133,14 +121,14 @@ export default function ContestList() {
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
               .map(
                 (
-                  { contestId, contestName, endTime, isExpired, startTime },
+                  { contestId, contestTitle, endTime, isExpired, startTime },
                   i
                 ) => (
                   <TableRow key={contestId}>
                     <TableCell component="th" scope="row">
                       {page * rowsPerPage + i + 1}
                     </TableCell>
-                    <TableCell align="right">{contestName}</TableCell>
+                    <TableCell align="right">{contestTitle}</TableCell>
                     <TableCell align="right">
                       {startTime.split("T")[0] +
                         " " +
@@ -159,7 +147,7 @@ export default function ContestList() {
                         </Button>
                       ) : (
                         <Button
-                          onClick={() => joinContest(contestId, contestName)}
+                          onClick={() => joinContest(contestId, contestTitle)}
                         >
                           참여하기
                         </Button>

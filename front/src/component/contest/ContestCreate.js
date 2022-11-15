@@ -93,7 +93,7 @@ export default function ContestCreate() {
     let day = pad(time.$D);
     let hour = pad(time.$H);
     let minute = pad(time.$m);
-    return year + "-" + month + "-" + day + "T" + hour + ":" + minute+"+09:00";
+    return year + "-" + month + "-" + day + "T" + hour + ":" + minute+":00+09:00[Asia/Seoul]";
   };
   function timestamp() {
     var today = new Date();
