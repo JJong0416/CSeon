@@ -127,6 +127,7 @@ export default function ContestDetail() {
     for (let i = 0; i < newarr.length; i++) {
       newarr[i].rank += 1;
     }
+    console.log(Token + "-sdfsdfsdf");
     getContestRanking(
       contestId,
       Token,

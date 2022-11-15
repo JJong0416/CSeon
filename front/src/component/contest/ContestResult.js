@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 export default function ContestResult() {
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
+  const [highRanking, setHighRanking] = useState();
   const [ranking, setRanking] = useState([
     { rank: 0 },
     { rank: 1 },

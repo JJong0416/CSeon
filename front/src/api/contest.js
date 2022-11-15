@@ -47,7 +47,7 @@ function submitContestAnswer(contestAnswerReq, token, success, error) {
 
 function getContestRanking(contestId, token, success, error) {
   instance
-    .get(`/contest/${contestId}/ranking`, contestId, {
+    .get(`/contest/${contestId}/ranking`, {
       headers: createHeaders(token),
     })
     .then(success)
@@ -56,7 +56,7 @@ function getContestRanking(contestId, token, success, error) {
 
 function getContestResult(contestId, token, success, error) {
   instance
-    .get(`/contest/${contestId}/result`, contestId, {
+    .get(`/contest/${contestId}/result`, {
       headers: createHeaders(token),
     })
     .then(success)
