@@ -19,8 +19,8 @@ export default function MyPage() {
     (state) => state.AccountInfo.accountInfo.accountName
   );
   const dispatch = new useDispatch();
-  const correctList = [1, 2, 3, 4];
-  const unCorrectList = [1, 2, 3, 4];
+  const [correctList, setCorrectList] = useState([]);
+  const [unCorrectList, setUncorrectList] = useState([]);
   const badges = ["현중배 1등", "요청 문제 정식 등록 10회"];
   const [workbooks, setWorkbooks] = useState(null);
   const goWorkbookDetail = (workbookId) => {
@@ -38,6 +38,8 @@ export default function MyPage() {
       (res) => {
         console.log(res);
         setWorkbooks(res.data.workbooks);
+        setCorrectList(res.data.correctQuestion);
+        setUncorrectList(res.data.wrongQuestion);
       },
       (err) => {
         console.log(err);

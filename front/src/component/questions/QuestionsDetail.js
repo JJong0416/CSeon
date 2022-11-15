@@ -17,8 +17,7 @@ export default function QuestionsDetail() {
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
 
   const [questionLog, setQuestionLog] = useState([
-    { time: "2022-04-21", isRight: false, selected: 2 },
-    { time: "2022-04-21", isRight: true, selected: 3 },
+    { time: "", isRight: false, selected: 1 },
   ]);
   const navigate = useNavigate();
   const clickQuestionList = () => {
@@ -70,11 +69,11 @@ export default function QuestionsDetail() {
             Token,
             (res) => {
               console.log(res.data);
-              setQuestionLog(res.data.responseDto);
+              setQuestionLog(res.data);
               var data2 = [];
-              for (var i = res.data.responseDto.length - 1; i >= 0; i--) {
+              for (var i = res.data.length - 1; i >= 0; i--) {
                 var isAnswer = "";
-                if (res.data.responseDto.isAnswer) {
+                if (res.data.isAnswer) {
                   isAnswer = "O";
                 } else {
                   isAnswer = "X";
@@ -82,16 +81,14 @@ export default function QuestionsDetail() {
                 data2.push(
                   "<tr>",
                   '<td align="center">' +
-                    res.data.responseDto[i].timestamp.split("T")[0] +
+                    res.data[i].timestamp.split("T")[0] +
                     " " +
-                    res.data.responseDto[i].timestamp
-                      .split("T")[1]
-                      .split(".")[0] +
+                    res.data[i].timestamp.split("T")[1].split(".")[0] +
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
                   '<td align="center">' +
-                    (res.data.responseDto[i].checkNumber + 1) +
+                    (res.data[i].checkNumber + 1) +
                     "</td>",
                   "</tr>"
                 );
@@ -135,24 +132,59 @@ export default function QuestionsDetail() {
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
-          Swal.fire({
-            html:
-              `<table id="table" border=1>
-            <thead>
-                <tr>
-                    <th>푼 날짜</th>
-                    <th>정답 여부</th>
-                    <th>선택한 답</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-       ` +
-              data2.join("") +
-              `         
-    </tbody>
-    </table>`,
-          });
+          getLogs(
+            questionId,
+            Token,
+            (res) => {
+              console.log(res.data);
+              setQuestionLog(res.data);
+              var data2 = [];
+              for (var i = res.data.length - 1; i >= 0; i--) {
+                var isAnswer = "";
+                if (res.data[i].isAnswer) {
+                  isAnswer = "O";
+                } else {
+                  isAnswer = "X";
+                }
+                data2.push(
+                  "<tr>",
+                  '<td align="center">' +
+                    res.data[i].timestamp.split("T")[0] +
+                    " " +
+                    res.data[i].timestamp.split("T")[1].split(".")[0] +
+                    "</td>",
+
+                  '<td align="center">' + isAnswer + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
+                  "</tr>"
+                );
+
+                Swal.fire({
+                  html:
+                    `<table id="table" border=1>
+                  <thead>
+                      <tr>
+                          <th>푼 날짜</th>
+                          <th>정답 여부</th>
+                          <th>선택한 답</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+             ` +
+                    data2.join("") +
+                    `         
+          </tbody>
+          </table>`,
+                });
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     }

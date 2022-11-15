@@ -18,6 +18,7 @@ import WorkbookCreate from "./component/workbook/WorkbookCreate";
 import ContestCreate from "./component/contest/ContestCreate";
 import RequestQuestionList from "./component/admin/RequestQuestionList";
 import RequestQuestionDetail from "./component/admin/RequestQuestionDetail";
+import ContestResult from "./component/contest/ContestResult";
 
 function App() {
   const isloggedin = useSelector((state) => state.AccountInfo.loggedIn);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/contestlist" element={<ContestList />}></Route>
           <Route path="/contestdetail" element={<ContestDetail />}></Route>
           <Route path="/contestcreate" element={<ContestCreate />}></Route>
+          <Route path="/contestresult" element={<ContestResult />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route
             path="/requestquestionlist"

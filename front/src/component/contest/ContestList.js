@@ -44,7 +44,8 @@ export default function ContestList() {
     setPage(newPage);
   };
   const showResult = (contestId) => {
-    console.log("결과 보기");
+    dispatch(SET_CONTEST_ID(contestId));
+    navigate("/contestresult");
   };
 
   const joinContest = (contestId, contestName) => {

@@ -15,6 +15,8 @@ export default function ContestDetail() {
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [ranking, setRanking] = useState([]);
 
+  let newarr = [];
+
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
@@ -71,13 +73,14 @@ export default function ContestDetail() {
         console.log(err);
       }
     );
-    let timer = setInterval(()=>{
-      let newarr = [...ranking];
-      newarr.push({rank:ranking.length, name:"testuser"});
-      console.log(newarr.length);
+    let timer = setInterval(() => {
+      console.log("ranking:", ranking);
+      console.log("before: ", newarr);
+      newarr.push({ rank: ranking.length, name: "testuser" });
+      console.log("after: ", newarr);
       setRanking(newarr);
-    }, 5000);
-    return ()=> clearInterval(timer);
+    }, 2000);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -173,11 +176,12 @@ export default function ContestDetail() {
           <Divider></Divider>
           {/* <img alt="" src="img/first.png" style={{ width: "25%" }}></img>
           lapaho8645 */}
-          {ranking.map(()=>{
-            <RankComponent></RankComponent>
-          })}
-          <RankComponent></RankComponent>
-          <RankComponent></RankComponent>
+          {ranking.map((user) => (
+            <h1>{user.rank}</h1>
+            // <RankComponent></RankComponent>
+          ))}
+          {/* <RankComponent></RankComponent>
+          <RankComponent></RankComponent> */}
         </div>
       </div>
     </div>
