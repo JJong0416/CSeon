@@ -36,4 +36,39 @@ function createContest(contestReq, token, success, error) {
     .catch(error);
 }
 
-export { getAllContestList, checkValidation, getContestQuestions, createContest };
+function submitContestAnswer(contestAnswerReq, token, success, error) {
+  instance
+    .post(`/contest/submit`, contestAnswerReq, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
+
+function getContestRanking(contestId, token, success, error) {
+  instance
+    .get(`/contest/${contestId}/ranking`, contestId, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
+
+function getContestResult(contestId, token, success, error) {
+  instance
+    .get(`/contest/${contestId}/result`, contestId, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
+
+export {
+  getAllContestList,
+  checkValidation,
+  getContestQuestions,
+  createContest,
+  submitContestAnswer,
+  getContestRanking,
+  getContestResult,
+};

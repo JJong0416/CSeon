@@ -5,6 +5,7 @@ export const tokenSlice = createSlice({
   initialState: {
     contestId: 1,
     contestName: "",
+    contestEndTime: "",
   },
   reducers: {
     SET_CONTEST_ID: (state, action) => {
@@ -13,9 +14,13 @@ export const tokenSlice = createSlice({
     SET_CONTEST_NAME: (state, action) => {
       state.contestName = action.payload;
     },
+    SET_CONTEST_ENDTIME: (state, action) => {
+      state.contestEndTime = action.payload;
+    },
   },
 });
 
-export const { SET_CONTEST_ID, SET_CONTEST_NAME } = tokenSlice.actions;
+export const { SET_CONTEST_ID, SET_CONTEST_NAME, SET_CONTEST_ENDTIME } =
+  tokenSlice.actions;
 
 export default tokenSlice.reducer;

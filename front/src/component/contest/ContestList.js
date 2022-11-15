@@ -25,7 +25,11 @@ import {
   checkValidation,
   getContestQuestions,
 } from "../../api/contest";
-import { SET_CONTEST_ID, SET_CONTEST_NAME } from "../../redux/ContestInfo";
+import {
+  SET_CONTEST_ID,
+  SET_CONTEST_NAME,
+  SET_CONTEST_ENDTIME,
+} from "../../redux/ContestInfo";
 export default function ContestList() {
   const accountRole = useSelector(
     (state) => state.AccountInfo.accountInfo.accountRole
@@ -48,9 +52,11 @@ export default function ContestList() {
     navigate("/contestresult");
   };
 
-  const joinContest = (contestId, contestName) => {
+  const joinContest = (contestId, contestName, contestEndTime) => {
     dispatch(SET_CONTEST_ID(contestId));
     dispatch(SET_CONTEST_NAME(contestName));
+    dispatch(SET_CONTEST_ENDTIME(contestEndTime));
+    console.log(contestEndTime);
     checkValidation(
       contestId,
       Token,
@@ -77,7 +83,7 @@ export default function ContestList() {
     getAllContestList(
       Token,
       (res) => {
-        console.log("getAllContestList res.data: ",res.data);
+        console.log("getAllContestList res.data: ", res.data);
         setContestList(res.data);
       },
       (err) => {
@@ -121,14 +127,14 @@ export default function ContestList() {
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
               .map(
                 (
-                  { contestId, contestTitle, endTime, isExpired, startTime },
+                  { contestId, contestName, endTime, isExpired, startTime },
                   i
                 ) => (
                   <TableRow key={contestId}>
                     <TableCell component="th" scope="row">
                       {page * rowsPerPage + i + 1}
                     </TableCell>
-                    <TableCell align="right">{contestTitle}</TableCell>
+                    <TableCell align="right">{contestName}</TableCell>
                     <TableCell align="right">
                       {startTime.split("T")[0] +
                         " " +
@@ -147,7 +153,9 @@ export default function ContestList() {
                         </Button>
                       ) : (
                         <Button
-                          onClick={() => joinContest(contestId, contestTitle)}
+                          onClick={() =>
+                            joinContest(contestId, contestName, endTime)
+                          }
                         >
                           참여하기
                         </Button>

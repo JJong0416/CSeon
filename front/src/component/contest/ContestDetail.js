@@ -5,17 +5,35 @@ import { useState, useEffect } from "react";
 import BasicButton from "../BasicButton";
 import { useSelector } from "react-redux";
 import RankComponent from "./RankComponent";
-import { getContestQuestions } from "../../api/contest";
+import {
+  getContestQuestions,
+  submitContestAnswer,
+  getContestRanking,
+} from "../../api/contest";
 import { useNavigate } from "react-router";
 import useInterval from "./useInterval";
 import "animate.css";
 export default function ContestDetail() {
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const contestName = useSelector((state) => state.ContestInfo.contestName);
+  const contestEndTime = useSelector(
+    (state) => state.ContestInfo.contestEndTime
+  );
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
-  const [ranking, setRanking] = useState([{rank:0}, {rank:1}, {rank:2}, {rank:3}, {rank:4}, {rank:5}, {rank:6}, {rank:7}, {rank:8}, {rank:9}]);
+  const [ranking, setRanking] = useState([
+    { rank: 0 },
+    { rank: 1 },
+    { rank: 2 },
+    { rank: 3 },
+    { rank: 4 },
+    { rank: 5 },
+    { rank: 6 },
+    { rank: 7 },
+    { rank: 8 },
+    { rank: 9 },
+  ]);
 
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -42,14 +60,43 @@ export default function ContestDetail() {
 
   const submitAnswer = () => {
     console.log(selectedAnswer);
+    console.log(contestName + "-----");
+    const contestAnswerReq = {
+      contestId: contestId,
+      isAnswer: rightAnswer === selectedAnswer ? true : false,
+      idx: 0,
+      endTime: contestEndTime,
+    };
+
     if (index + 1 < contestQuestionList.length) {
       setIndex(index + 1);
+
+      submitContestAnswer(
+        contestAnswerReq,
+        Token,
+        (res) => {
+          console.log(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     } else {
       // 결과 페이지 또는 끝내기
 
       if (window.confirm("마지막 문제입니다. 대회를 종료하시겠습니까?")) {
         alert("수고하셨습니다.");
-        navigate("/mainpage");
+        submitContestAnswer(
+          contestAnswerReq,
+          Token,
+          (res) => {
+            console.log(res.data);
+            navigate("/mainpage");
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
     }
 
@@ -77,9 +124,19 @@ export default function ContestDetail() {
 
   useInterval(() => {
     let newarr = [...ranking];
-    for (let i=0; i<newarr.length; i++){
-      newarr[i].rank+=1;
+    for (let i = 0; i < newarr.length; i++) {
+      newarr[i].rank += 1;
     }
+    getContestRanking(
+      contestId,
+      Token,
+      (res) => {
+        console.log(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
     console.log(newarr);
     setRanking(newarr);
   }, 5000);
