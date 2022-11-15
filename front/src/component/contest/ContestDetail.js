@@ -1,13 +1,14 @@
 import { Button, Divider, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BasicButton from "../BasicButton";
 import { useSelector } from "react-redux";
 import RankComponent from "./RankComponent";
 import { getContestQuestions } from "../../api/contest";
 import { useNavigate } from "react-router";
 export default function ContestDetail() {
+  const savedCallback = useRef();
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const contestName = useSelector((state) => state.ContestInfo.contestName);
   const navigate = useNavigate();
@@ -57,6 +58,17 @@ export default function ContestDetail() {
     setIsCategorySelect(newArr);
   };
 
+  const callback = () => {
+    console.log("ranking:", ranking);
+    console.log("before: ", newarr);
+    newarr.push({ rank: ranking.length, name: "testuser" });
+    console.log("after: ", newarr);
+    setRanking(newarr);
+  };
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
   useEffect(() => {
     getContestQuestions(
       contestId,
@@ -73,13 +85,21 @@ export default function ContestDetail() {
         console.log(err);
       }
     );
-    let timer = setInterval(() => {
-      console.log("ranking:", ranking);
-      console.log("before: ", newarr);
-      newarr.push({ rank: ranking.length, name: "testuser" });
-      console.log("after: ", newarr);
-      setRanking(newarr);
-    }, 2000);
+
+    // let timer = setInterval(() => {
+    //   console.log("ranking:", ranking);
+    //   console.log("before: ", newarr);
+    //   newarr.push({ rank: ranking.length, name: "testuser" });
+    //   console.log("after: ", newarr);
+    //   setRanking(newarr);
+    // }, 2000);
+    // return () => clearInterval(timer);
+
+    const tick = () => {
+      savedCallback.current();
+    };
+
+    const timer = setInterval(tick, 2000);
     return () => clearInterval(timer);
   }, []);
 
