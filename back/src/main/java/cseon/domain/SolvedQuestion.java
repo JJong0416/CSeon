@@ -1,14 +1,11 @@
 package cseon.domain;
 
-import cseon.api.repository.SolvedRepository;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
