@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ContestOperationService {
-
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
 
@@ -62,7 +61,7 @@ public class ContestOperationService {
         return contests.stream()
                 .map(contest -> ContestRes.builder()
                         .contestId(contest.getContestId())
-                        .contestTitle(contest.getContestName())
+                        .contestName(contest.getContestName())
                         .isExpired(checkContestStatus(contest.getContestStart(), contest.getContestEnd()))
                         .startTime(contest.getContestStart())
                         .endTime(contest.getContestEnd())
@@ -76,9 +75,10 @@ public class ContestOperationService {
         Contest findContest = takeDetailsContest(contestId);
 
         List<WorkbookQuestion> questions =
-                workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(findContest.getWorkbookId()).orElseThrow(() -> {
-                    throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
-                });
+                workbookQuestionRepository.findWorkbookQuestionsByWorkbookId(findContest.getWorkbookId())
+                        .orElseThrow(() -> {
+                            throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+                        });
 
         return questions.stream()
                 .map(question -> questionSearchService.takeDetailsQuestion(

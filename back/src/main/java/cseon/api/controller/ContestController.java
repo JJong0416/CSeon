@@ -1,10 +1,13 @@
 package cseon.api.controller;
 
 import cseon.api.dto.request.ContestReq;
+import cseon.api.dto.request.ContestAnswerReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
 import cseon.api.dto.response.ContestResultRes;
 import cseon.api.dto.response.QuestionDto;
+import cseon.common.constant.ControllerConstant;
+import cseon.common.utils.MessageResponse;
 import cseon.api.service.ContestOperationService;
 import cseon.api.service.ContestRealTimeService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,12 +24,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/contest")
 @Tag(name = "대회", description = "대회 관련 API")
-public class ContestController {
+public class ContestController extends ControllerConstant{
 
     private final ContestOperationService contestOperationService;
 
     private final ContestRealTimeService contestRealTimeService;
-
 
     @GetMapping
     public ResponseEntity<List<ContestRes>> takeAllContests() {
@@ -60,5 +62,11 @@ public class ContestController {
         return ResponseEntity.ok(
                 contestOperationService.takeContestResultWithContestInfo(
                         contestId, contestRealTimeService.SearchRankingInfo(contestId)));
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<MessageResponse> pushAccountContestAnswer(@RequestBody ContestAnswerReq contestAnswerReq){
+        boolean res = contestRealTimeService.pushAccountContestAnswer(contestAnswerReq);
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
     }
 }

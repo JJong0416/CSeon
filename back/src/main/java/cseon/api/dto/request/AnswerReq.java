@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Getter
@@ -15,7 +14,7 @@ public class AnswerReq implements Serializable {
     @NotNull
     private final Long questionId;
 
-    @Size(min = 1, max = 4)
+    @NotNull
     private final Integer checkNumber;
 
     @NotNull

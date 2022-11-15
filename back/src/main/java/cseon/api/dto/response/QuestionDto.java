@@ -42,7 +42,8 @@ public class QuestionDto {
     }
 
     @Builder
-    public QuestionDto(Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId, List<String> labels) {
+    public QuestionDto(
+            Long questionId, String questionTitle, String questionExp, AnswerRes answerRes, Long accountId, List<String> labels) {
         this(questionId, questionTitle, questionExp, answerRes);
         this.accountId = accountId;
         this.labels = labels;

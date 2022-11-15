@@ -1,17 +1,23 @@
 package cseon.api.service;
 
+import cseon.api.dto.layer.AccountContestAnswerDto;
+import cseon.api.dto.request.ContestAnswerReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
 import cseon.api.dto.response.RankingRes;
 import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
+import cseon.common.provider.KafkaProducerProvider;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
@@ -24,6 +30,7 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 public class ContestRealTimeService extends RedisConst {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final KafkaProducerProvider kafkaProducerProvider;
 
     public ContestInfoRes SearchRankingInfo(Long contestId) {
         final String username = getAccountName();
@@ -40,7 +47,6 @@ public class ContestRealTimeService extends RedisConst {
 
         // 3. 그래도 서버에 문제가 있다면, 바로 CustomException 터트려준다.
         checkRedisCondition(typedTuples);
-
 
         // 4. Redis에서 가져온 데이터를 SortedMap으로 매핑시킨다.
         List<RankingRes> topRankingPlayer =
@@ -63,6 +69,40 @@ public class ContestRealTimeService extends RedisConst {
                         .accountScore(tuple.getScore())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+        InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
+
+        Integer cor =
+                floor(redisTemplate.opsForZSet().score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 50000);
+
+        // 정답이면 score 증가
+        if (contestAnswerReq.getIsAnswer())
+            ++cor;
+
+        ZonedDateTime now = ZonedDateTime.now();
+        Double score = Double.valueOf(cor * 5);
+        score += Math.abs(ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
+
+        AccountContestAnswerDto accountContestAnswerDto =
+                new AccountContestAnswerDto(contestAnswerReq.getContestId(), score);
+
+        kafkaProducerProvider.getKafkaProducer().send(
+                new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
+
+        return true;
+    }
+
+    private SortedMap<String, Double> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
+        SortedMap<String, Double> map = new TreeMap<>();
+
+        for (ZSetOperations.TypedTuple<String> typedTuple : typedTuples) {
+            if (map.put(typedTuple.getValue(), typedTuple.getScore()) != null)
+                throw new IllegalStateException("Duplicate key");
+        }
+        return map;
     }
 
     private ContestMyRankingRes SearchMyRankingInfo(
@@ -88,5 +128,9 @@ public class ContestRealTimeService extends RedisConst {
         if (Objects.requireNonNull(typedTuples).isEmpty()) {
             throw new CustomException(ErrorCode.CONTEST_NOT_EXIST_SERVER);
         }
+    }
+
+    private Integer floor(Double d){
+        return d.intValue();
     }
 }
