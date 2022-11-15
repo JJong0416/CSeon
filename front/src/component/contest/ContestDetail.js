@@ -72,7 +72,10 @@ export default function ContestDetail() {
       }
     );
     let timer = setInterval(()=>{
-      setRanking(ranking+[{rank:ranking.length, name:"testuser"}]);
+      let newarr = [...ranking];
+      newarr.push({rank:ranking.length, name:"testuser"});
+      console.log(newarr.length);
+      setRanking(newarr);
     }, 5000);
     return ()=> clearInterval(timer);
   }, []);
