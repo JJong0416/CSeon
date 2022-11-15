@@ -32,8 +32,7 @@ public class Contest {
 
     @Builder
     public Contest(
-            Long contestId, Workbook workbook, String contestName, ZonedDateTime contestStart, ZonedDateTime contestEnd){
-        this.contestId = contestId;
+            Workbook workbook, String contestName, ZonedDateTime contestStart, ZonedDateTime contestEnd){
         this.workbookId = workbook;
         this.contestName = contestName;
         this.contestStart = contestStart;

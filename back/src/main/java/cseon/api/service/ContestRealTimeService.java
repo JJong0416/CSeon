@@ -2,6 +2,7 @@ package cseon.api.service;
 
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestMyRankingRes;
+import cseon.api.dto.response.RankingRes;
 import cseon.common.constant.RedisConst;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
@@ -10,10 +11,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
 
@@ -39,8 +41,9 @@ public class ContestRealTimeService extends RedisConst {
         // 3. 그래도 서버에 문제가 있다면, 바로 CustomException 터트려준다.
         checkRedisCondition(typedTuples);
 
+
         // 4. Redis에서 가져온 데이터를 SortedMap으로 매핑시킨다.
-        SortedMap<String, Double> topRankingPlayer =
+        List<RankingRes> topRankingPlayer =
                 SearchTopRankingPlayer(Objects.requireNonNull(typedTuples));
 
         // 5. 해당 정보를 통해서 현재 내 랭킹에 대한 정보를 가져온다.
@@ -53,22 +56,22 @@ public class ContestRealTimeService extends RedisConst {
                 .build();
     }
 
-    private SortedMap<String, Double> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
-        SortedMap<String, Double> map = new TreeMap<>();
-
-        for (ZSetOperations.TypedTuple<String> typedTuple : typedTuples) {
-            if (map.put(typedTuple.getValue(), typedTuple.getScore()) != null)
-                throw new IllegalStateException("Duplicate key");
-        }
-        return map;
+    private List<RankingRes> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
+        return typedTuples.stream()
+                .map(tuple -> RankingRes.builder()
+                        .accountNickname(tuple.getValue())
+                        .accountScore(tuple.getScore())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private ContestMyRankingRes SearchMyRankingInfo(
-            String redisId, String username, SortedMap<String, Double> topRankingPlayer, ZSetOperations<String, String> ZSetOperations) {
+            String redisId, String username, List<RankingRes> topRankingPlayer, ZSetOperations<String, String> ZSetOperations) {
         return ContestMyRankingRes.builder()
                 .myRank(ZSetOperations.rank(redisId, username))
                 .myScore(ZSetOperations.score(redisId, username))
-                .isExistMeInLeaderboard(topRankingPlayer.containsKey(username))
+                .isExistMeInLeaderboard(topRankingPlayer.stream()
+                        .anyMatch(rankingRes -> rankingRes.getAccountNickname().equals(username)))
                 .build();
     }
 
@@ -78,7 +81,7 @@ public class ContestRealTimeService extends RedisConst {
 
         if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
                 || ZSetOperations.rank(redisId, username) == null)
-            ZSetOperations.add(redisId, username, -1);
+            ZSetOperations.add(redisId, username, 0);
     }
 
     private void checkRedisCondition(Set<ZSetOperations.TypedTuple<String>> typedTuples) {

@@ -94,12 +94,14 @@ public class ContestOperationService {
         ZonedDateTime startTime = ZonedDateTime.parse(contestReq.getContestStart());
         ZonedDateTime endTime = ZonedDateTime.parse(contestReq.getContestEnd());
 
-        Integer integer = contestRepository.findMaxCount().orElseThrow(() -> {
-            throw new CustomException(ErrorCode.CONTEST_NOT_EXIST_SERVER);
-        }) + 1;
+        Contest contest = Contest.builder()
+                .workbook(workbook)
+                .contestName(contestReq.getContestName())
+                .contestStart(startTime)
+                .contestEnd(endTime)
+                .build();
 
-        contestRepository.insertCompositeContest(integer.longValue(), workbook, contestReq.getContestName() ,startTime, endTime);
-
+        contestRepository.save(contest);
     }
 
     private Workbook takeWorkbookWithWorkbookId(Long contestId) {

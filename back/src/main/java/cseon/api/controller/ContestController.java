@@ -34,7 +34,7 @@ public class ContestController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> newContest(@RequestBody ContestReq contestReq){
+    public ResponseEntity<HttpStatus> newContest(@Valid @RequestBody ContestReq contestReq){
         contestOperationService.createContest(contestReq);
         return ResponseEntity.ok().build();
     }
