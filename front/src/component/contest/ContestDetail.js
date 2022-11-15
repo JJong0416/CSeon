@@ -1,22 +1,21 @@
 import { Button, Divider, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import BasicButton from "../BasicButton";
 import { useSelector } from "react-redux";
 import RankComponent from "./RankComponent";
 import { getContestQuestions } from "../../api/contest";
 import { useNavigate } from "react-router";
+import useInterval from "./useInterval";
+import "animate.css";
 export default function ContestDetail() {
-  const savedCallback = useRef();
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const contestName = useSelector((state) => state.ContestInfo.contestName);
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
-  const [ranking, setRanking] = useState([]);
-
-  let newarr = [];
+  const [ranking, setRanking] = useState([{rank:0}, {rank:1}, {rank:2}, {rank:3}, {rank:4}, {rank:5}, {rank:6}, {rank:7}, {rank:8}, {rank:9}]);
 
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -58,17 +57,6 @@ export default function ContestDetail() {
     setIsCategorySelect(newArr);
   };
 
-  const callback = () => {
-    console.log("ranking:", ranking);
-    console.log("before: ", newarr);
-    newarr.push({ rank: ranking.length, name: "testuser" });
-    console.log("after: ", newarr);
-    setRanking(newarr);
-  };
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
   useEffect(() => {
     getContestQuestions(
       contestId,
@@ -85,23 +73,16 @@ export default function ContestDetail() {
         console.log(err);
       }
     );
-
-    // let timer = setInterval(() => {
-    //   console.log("ranking:", ranking);
-    //   console.log("before: ", newarr);
-    //   newarr.push({ rank: ranking.length, name: "testuser" });
-    //   console.log("after: ", newarr);
-    //   setRanking(newarr);
-    // }, 2000);
-    // return () => clearInterval(timer);
-
-    const tick = () => {
-      savedCallback.current();
-    };
-
-    const timer = setInterval(tick, 2000);
-    return () => clearInterval(timer);
   }, []);
+
+  useInterval(() => {
+    let newarr = [...ranking];
+    for (let i=0; i<newarr.length; i++){
+      newarr[i].rank+=1;
+    }
+    console.log(newarr);
+    setRanking(newarr);
+  }, 5000);
 
   useEffect(() => {
     setQuestionTitle(contestQuestionList[index].questionTitle);
@@ -196,9 +177,9 @@ export default function ContestDetail() {
           <Divider></Divider>
           {/* <img alt="" src="img/first.png" style={{ width: "25%" }}></img>
           lapaho8645 */}
-          {ranking.map((user) => (
-            <h1>{user.rank}</h1>
-            // <RankComponent></RankComponent>
+          {ranking.map((rank) => (
+            // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
+            <RankComponent key={Math.random()} rankinfo={rank}></RankComponent>
           ))}
           {/* <RankComponent></RankComponent>
           <RankComponent></RankComponent> */}
