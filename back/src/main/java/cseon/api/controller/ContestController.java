@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,10 +34,9 @@ public class ContestController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> newContest(@Parameter @RequestBody ContestReq contestReq){
+    public ResponseEntity<HttpStatus> newContest(@Valid @RequestBody ContestReq contestReq){
         contestOperationService.createContest(contestReq);
         return ResponseEntity.ok().build();
-
     }
 
     @GetMapping("/{contestId}/valid-time")
@@ -61,5 +61,4 @@ public class ContestController {
                 contestOperationService.takeContestResultWithContestInfo(
                         contestId, contestRealTimeService.SearchRankingInfo(contestId)));
     }
-
 }

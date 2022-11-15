@@ -18,9 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +28,9 @@ public class ContestOperationService {
 
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
-    private final QuestionSearchService questionSearchService;
+
     private final WorkbookRepository workbookRepository;
+    private final QuestionSearchService questionSearchService;
 
     @Transactional(readOnly = true)
     public String canParticipateContestWithContestId(Long contestId) {
@@ -87,6 +86,36 @@ public class ContestOperationService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void createContest(ContestReq contestReq) {
+
+        Workbook workbook = takeWorkbookWithWorkbookId(contestReq.getWorkbookId());
+
+        ZonedDateTime startTime = ZonedDateTime.parse(contestReq.getContestStart());
+        ZonedDateTime endTime = ZonedDateTime.parse(contestReq.getContestEnd());
+
+        Long findContestId = contestRepository.findMaxCount().orElseThrow(() -> {
+            throw new CustomException(ErrorCode.CONTEST_NOT_EXIST_SERVER);
+        });
+
+        Contest contest = Contest.builder()
+                .contestId(findContestId + 1)
+                .workbook(workbook)
+                .contestName(contestReq.getContestName())
+                .contestStart(startTime)
+                .contestEnd(endTime)
+                .build();
+
+        contestRepository.save(contest);
+    }
+
+    private Workbook takeWorkbookWithWorkbookId(Long contestId) {
+        return workbookRepository.findWorkbookByWorkbookId(contestId)
+                .orElseThrow(() -> {
+                    throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
+                });
+    }
+
     private Contest takeDetailsContest(Long contestId) {
         return contestRepository.findContestByContestId(contestId).orElseThrow(() -> {
             throw new CustomException(ErrorCode.CONTEST_NOT_FOUND);
@@ -104,20 +133,4 @@ public class ContestOperationService {
             return ContestStatus.AFTER_CONTEST.getDesc();
         }
     }
-
-    @Transactional
-    public void createContest(ContestReq contestReq){
-
-        ZonedDateTime zdtstart = ZonedDateTime.parse(contestReq.getContestStart());
-
-        ZonedDateTime zdtEnd = ZonedDateTime.parse(contestReq.getContestEnd());
-
-        contestRepository.save(Contest.builder()
-                .workbook(contestReq.getWorkbook())
-                .contestStart(zdtstart)
-                .contestEnd(zdtEnd)
-                .contestName(contestReq.getContestName())
-                .build());
-    }
-
 }

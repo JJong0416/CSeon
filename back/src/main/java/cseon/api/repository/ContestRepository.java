@@ -15,4 +15,7 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
     Optional<List<Contest>> findAllContests();
 
     Optional<Contest> findContestByContestId(Long contestId);
+
+    @Query(value = "SELECT contest_id FROM Contest", nativeQuery = true)
+    Optional<Long> findMaxCount();
 }
