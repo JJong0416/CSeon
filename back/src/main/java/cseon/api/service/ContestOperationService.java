@@ -65,6 +65,8 @@ public class ContestOperationService {
                         .contestId(contest.getContestId())
                         .contestTitle(contest.getContestName())
                         .isExpired(checkContestStatus(contest.getContestStart(), contest.getContestEnd()))
+                        .startTime(contest.getContestStart())
+                        .endTime(contest.getContestEnd())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -105,25 +107,17 @@ public class ContestOperationService {
 
     @Transactional
     public void createContest(ContestReq contestReq){
-        Workbook workbook =
-                workbookRepository.findWorkbookByWorkbookId(contestReq.getWorkbookId()).orElseThrow(() -> {
-            throw new CustomException(ErrorCode.WORKBOOK_NOT_FOUND);
-        });
-        ZonedDateTime zdtstart = ZonedDateTime
-                .parse(contestReq.getContestStart(), formatter);
 
-        ZonedDateTime zdtEnd = ZonedDateTime
-                .parse(contestReq.getContestEnd(), formatter);
+        ZonedDateTime zdtstart = ZonedDateTime.parse(contestReq.getContestStart());
+
+        ZonedDateTime zdtEnd = ZonedDateTime.parse(contestReq.getContestEnd());
 
         contestRepository.save(Contest.builder()
-                .workbook(workbook).
-                contestStart(zdtstart)
+                .workbook(contestReq.getWorkbook())
+                .contestStart(zdtstart)
                 .contestEnd(zdtEnd)
                 .contestName(contestReq.getContestName())
                 .build());
     }
-
-    private final static DateTimeFormatter formatter
-            = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a z");
 
 }

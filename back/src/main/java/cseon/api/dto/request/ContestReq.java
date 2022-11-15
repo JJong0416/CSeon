@@ -1,19 +1,20 @@
 package cseon.api.dto.request;
 
+import cseon.domain.Workbook;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class ContestReq {
 
-    private Long workbookId;
+    private Workbook workbook;
     private String contestName;
     private String contestStart;
     private String contestEnd;
 
     @Builder
-    ContestReq(Long workbookId, String contestName, String contestStart, String contestEnd){
-        this.workbookId = workbookId;
+    ContestReq(Workbook workbook, String contestName, String contestStart, String contestEnd){
+        this.workbook = workbook;
         this.contestName = contestName;
         this.contestStart = contestStart;
         this.contestEnd = contestEnd;
