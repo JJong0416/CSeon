@@ -9,7 +9,7 @@ EXPOSE 7071
 ARG JAR_FILE=build/libs/*.jar
 
 #jar파일 복사
-COPY ${JAR_FILE} indivisualapp.jar
+COPY ${JAR_FILE} app.jar
 
 #ENTRYPOINT 명령을 지정, app.jar 실행
-ENTRYPOINT ["java","-jar","/indivisualapp.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
