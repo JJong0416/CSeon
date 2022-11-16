@@ -84,7 +84,7 @@ public class ContestRealTimeService extends RedisConst {
 
         ZonedDateTime now = ZonedDateTime.now();
         Double score = Double.valueOf(cor * 5);
-        score += Math.abs(ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
+        score += Math.abs((double)ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
 
         AccountContestAnswerDto accountContestAnswerDto =
                 new AccountContestAnswerDto(contestAnswerReq.getContestId(), getAccountName(), score);
