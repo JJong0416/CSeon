@@ -6,7 +6,7 @@ FROM openjdk:11-jdk
 EXPOSE 7072
 
 #가져올 파일 jar또는 war
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=build/libs/
 
 #war파일 복사
 COPY ${JAR_FILE} app.jar
