@@ -22,18 +22,7 @@ export default function ContestDetail() {
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
-  const [ranking, setRanking] = useState([
-    { rank: 0 },
-    { rank: 1 },
-    { rank: 2 },
-    { rank: 3 },
-    { rank: 4 },
-    { rank: 5 },
-    { rank: 6 },
-    { rank: 7 },
-    { rank: 8 },
-    { rank: 9 },
-  ]);
+  const [ranking, setRanking] = useState([]);
 
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");
@@ -123,23 +112,25 @@ export default function ContestDetail() {
   }, []);
 
   useInterval(() => {
-    let newarr = [...ranking];
-    for (let i = 0; i < newarr.length; i++) {
-      newarr[i].rank += 1;
-    }
-    console.log(Token + "-sdfsdfsdf");
     getContestRanking(
       contestId,
       Token,
       (res) => {
-        console.log(res.data);
+        console.log("getContestRanking res.data: ", res.data);
+        let arr = [...res.data.highRanking];
+        arr.push({ accountNickname: "경준", accountScore: 14.8734 });
+        arr.push(res.data.highRanking[0]);
+        arr.push(res.data.highRanking[0]);
+        arr.push(res.data.highRanking[0]);
+        arr.push(res.data.highRanking[0]);
+        arr.push(res.data.highRanking[0]);
+        setRanking(arr);
+        console.log(arr);
       },
       (err) => {
         console.log(err);
       }
     );
-    console.log(newarr);
-    setRanking(newarr);
   }, 5000);
 
   useEffect(() => {
@@ -235,9 +226,13 @@ export default function ContestDetail() {
           <Divider></Divider>
           {/* <img alt="" src="img/first.png" style={{ width: "25%" }}></img>
           lapaho8645 */}
-          {ranking.map((rank) => (
+          {ranking.map((rank, i) => (
             // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
-            <RankComponent key={Math.random()} rankinfo={rank}></RankComponent>
+            <RankComponent
+              key={Math.random()}
+              rankinfo={rank}
+              index={i}
+            ></RankComponent>
           ))}
           {/* <RankComponent></RankComponent>
           <RankComponent></RankComponent> */}
