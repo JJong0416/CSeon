@@ -16,16 +16,16 @@ public class ContestAnswerReq {
     private final Boolean isAnswer;
 
     @NotNull
-    private final Integer idx;
+    private final Integer problemIdx;
 
     @NotNull
     private final ZonedDateTime endTime;
 
     @Builder
-    public ContestAnswerReq(Long contestId, Boolean isAnswer, Integer idx, ZonedDateTime endTime) {
+    public ContestAnswerReq(Long contestId, Boolean isAnswer, Integer problemIdx, ZonedDateTime endTime) {
         this.contestId = contestId;
         this.isAnswer = isAnswer;
-        this.idx = idx;
+        this.problemIdx = problemIdx;
         this.endTime = endTime;
     }
 }

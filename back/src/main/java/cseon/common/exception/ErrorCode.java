@@ -55,7 +55,9 @@ public enum ErrorCode {
     //500 INTERNAL_SERVER_ERROR: 내부 서버 오류
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류입니다."),
 
-    INTERNAL_KAKAO_ERROR(HttpStatus.BAD_GATEWAY, "카카오 서버 오류입니다");
+    INTERNAL_KAKAO_ERROR(HttpStatus.BAD_GATEWAY, "카카오 서버 오류입니다"),
+
+    CONTEST_REAL_TIME_ERROR(HttpStatus.BAD_GATEWAY, "실시간 통신 오류입니다");
 
 
     private final HttpStatus status;

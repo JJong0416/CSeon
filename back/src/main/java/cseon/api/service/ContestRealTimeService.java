@@ -11,16 +11,16 @@ import cseon.common.exception.ErrorCode;
 import cseon.common.provider.KafkaProducerProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 import static cseon.common.utils.SecurityUtils.getAccountName;
@@ -59,19 +59,12 @@ public class ContestRealTimeService extends RedisConst {
         return ContestInfoRes.builder()
                 .highRanking(topRankingPlayer)
                 .contestMyRankingRes(myRankingRes)
+                .contestProblemIdx(takeRedisUsernameIndex(contestId, username))
                 .build();
     }
 
-    private List<RankingRes> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
-        return typedTuples.stream()
-                .map(tuple -> RankingRes.builder()
-                        .accountNickname(tuple.getValue())
-                        .accountScore(tuple.getScore())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
     public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
+        final String accountName = getAccountName();
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
         InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
 
@@ -84,13 +77,15 @@ public class ContestRealTimeService extends RedisConst {
 
         ZonedDateTime now = ZonedDateTime.now();
         Double score = Double.valueOf(cor * 5);
-        score += Math.abs((double)ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
+        score += Math.abs((double) ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
 
         AccountContestAnswerDto accountContestAnswerDto =
-                new AccountContestAnswerDto(contestAnswerReq.getContestId(), getAccountName(), score);
+                new AccountContestAnswerDto(contestAnswerReq.getContestId(), accountName, score);
 
         kafkaProducerProvider.getKafkaProducer().send(
                 new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
+
+        this.upstageUserIndex(contestAnswerReq.getContestId(), accountName, contestAnswerReq.getProblemIdx());
 
         return true;
     }
@@ -120,7 +115,36 @@ public class ContestRealTimeService extends RedisConst {
         }
     }
 
-    private Integer floor(Double d){
+    private Integer takeRedisUsernameIndex(Long contestId, String username) {
+        final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
+
+        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
+
+        return Integer.parseInt(Objects.requireNonNull(
+                hashOperations.get(CONTEST_HASH_KEY, username)));
+    }
+
+    private void upstageUserIndex(Long contestId, String username, Integer contestQuestionIdx) {
+        final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
+
+        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
+        if (hashOperations.get(CONTEST_HASH_KEY, username) == null) {
+            hashOperations.putIfAbsent(CONTEST_HASH_KEY, username, "-1");
+        } else {
+            hashOperations.put(CONTEST_HASH_KEY, username, String.valueOf(contestQuestionIdx));
+        }
+    }
+
+    private List<RankingRes> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
+        return typedTuples.stream()
+                .map(tuple -> RankingRes.builder()
+                        .accountNickname(tuple.getValue())
+                        .accountScore(tuple.getScore())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private Integer floor(Double d) {
         return d.intValue();
     }
 }
