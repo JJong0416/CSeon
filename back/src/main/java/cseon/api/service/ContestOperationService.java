@@ -43,9 +43,11 @@ public class ContestOperationService {
     public ContestResultRes takeContestResultWithContestInfo(Long contestId, ContestInfoRes contestInfoRes) {
 
         Contest findContest = takeDetailsContest(contestId);
+        Long workbookId = findContest.getWorkbookId().getWorkbookId();
 
         return ContestResultRes.builder()
                 .contestId(contestId)
+                .workbookId(workbookId)
                 .contestName(findContest.getContestName())
                 .contestInfoRes(contestInfoRes)
                 .build();
