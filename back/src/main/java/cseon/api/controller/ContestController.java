@@ -1,16 +1,15 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.ContestReq;
 import cseon.api.dto.request.ContestAnswerReq;
+import cseon.api.dto.request.ContestReq;
 import cseon.api.dto.response.ContestInfoRes;
 import cseon.api.dto.response.ContestRes;
 import cseon.api.dto.response.ContestResultRes;
 import cseon.api.dto.response.QuestionDto;
-import cseon.common.constant.ControllerConstant;
-import cseon.common.utils.MessageResponse;
 import cseon.api.service.ContestOperationService;
 import cseon.api.service.ContestRealTimeService;
-import io.swagger.v3.oas.annotations.Parameter;
+import cseon.common.constant.ControllerConstant;
+import cseon.common.utils.MessageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/contest")
 @Tag(name = "대회", description = "대회 관련 API")
-public class ContestController extends ControllerConstant{
+public class ContestController extends ControllerConstant {
 
     private final ContestOperationService contestOperationService;
 
@@ -36,13 +35,13 @@ public class ContestController extends ControllerConstant{
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> newContest(@Valid @RequestBody ContestReq contestReq){
+    public ResponseEntity<HttpStatus> newContest(@Valid @RequestBody ContestReq contestReq) {
         contestOperationService.createContest(contestReq);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{contestId}/valid-time")
-    public ResponseEntity<String> canParticipateContest(@PathVariable("contestId") Long contestId){
+    public ResponseEntity<String> canParticipateContest(@PathVariable("contestId") Long contestId) {
         return ResponseEntity.ok(contestOperationService.canParticipateContestWithContestId(contestId));
     }
 
@@ -65,8 +64,13 @@ public class ContestController extends ControllerConstant{
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<MessageResponse> pushAccountContestAnswer(@RequestBody ContestAnswerReq contestAnswerReq){
+    public ResponseEntity<MessageResponse> pushAccountContestAnswer(@RequestBody ContestAnswerReq contestAnswerReq) {
         boolean res = contestRealTimeService.pushAccountContestAnswer(contestAnswerReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
+    }
+
+    @GetMapping("/test")
+    public void test1() {
+        contestRealTimeService.upstageUserIndex(1L,"jjong111111", 5);
     }
 }
