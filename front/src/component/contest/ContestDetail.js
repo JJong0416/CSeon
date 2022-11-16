@@ -56,7 +56,7 @@ export default function ContestDetail() {
     const contestAnswerReq = {
       contestId: contestId,
       isAnswer: rightAnswer === selectedAnswer ? true : false,
-      idx: 0,
+      problemIdx: index,
       endTime: contestEndTime,
     };
 
