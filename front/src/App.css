@@ -111,3 +111,12 @@ height: 100%;
 display: flex;
 align-items: center;
 }
+
+.head-button {
+  color: "#000000";
+  font-size: "2vh";
+}
+
+.MuiTypography-root .MuiTypography-h5 .MuiTypography-gutterBottom .css-h93ljk-MuiTypography-root{
+  font-family: 'GangwonEdu_OTFBoldA';
+}

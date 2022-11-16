@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 export default function AnswerForm(props) {
   const clickedButtonStyle = {
     textColor: "white",
-    backgroundColor: "#90caf9",
+    backgroundColor: "#64b5f6",
     margin: "0vh 5vh 5vh 5vh",
   };
 

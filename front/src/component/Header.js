@@ -2,12 +2,15 @@ import * as React from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGOUT } from "../redux/AccountInfo";
-
+import { Button, styled } from "@mui/material";
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accountRole = useSelector(
     (state) => state.AccountInfo.accountInfo.accountRole
+  );
+  const accountName = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountName
   );
   const ClickQuestions = () => {
     navigate("/questionslist");
@@ -43,14 +46,51 @@ export default function Header() {
 
         <nav>
           <ul>
-            <li onClick={ClickQuestions}>문제 풀기</li>
-            <li onClick={ClickWorkbook}>문제집</li>
-            <li onClick={ClickContest}>실시간 대회</li>
+            <li onClick={ClickQuestions}>
+              <Button style={{ color: "#000000", fontSize: "2vh" }}>
+                <h3> 문제 풀기</h3>
+              </Button>
+            </li>
+            <li onClick={ClickWorkbook}>
+              <Button style={{ color: "#000000", fontSize: "2vh" }}>
+                <h3>문제집</h3>
+              </Button>
+            </li>
+            <li onClick={ClickContest}>
+              <Button style={{ color: "#000000", fontSize: "2vh" }}>
+                <h3>실시간 대회</h3>
+              </Button>
+            </li>
             <li>
-              <button onClick={Logout}>로그아웃</button>
-              {accountRole === "USER" ? (
-                <button onClick={ClickMypage}>마이페이지</button>
-              ) : null}
+              <h3>
+                {" "}
+                {accountRole === "USER" ? (
+                  <Button
+                    variant="text"
+                    style={{
+                      color: "#64b5f6",
+                      fontSize: "2vh",
+                      fontFamily: "GangwonEdu_OTFBoldA",
+                    }}
+                    size="large"
+                    onClick={ClickMypage}
+                  >
+                    {accountName}
+                  </Button>
+                ) : null}{" "}
+                <Button
+                  variant="text"
+                  style={{
+                    color: "#64b5f6",
+                    fontSize: "2vh",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  size="large"
+                  onClick={Logout}
+                >
+                  로그아웃
+                </Button>
+              </h3>
             </li>
           </ul>
         </nav>

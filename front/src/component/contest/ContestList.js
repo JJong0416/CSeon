@@ -109,91 +109,161 @@ export default function ContestList() {
     <div>
       <div style={{ marginTop: "3vh" }}>
         {/* <input type="text" value={search} onChange={onChange} /> */}
-        <h2>실시간 대회</h2>
+        <h1>실시간 대회</h1>
       </div>
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>No</TableCell>
+      <div style={{ width: "90%", margin: "2vh auto" }}>
+        <TableContainer component={Paper}>
+          <Table size="large">
+            <TableHead sx={{ backgroundColor: "#64b5f6" }}>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  No
+                </TableCell>
 
-              <TableCell align="right">대회명</TableCell>
-              <TableCell align="right">대회 기간</TableCell>
-              <TableCell align="right">대회 상태</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {contestList
-              .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(
-                (
-                  { contestId, contestName, endTime, isExpired, startTime },
-                  i
-                ) => (
-                  <TableRow key={contestId}>
-                    <TableCell component="th" scope="row">
-                      {page * rowsPerPage + i + 1}
-                    </TableCell>
-                    <TableCell align="right">{contestName}</TableCell>
-                    <TableCell align="right">
-                      {startTime.split("T")[0] +
-                        " " +
-                        startTime.split("T")[1].split("+")[0]}{" "}
-                      ~ <br></br>
-                      {endTime.split("T")[0] +
-                        " " +
-                        endTime.split("T")[1].split("+")[0]}
-                    </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
 
-                    {/* <TableCell align="right" onClick={ClickTitle}> */}
-                    <TableCell align="right">
-                      {isExpired === "대회 종료" ? (
-                        <Button onClick={() => showResult(contestId)}>
-                          결과 보기
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={() =>
-                            joinContest(contestId, contestName, endTime)
-                          }
-                        >
-                          참여하기
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )
-              )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={users.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-      {accountRole === "ADMIN" ? (
-        <Button
-          size="small"
-          variant="contained"
-          style={{
-            backgroundColor: "#64b5f6",
-            float: "right",
-            margin: "0vh 4vh 4vh 0vh",
-          }}
-          onClick={ClickContetCreate}
-        >
-          대회 생성
-        </Button>
-      ) : (
-        <></>
-      )}
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  대회명
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "20%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  대회 기간
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  대회 상태
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {contestList
+                .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                .map(
+                  (
+                    { contestId, contestName, endTime, isExpired, startTime },
+                    i
+                  ) => (
+                    <TableRow key={contestId}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          fontSize: "2vh",
+                          width: "10%",
+                          fontFamily: "GangwonEdu_OTFBoldA",
+                        }}
+                        align="center"
+                      >
+                        {page * rowsPerPage + i + 1}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          fontSize: "2vh",
+
+                          fontFamily: "GangwonEdu_OTFBoldA",
+                        }}
+                        align="center"
+                      >
+                        {contestName}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          fontSize: "2vh",
+                          width: "20%",
+                          fontFamily: "GangwonEdu_OTFBoldA",
+                        }}
+                        align="center"
+                      >
+                        {startTime.split("T")[0] +
+                          " " +
+                          startTime.split("T")[1].split("+")[0]}{" "}
+                        ~ <br></br>
+                        {endTime.split("T")[0] +
+                          " " +
+                          endTime.split("T")[1].split("+")[0]}
+                      </TableCell>
+
+                      {/* <TableCell align="right" onClick={ClickTitle}> */}
+                      <TableCell
+                        sx={{
+                          fontSize: "2vh",
+                          width: "10%",
+                          fontFamily: "GangwonEdu_OTFBoldA",
+                        }}
+                        align="center"
+                      >
+                        {isExpired === "대회 종료" ? (
+                          <Button onClick={() => showResult(contestId)}>
+                            결과 보기
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() =>
+                              joinContest(contestId, contestName, endTime)
+                            }
+                          >
+                            참여하기
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={users.length}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+        {accountRole === "ADMIN" ? (
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: "#64b5f6",
+              float: "right",
+              margin: "0vh 4vh 4vh 0vh",
+            }}
+            onClick={ClickContetCreate}
+          >
+            대회 생성
+          </Button>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

@@ -95,6 +95,8 @@ export default function WorkbookList() {
     <div>
       <div style={{ marginTop: "3vh" }}>
         {/* <input type="text" value={search} onChange={onChange} /> */}
+        {/* <h1>문제집</h1> */}
+
         <TextField
           focused
           color="info"
@@ -119,60 +121,110 @@ export default function WorkbookList() {
           }}
         />
       </div>
-      <TableContainer component={Paper} sx={{ mb: 4 }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              {/* <TableCell>No</TableCell> */}
-              <TableCell>번호</TableCell>
-              <TableCell align="left">만든 사람</TableCell>
-              <TableCell align="left">문제집 제목</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {list
-              .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ workbookId, workbookCreatedBy, workbookName }, i) => (
-                <TableRow key={workbookId}>
-                  {/* <TableCell component="th" scope="row">
+      <div style={{ width: "90%", margin: "2vh auto" }}>
+        <TableContainer component={Paper} sx={{ mb: 4 }}>
+          <Table size="large">
+            <TableHead sx={{ backgroundColor: "#64b5f6" }}>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  번호
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  만든 사람
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  문제집 제목
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {list
+                .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                .map(({ workbookId, workbookCreatedBy, workbookName }, i) => (
+                  <TableRow key={workbookId}>
+                    {/* <TableCell component="th" scope="row">
                     {page * rowsPerPage + i + 1}
                   </TableCell> */}
-                  <TableCell>{workbookId}</TableCell>
-                  <TableCell align="left">{workbookCreatedBy}</TableCell>
-                  <TableCell
-                    align="left"
-                    onClick={() => ClickTitle(workbookId)}
-                  >
-                    {workbookName}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={list.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-      <Button
-        size="small"
-        variant="contained"
-        style={{
-          backgroundColor: "#64b5f6",
-          float: "right",
-          margin: "0vh 4vh 4vh 0vh",
-        }}
-        onClick={clickWorkbookCreate}
-      >
-        문제집 만들기
-      </Button>
+                    <TableCell
+                      sx={{
+                        fontSize: "2vh",
+                        width: "10%",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      align="center"
+                    >
+                      {workbookId}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        fontSize: "2vh",
+                        width: "10%",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                    >
+                      {workbookCreatedBy}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        fontSize: "2vh",
+
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      onClick={() => ClickTitle(workbookId)}
+                    >
+                      {workbookName}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={list.length}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+        <Button
+          size="small"
+          variant="contained"
+          style={{
+            backgroundColor: "#64b5f6",
+            float: "right",
+            margin: "0vh 4vh 4vh 0vh",
+          }}
+          onClick={clickWorkbookCreate}
+        >
+          문제집 만들기
+        </Button>
+      </div>
     </div>
   );
 }

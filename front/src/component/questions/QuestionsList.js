@@ -226,76 +226,109 @@ export default function QuestionsList() {
           />{" "}
         </Box>
       </div>
-      <TableContainer component={Paper} sx={{ mb: 4 }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell align="left">Id</TableCell>
-              <TableCell align="left">Title</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {list
-              .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ questionId, questionTitle }, i) => (
-                <TableRow key={questionId}>
-                  <TableCell component="th" scope="row">
-                    {page * rowsPerPage + i + 1}
-                  </TableCell>
-                  <TableCell align="left">{questionId}</TableCell>
-                  {/* <TableCell align="right">
+      <div style={{ width: "90%", margin: "2vh auto" }}>
+        <TableContainer component={Paper} sx={{ mb: 4 }}>
+          <Table size="large">
+            <TableHead sx={{ backgroundColor: "#64b5f6" }}>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  No
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  문제
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {list
+                .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                .map(({ questionId, questionTitle }, i) => (
+                  <TableRow key={questionId}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{
+                        fontSize: "2vh",
+                        width: "10%",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      align="center"
+                    >
+                      {page * rowsPerPage + i + 1}
+                    </TableCell>
+
+                    {/* <TableCell align="right">
                     {label.map((l) => ({ l }))}
                   </TableCell> */}
-                  <TableCell
-                    align="left"
-                    onClick={() => ClickTitle(questionId)}
-                  >
-                    {questionTitle}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={list.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-      {accountRole === "USER" ? (
-        <Button
-          size="small"
-          variant="contained"
-          style={{
-            backgroundColor: "#64b5f6",
-            float: "right",
-            margin: "0vh 4vh 4vh 0vh",
-          }}
-          onClick={clickQuestionCreate}
-        >
-          문제 만들기
-        </Button>
-      ) : (
-        <Button
-          size="small"
-          variant="contained"
-          style={{
-            backgroundColor: "#64b5f6",
-            float: "right",
-            margin: "0vh 4vh 4vh 0vh",
-          }}
-          onClick={clickQuestionConfirm}
-        >
-          요청문제확인
-        </Button>
-      )}
+                    <TableCell
+                      sx={{
+                        fontSize: "2vh",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      align="center"
+                      onClick={() => ClickTitle(questionId)}
+                    >
+                      {questionTitle}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={list.length}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+
+        {accountRole === "USER" ? (
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: "#64b5f6",
+              float: "right",
+              margin: "0vh 4vh 4vh 0vh",
+            }}
+            onClick={clickQuestionCreate}
+          >
+            문제 만들기
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: "#64b5f6",
+              float: "right",
+              margin: "0vh 4vh 4vh 0vh",
+            }}
+            onClick={clickQuestionConfirm}
+          >
+            요청 문제 확인
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

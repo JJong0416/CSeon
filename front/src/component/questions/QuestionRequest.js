@@ -187,7 +187,7 @@ export default function QuestionRequest() {
 
   return (
     <Box style={{ width: "100%", marginTop: "3vh" }}>
-      <StyledTable>
+      {/* <StyledTable>
         <thead>
           <tr>
             <th>
@@ -218,7 +218,7 @@ export default function QuestionRequest() {
             </tr>
           ))}
         </tbody>
-      </StyledTable>
+      </StyledTable> */}
       <h1 style={{ wordBreak: "break-all" }}>
         Q.{" "}
         <TextField
@@ -228,7 +228,7 @@ export default function QuestionRequest() {
           onChange={(e) => setTitle(e.target.value)}
         />{" "}
       </h1>
-      <h4>정답을 눌러주세요.</h4>
+      <h3>정답을 눌러주세요.</h3>
       <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
         {AnswerForm()}
       </Grid>
