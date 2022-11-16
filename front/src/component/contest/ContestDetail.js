@@ -19,11 +19,14 @@ export default function ContestDetail() {
   const contestEndTime = useSelector(
     (state) => state.ContestInfo.contestEndTime
   );
+  const accountName = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountName
+  );
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [ranking, setRanking] = useState([]);
-
+  const [myRank, setMyRank] = useState({});
   const [index, setIndex] = useState(0);
   const [questionTitle, setQuestionTitle] = useState("");
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
@@ -104,6 +107,28 @@ export default function ContestDetail() {
         setQuestionTitle(res.data[index].questionTitle);
         setAnswerList(res.data[index].answerRes.answers);
         setRightAnswer(res.data[index].answerRes.rightAnswer);
+        getContestRanking(
+          contestId,
+          Token,
+          (res) => {
+            console.log("getContestRanking res.data: ", res.data);
+            let arr = [...res.data.highRanking];
+            arr.push({ accountNickname: "경준", accountScore: 14.8734 });
+            arr.push(res.data.highRanking[0]);
+            arr.push(res.data.highRanking[0]);
+            arr.push(res.data.highRanking[0]);
+            arr.push(res.data.highRanking[0]);
+            arr.push(res.data.highRanking[0]);
+
+            setMyRank(res.data.contestMyRankingRes);
+
+            setRanking(arr);
+            console.log(arr);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       },
       (err) => {
         console.log(err);
@@ -124,6 +149,8 @@ export default function ContestDetail() {
         arr.push(res.data.highRanking[0]);
         arr.push(res.data.highRanking[0]);
         arr.push(res.data.highRanking[0]);
+        setMyRank(res.data.contestMyRankingRes);
+
         setRanking(arr);
         console.log(arr);
       },
@@ -230,10 +257,25 @@ export default function ContestDetail() {
             // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
             <RankComponent
               key={Math.random()}
-              rankinfo={rank}
+              nickname={rank.accountNickname}
+              score={rank.accountScore}
+              myrank={myRank.myRank}
               index={i}
             ></RankComponent>
           ))}
+          {myRank.isExistMeInLeaderboard === true ? null : (
+            <div>
+              ...{" "}
+              <RankComponent
+                key={Math.random()}
+                nickname={accountName}
+                score={myRank.myScore}
+                myrank={myRank.myRank}
+                index={myRank.myRank}
+              ></RankComponent>
+              ...
+            </div>
+          )}
           {/* <RankComponent></RankComponent>
           <RankComponent></RankComponent> */}
         </div>

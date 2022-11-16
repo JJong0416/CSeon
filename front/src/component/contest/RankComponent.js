@@ -1,9 +1,18 @@
 import { Box, Divider } from "@mui/material";
 import "animate.css";
 export default function RankComponent(props) {
+  const myStyle = {
+    backgroundColor: "#90caf9",
+    margin: "1vh 1vh 1vh 1vh",
+  };
+  const defaultStyle = {
+    backgroundColor: "white",
+    margin: "1vh 1vh 1vh 1vh",
+  };
+
   return (
     <div
-      style={{ margin: "1vh 1vh 1vh 1vh" }}
+      style={props.index === props.myrank ? myStyle : defaultStyle}
       className="animate__animated animate__flipInX"
     >
       {props.index == 0 ? (
@@ -15,8 +24,7 @@ export default function RankComponent(props) {
       ) : (
         <p>{props.index + 1}</p>
       )}
-      {props.rankinfo.accountNickname} : {(parseInt)(props.rankinfo.accountScore)}{" "}
-      {props.index}
+      {props.nickname} : {parseInt(props.score)} {props.index}
       <Divider></Divider>
     </div>
   );
