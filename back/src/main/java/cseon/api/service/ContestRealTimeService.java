@@ -76,7 +76,7 @@ public class ContestRealTimeService extends RedisConst {
         InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
 
         Integer cor =
-                floor(redisTemplate.opsForZSet().score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 50000);
+                floor(zSetOperations.score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 5);
 
         // 정답이면 score 증가
         if (contestAnswerReq.getIsAnswer())
@@ -87,7 +87,7 @@ public class ContestRealTimeService extends RedisConst {
         score += Math.abs(ChronoUnit.SECONDS.between(now, contestAnswerReq.getEndTime())) / 100000;
 
         AccountContestAnswerDto accountContestAnswerDto =
-                new AccountContestAnswerDto(contestAnswerReq.getContestId(), score);
+                new AccountContestAnswerDto(contestAnswerReq.getContestId(), getAccountName(), score);
 
         kafkaProducerProvider.getKafkaProducer().send(
                 new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));

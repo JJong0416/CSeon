@@ -12,9 +12,9 @@ public class AccountContestAnswerDto implements Serializable {
     private final String accountName;
     private final Double score;
 
-    public AccountContestAnswerDto(Long contestId, Double score){
+    public AccountContestAnswerDto(Long contestId, String accountName, Double score){
         this.contestId = contestId;
-        this.accountName = getAccountName();
+        this.accountName = accountName;
         this.score = score;
     }
 
