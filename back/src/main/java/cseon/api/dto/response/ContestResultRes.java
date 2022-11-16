@@ -9,13 +9,16 @@ public class ContestResultRes {
 
     private final Long contestId;
 
+    private final Long workbookId;
+
     private final String contestName;
 
-    public ContestInfoRes contestInfoRes;
+    public final ContestInfoRes contestInfoRes;
 
     @Builder
-    public ContestResultRes(Long contestId, String contestName, ContestInfoRes contestInfoRes){
+    public ContestResultRes(Long contestId, Long workbookId, String contestName, ContestInfoRes contestInfoRes) {
         this.contestId = contestId;
+        this.workbookId = workbookId;
         this.contestName = contestName;
         this.contestInfoRes = contestInfoRes;
     }
