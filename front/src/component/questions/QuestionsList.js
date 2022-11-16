@@ -42,13 +42,11 @@ export default function QuestionsList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [list, setList] = useState([]);
-  // const labels = ["JAVA", "DATABASE", "SPRING", "JPA"]; // 라벨 테이블에서 API로 가져오기(2022.11.10)
   const [labels, setLabels] = useState([]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   const handleLabelChange = (e) => {
-    //axios
     console.log(e.target.value);
     if (e.target.value === "NONE") {
       console.log("allquestion api 호출");
@@ -182,12 +180,8 @@ export default function QuestionsList() {
       <div style={{ marginTop: "3vh" }}>
         <Box sx={{ minWidth: 120, mb: 4 }}>
           <FormControl sx={{ mr: 10, width: "15%" }} focused>
-            <InputLabel id="demo-simple-select-standard-label">
-              라벨 선택
-            </InputLabel>
+            <InputLabel>라벨 선택</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
               value={selectedLabel}
               onChange={handleLabelChange}
               defaultValue={"NONE"}
@@ -197,7 +191,9 @@ export default function QuestionsList() {
                 <em>선택 안함</em>
               </MenuItem>
               {labels.map((label) => (
-                <MenuItem value={label}>{label}</MenuItem>
+                <MenuItem key={label} value={label}>
+                  {label}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -206,7 +202,6 @@ export default function QuestionsList() {
             focused
             color="info"
             placeholder="문제 검색하기"
-            id="outlined-start-adornment"
             value={search}
             onChange={onChange}
             InputProps={{
@@ -223,7 +218,7 @@ export default function QuestionsList() {
                 </InputAdornment>
               ),
             }}
-          />{" "}
+          />
         </Box>
       </div>
       <div style={{ width: "90%", margin: "2vh auto" }}>
