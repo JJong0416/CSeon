@@ -65,7 +65,7 @@ spring:
 
   data:
     mongodb:
-      host: localhost
+      host: k7a606.p.ssafy.io
       port: 27017
       database: cseon
   datasource:
