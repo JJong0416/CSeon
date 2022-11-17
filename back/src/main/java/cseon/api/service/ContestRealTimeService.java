@@ -59,7 +59,6 @@ public class ContestRealTimeService extends RedisConst {
         return ContestInfoRes.builder()
                 .highRanking(topRankingPlayer)
                 .contestMyRankingRes(myRankingRes)
-                .contestProblemIdx(takeRedisUsernameIndex(contestId, username))
                 .build();
     }
 
@@ -90,6 +89,17 @@ public class ContestRealTimeService extends RedisConst {
         return true;
     }
 
+    public Integer takeRedisUsernameIndex(Long contestId) {
+        final String username = getAccountName();
+        final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
+
+        this.InitUserIndex(contestId);
+        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
+
+        return Integer.parseInt(Objects.requireNonNull(
+                hashOperations.get(CONTEST_HASH_KEY, username)));
+    }
+
     private ContestMyRankingRes SearchMyRankingInfo(
             String redisId, String username, List<RankingRes> topRankingPlayer, ZSetOperations<String, String> ZSetOperations) {
         return ContestMyRankingRes.builder()
@@ -115,13 +125,13 @@ public class ContestRealTimeService extends RedisConst {
         }
     }
 
-    private Integer takeRedisUsernameIndex(Long contestId, String username) {
+    private void InitUserIndex(Long contestId) {
+        final String username = getAccountName();
         final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
 
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
-        return Integer.parseInt(Objects.requireNonNull(
-                hashOperations.get(CONTEST_HASH_KEY, username)));
+        hashOperations.putIfAbsent(CONTEST_HASH_KEY, username, INIT_VALUE);
     }
 
     private void upstageUserIndex(Long contestId, String username, Integer contestQuestionIdx) {
@@ -129,7 +139,7 @@ public class ContestRealTimeService extends RedisConst {
 
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         if (hashOperations.get(CONTEST_HASH_KEY, username) == null) {
-            hashOperations.putIfAbsent(CONTEST_HASH_KEY, username, "-1");
+            hashOperations.putIfAbsent(CONTEST_HASH_KEY, username, INIT_VALUE);
         } else {
             hashOperations.put(CONTEST_HASH_KEY, username, String.valueOf(contestQuestionIdx));
         }

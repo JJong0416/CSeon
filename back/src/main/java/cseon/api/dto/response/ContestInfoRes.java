@@ -13,12 +13,9 @@ public class ContestInfoRes {
 
     private final ContestMyRankingRes contestMyRankingRes;
 
-    private final Integer contestProblemIdx;
-
     @Builder
-    public ContestInfoRes(List<RankingRes> highRanking, ContestMyRankingRes contestMyRankingRes, Integer contestProblemIdx) {
+    public ContestInfoRes(List<RankingRes> highRanking, ContestMyRankingRes contestMyRankingRes) {
         this.highRanking = highRanking;
         this.contestMyRankingRes = contestMyRankingRes;
-        this.contestProblemIdx = contestProblemIdx;
     }
 }
