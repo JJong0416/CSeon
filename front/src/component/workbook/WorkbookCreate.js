@@ -116,24 +116,27 @@ export default function WorkbookCreate() {
     }
   };
   const ClickRegisterRequest = () => {
-    let workbookRequest = {
-      questionId: right.map((question) => question.questionId),
-      workbookName: title,
-      workbookCreatedBy: accountName,
-    };
-    registerWorkbook(
-      workbookRequest,
-      Token,
-      (res) => {
-        console.log("registerWorkbook res.data: ", res.data);
-        navigate("/workbooklist");
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-    console.log(right + "dfsafsdfs");
-    console.log(title + "workbookname");
+    if (title === "") {
+      alert("워크북 이름을 적어주세요");
+    } else {
+      let workbookRequest = {
+        questionId: right.map((question) => question.questionId),
+        workbookName: title,
+        workbookCreatedBy: accountName,
+      };
+      registerWorkbook(
+        workbookRequest,
+        Token,
+        (res) => {
+          alert("워크북 생성완료!");
+          console.log("registerWorkbook res.data: ", res.data);
+          navigate("/workbooklist");
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   };
   const customList = (items) => (
     <Paper sx={{ height: "60vh", overflow: "auto" }}>
