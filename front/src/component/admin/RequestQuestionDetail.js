@@ -94,7 +94,7 @@ export default function RequestQuestionDetail() {
     console.log("AnswerForm");
     const clickedButtonStyle = {
       textColor: "white",
-      backgroundColor: "#90caf9",
+      backgroundColor: "#64b5f6",
       margin: "0vh 5vh 5vh 5vh",
     };
 
@@ -129,7 +129,6 @@ export default function RequestQuestionDetail() {
                   id="outlined-multiline-static"
                   placeholder="보기를 작성해주세요."
                   multiline
-                  rows={4}
                   value={
                     i === 0
                       ? answer0
@@ -209,43 +208,11 @@ export default function RequestQuestionDetail() {
   };
   return (
     <Box style={{ width: "100%", marginTop: "3vh" }}>
-      <StyledTable>
-        <thead>
-          <tr>
-            <th>
-              <input
-                type="checkbox"
-                name="select-all"
-                onChange={(e) => handleAllCheck(e.target.checked)}
-                // 데이터 개수와 체크된 아이템의 개수가 다를 경우 선택 해제 (하나라도 해제 시 선택 해제)
-                checked={selectedlabels.length === labels.length ? true : false}
-              />
-            </th>
-            <th className="second-row">라벨 목록</th>
-          </tr>
-        </thead>
-        <tbody>
-          {labels?.map((label, key) => (
-            <tr key={key}>
-              <td>
-                <input
-                  type="checkbox"
-                  name={`select-${label}`}
-                  onChange={(e) => handleSingleCheck(e.target.checked, label)}
-                  // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
-                  checked={selectedlabels.includes(label) ? true : false}
-                />
-              </td>
-              <td className="second-row">{label}</td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledTable>
       <h1 style={{ wordBreak: "break-all" }}>
         Q.{" "}
         <TextField
-          helperText="100자 이하로 작성해주세요."
           placeholder="질문을 작성해주세요."
+          multiline
           style={{ width: "70%" }}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -266,7 +233,55 @@ export default function RequestQuestionDetail() {
         value={explain}
         onChange={(e) => setExplain(e.target.value)}
       />
-      <div style={{ marginBottom: "4vh" }}>
+      <StyledTable
+        style={{ width: "60%", margin: "auto", border: "1px solid #64b5f6" }}
+      >
+        <thead>
+          <tr>
+            <th
+              style={{
+                width: "10%",
+                fontSize: "2.5vh",
+                backgroundColor: "#64b5f6",
+              }}
+            >
+              <input
+                type="checkbox"
+                name="select-all"
+                onChange={(e) => handleAllCheck(e.target.checked)}
+                // 데이터 개수와 체크된 아이템의 개수가 다를 경우 선택 해제 (하나라도 해제 시 선택 해제)
+                checked={selectedlabels.length === labels.length ? true : false}
+              />
+            </th>
+            <th style={{ fontSize: "2.5vh", backgroundColor: "#64b5f6" }}>
+              라벨 목록
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {labels?.map((label, key) => (
+            <tr key={key}>
+              <td style={{ border: "1px solid #64b5f6" }}>
+                <input
+                  type="checkbox"
+                  name={`select-${label}`}
+                  onChange={(e) => handleSingleCheck(e.target.checked, label)}
+                  // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
+                  checked={selectedlabels.includes(label) ? true : false}
+                />
+              </td>
+              <td
+                className="second-row"
+                style={{ fontSize: "2vh", border: "1px solid #64b5f6" }}
+              >
+                {" "}
+                {label}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </StyledTable>
+      <div style={{ margin: "4vh" }}>
         <Button
           size="large"
           variant="contained"

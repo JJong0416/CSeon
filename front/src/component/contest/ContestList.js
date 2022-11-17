@@ -130,7 +130,6 @@ export default function ContestList() {
                 <TableCell
                   sx={{
                     fontSize: "2.5vh",
-
                     fontFamily: "GangwonEdu_OTFBoldA",
                   }}
                   align="center"

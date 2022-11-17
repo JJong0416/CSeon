@@ -48,35 +48,90 @@ export default function RequestQuestionList() {
     navigate("/requestquestiondetail");
   };
   return (
-    <div>
+    <div style={{ width: "90%", margin: "2vh auto" }}>
+      <div style={{ marginTop: "3vh" }}>
+        {/* <input type="text" value={search} onChange={onChange} /> */}
+        <h1>요청된 문제들</h1>
+      </div>
       <TableContainer component={Paper} sx={{ mb: 4 }}>
-        <Table size="small">
-          <TableHead>
+        <Table size="large">
+          <TableHead sx={{ backgroundColor: "#64b5f6" }}>
             <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell align="left">Id</TableCell>
-              <TableCell align="left">Creator</TableCell>
-              <TableCell align="left">Title</TableCell>
+              <TableCell
+                sx={{
+                  fontSize: "2.5vh",
+                  width: "10%",
+                  fontFamily: "GangwonEdu_OTFBoldA",
+                }}
+                align="center"
+              >
+                No
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  fontSize: "2.5vh",
+                  fontFamily: "GangwonEdu_OTFBoldA",
+                }}
+                align="center"
+              >
+                문제
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  fontSize: "2.5vh",
+                  width: "10%",
+                  fontFamily: "GangwonEdu_OTFBoldA",
+                }}
+                align="center"
+              >
+                만든 이
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ questionId, accountId, questionTitle }, i) => (
-                <TableRow key={questionId}>
-                  <TableCell component="th" scope="row">
-                    {page * rowsPerPage + i + 1}
-                  </TableCell>
-                  <TableCell align="left">{questionId}</TableCell>
-                  <TableCell align="left">{accountId}</TableCell>
-                  <TableCell
-                    align="left"
-                    onClick={() => ClickTitle(questionId)}
-                  >
-                    {questionTitle}
-                  </TableCell>
-                </TableRow>
-              ))}
+              .map(
+                ({ questionId, accountId, accountName, questionTitle }, i) => (
+                  <TableRow key={questionId}>
+                    <TableCell
+                      align="center"
+                      component="th"
+                      scope="row"
+                      sx={{
+                        fontSize: "2vh",
+                        width: "10%",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                    >
+                      {page * rowsPerPage + i + 1}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      onClick={() => ClickTitle(questionId)}
+                      sx={{
+                        fontSize: "2vh",
+
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                    >
+                      {questionTitle}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        fontSize: "2vh",
+                        width: "10%",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                    >
+                      {accountName}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
           </TableBody>
           <TableFooter>
             <TableRow>

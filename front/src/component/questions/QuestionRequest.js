@@ -225,6 +225,8 @@ export default function QuestionRequest() {
           helperText="100자 이하로 작성해주세요."
           placeholder="질문을 작성해주세요."
           style={{ width: "70%" }}
+          id="outlined-multiline-static"
+          multiline
           onChange={(e) => setTitle(e.target.value)}
         />{" "}
       </h1>
@@ -239,7 +241,6 @@ export default function QuestionRequest() {
         id="outlined-multiline-static"
         placeholder="해설을 작성해주세요."
         multiline
-        rows={4}
         onChange={(e) => setExplain(e.target.value)}
       />
       <div style={{ marginBottom: "4vh" }}>

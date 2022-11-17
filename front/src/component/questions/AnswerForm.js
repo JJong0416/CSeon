@@ -41,7 +41,6 @@ export default function AnswerForm(props) {
               id="outlined-multiline-static"
               placeholder="보기를 작성해주세요."
               multiline
-              rows={4}
             />
           </Typography>
         </CardContent>

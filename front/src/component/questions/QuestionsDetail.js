@@ -95,7 +95,7 @@ export default function QuestionsDetail() {
 
                 Swal.fire({
                   html:
-                    `<table id="table" border=1>
+                    `<table id="table" style={{width : ''}}>
                   <thead>
                       <tr>
                           <th>푼 날짜</th>
