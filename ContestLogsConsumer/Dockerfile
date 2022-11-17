@@ -6,10 +6,10 @@ FROM openjdk:11-jdk
 EXPOSE 7072
 
 #가져올 파일 jar또는 war
-ARG JAR_FILE=build/libs/
+ARG JAR_FILE=build/libs/ContestLogsConsumer/
 
 #war파일 복사
-COPY ${JAR_FILE} contestapp.jar
+COPY ${JAR_FILE} app.jar
 
 #ENTRYPOINT 명령을 지정, app.war 실행
-ENTRYPOINT ["java","-jar","/contestapp.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
