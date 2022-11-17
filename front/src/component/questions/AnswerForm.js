@@ -4,19 +4,20 @@ import { useSelector } from "react-redux";
 export default function AnswerForm(props) {
   const clickedButtonStyle = {
     textColor: "white",
-    backgroundColor: "PaleTurquoise",
+    backgroundColor: "#64b5f6",
     margin: "0vh 5vh 5vh 5vh",
   };
+
   const buttonStyle = {
     textColor: "black",
     backgroundColor: "white",
     margin: "0vh 5vh 5vh 5vh",
   };
   const { icon, content, isSelected, handleClick, elementIndex } = props;
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
 
   return (
-    <Grid xs={6} sx={{ my: 5 }} style={{ textAlign: "center" }}>
+    <Grid xs={6} sx={{ mt: 5 }} style={{ textAlign: "center" }}>
       <Card
         style={isSelected ? clickedButtonStyle : buttonStyle}
         onClick={() => handleClick(elementIndex)}
@@ -40,7 +41,6 @@ export default function AnswerForm(props) {
               id="outlined-multiline-static"
               placeholder="보기를 작성해주세요."
               multiline
-              rows={4}
             />
           </Typography>
         </CardContent>

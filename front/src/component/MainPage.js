@@ -1,52 +1,65 @@
-import { useNavigate } from "react-router";
 import { useSelector } from "react-redux/es/exports";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { apitest } from "../api/user";
-import { SET_LOGOUT } from "../redux/UserInfo";
-
+import { useEffect } from "react";
+import { getUserType } from "../api/accountinfo";
+import { SET_ACCOUNT_INFO } from "../redux/AccountInfo";
+import { useDispatch } from "react-redux";
+import AOS from "aos";
+import "aos/dist/aos.css";
 export default function MainPage() {
-  const navigate = useNavigate();
-  const token = useSelector((state) => state.UserInfo.accessToken); // redux 상태관리
-
-  const [user_id, setUserId] = useState();
-  const [nickName, setNickName] = useState();
-  const [profileImage, setProfileImage] = useState();
-
-  // const getProfile = async () => {
-  //   try {
-  //     // Kakao SDK API를 이용해 사용자 정보 획득
-  //     let data = await window.Kakao.API.request({
-  //       url: "/v2/user/me",
-  //     });
-  //     // 사용자 정보 변수에 저장
-  //     setUserId(data.id);
-  //     setNickName(data.properties.nickname);
-  //     setProfileImage(data.properties.profile_image);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const token = useSelector((state) => state.AccountInfo.accessToken); // redux 상태관리
+  const dispatch = useDispatch();
   useEffect(() => {
-    console.log("token:", token);
-    apitest(
+    AOS.init();
+    console.log("mainpage render..");
+    getUserType(
       token,
       (res) => {
-        console.log(res);
+        console.log("getUserType res.data: ", res.data);
+        dispatch(SET_ACCOUNT_INFO(res.data));
       },
       (err) => {
         console.log(err);
       }
     );
-    // getProfile();
   }, []);
   return (
     <div>
-      <h2>MainPage</h2>
-      <h2>Token : {token}</h2>
-      <h2>{user_id}</h2>
-      <h2>{nickName}</h2>
-      <img src={profileImage}></img>
+      <div style={{ backgroundColor: "#64b5f6" }}>
+        {" "}
+        <img src={require("../assets/메인로고2.png")}></img>
+      </div>
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
+        {" "}
+        <img src={require("../assets/메인로고2.png")}></img>
+      </div>
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
+        {" "}
+        <img src={require("../assets/메인로고2.png")}></img>
+      </div>{" "}
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
+        {" "}
+        <img src={require("../assets/메인로고2.png")}></img>
+      </div>{" "}
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
+        {" "}
+        <img src={require("../assets/메인로고2.png")}></img>
+      </div>
     </div>
   );
 }

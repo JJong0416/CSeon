@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 export default function BasicButton(props) {
   const clickedButtonStyle = {
     textColor: "white",
-    backgroundColor: "PaleTurquoise",
+    backgroundColor: "#64b5f6",
     margin: "0vh 5vh 5vh 5vh",
   };
   const buttonStyle = {
@@ -13,7 +13,7 @@ export default function BasicButton(props) {
     margin: "0vh 5vh 5vh 5vh",
   };
   const { icon, content, isSelected, handleClick, elementIndex } = props;
-  const Token = useSelector((state) => state.UserInfo.accessToken);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
 
   return (
     <Grid xs={6} sx={{ my: 5 }} style={{ textAlign: "center" }}>
@@ -25,7 +25,7 @@ export default function BasicButton(props) {
           <Typography gutterBottom variant="h5" component="div">
             {elementIndex + 1} 번
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="h6" color="text.secondary">
             {content}
           </Typography>
         </CardContent>

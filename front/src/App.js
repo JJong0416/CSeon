@@ -10,13 +10,18 @@ import QuestionsDetail from "./component/questions/QuestionsDetail";
 import QuestionRequest from "./component/questions/QuestionRequest";
 import WorkbookList from "./component/workbook/WorkbookList";
 import WorkbookDetail from "./component/workbook/WorkbookDetail";
-import CompetitionList from "./component/competition/CompetitionList";
-import CompetitionDetail from "./component/competition/CompetitionDetail";
+import ContestList from "./component/contest/ContestList";
+import ContestDetail from "./component/contest/ContestDetail";
 import { useSelector } from "react-redux";
 import MyPage from "./component/MyPage";
+import WorkbookCreate from "./component/workbook/WorkbookCreate";
+import ContestCreate from "./component/contest/ContestCreate";
+import RequestQuestionList from "./component/admin/RequestQuestionList";
+import RequestQuestionDetail from "./component/admin/RequestQuestionDetail";
+import ContestResult from "./component/contest/ContestResult";
 
 function App() {
-  const isloggedin = useSelector((state) => state.UserInfo.loggedIn);
+  const isloggedin = useSelector((state) => state.AccountInfo.loggedIn);
   return (
     <div className="App">
       <BrowserRouter>
@@ -30,12 +35,20 @@ function App() {
           <Route path="/questionrequest" element={<QuestionRequest />}></Route>
           <Route path="/workbooklist" element={<WorkbookList />}></Route>
           <Route path="/workbookdetail" element={<WorkbookDetail />}></Route>
-          <Route path="/competitionlist" element={<CompetitionList />}></Route>
-          <Route
-            path="/competitiondetail"
-            element={<CompetitionDetail />}
-          ></Route>
+          <Route path="/workbookcreate" element={<WorkbookCreate />}></Route>
+          <Route path="/contestlist" element={<ContestList />}></Route>
+          <Route path="/contestdetail" element={<ContestDetail />}></Route>
+          <Route path="/contestcreate" element={<ContestCreate />}></Route>
+          <Route path="/contestresult" element={<ContestResult />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
+          <Route
+            path="/requestquestionlist"
+            element={<RequestQuestionList></RequestQuestionList>}
+          ></Route>
+          <Route
+            path="/requestquestiondetail"
+            element={<RequestQuestionDetail></RequestQuestionDetail>}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>

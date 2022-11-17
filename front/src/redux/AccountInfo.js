@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const tokenSlice = createSlice({
-  name: "userInfo",
+  name: "accountInfo",
   initialState: {
     accessToken: null,
-    userInfo: {
-      userName: null,
-      userNick: null,
-      userPhone: null,
-      userSeq: null,
+    accountInfo: {
+      accountRole: null,
+      accountName: null,
     },
     loggedIn: false,
   },
@@ -16,8 +14,8 @@ export const tokenSlice = createSlice({
     SET_TOKEN: (state, action) => {
       state.accessToken = action.payload;
     },
-    SET_USERINFO: (state, action) => {
-      state.userInfo = action.payload;
+    SET_ACCOUNT_INFO: (state, action) => {
+      state.accountInfo = action.payload;
     },
     SET_LOGIN: (state) => {
       state.loggedIn = true;
@@ -28,7 +26,7 @@ export const tokenSlice = createSlice({
   },
 });
 
-export const { SET_TOKEN, SET_USERINFO, SET_LOGIN, SET_LOGOUT } =
+export const { SET_TOKEN, SET_ACCOUNT_INFO, SET_LOGIN, SET_LOGOUT } =
   tokenSlice.actions;
 
 export default tokenSlice.reducer;

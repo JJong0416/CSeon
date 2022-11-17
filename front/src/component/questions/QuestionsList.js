@@ -21,17 +21,60 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box } from "@mui/system";
+import {
+  getAllQuestionList,
+  getQuestionListWithBoth,
+  getQuestionListWithKeyword,
+  getQuestionListWithLabel,
+} from "../../api/question";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_QUESTION_ID } from "../../redux/QuestionInfo";
+import { getLabels } from "../../api/label";
+
 export default function QuestionsList() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.AccountInfo.accessToken);
+  const accountRole = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountRole
+  );
   const [selectedLabel, setSelectedLabel] = useState("NONE");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [users, setUsers] = useState([]);
+  const [list, setList] = useState([]);
+  const [labels, setLabels] = useState([]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const handleLabelChange = (event) => {
-    setSelectedLabel(event.target.value);
+  const handleLabelChange = (e) => {
+    console.log(e.target.value);
+    if (e.target.value === "NONE") {
+      console.log("allquestion api 호출");
+      getAllQuestionList(
+        token,
+        (res) => {
+          console.log("getAllQuestionList res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      console.log("label api 호출");
+      getQuestionListWithLabel(
+        e.target.value,
+        token,
+        (res) => {
+          console.log("getQuestionListWithLabel res.data: ", res.data);
+          setList(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+    setSelectedLabel(e.target.value);
   };
   const handleChangeRowsPerPage = (event) => {
     console.log("handle", event.target);
@@ -39,42 +82,106 @@ export default function QuestionsList() {
     setPage(0);
   };
   useEffect(() => {
-    setUsers(
-      Array(60)
-        .fill()
-        .map(() => ({
-          id: 11,
-          label: "Java",
-          title: "java문제 제목제목",
-          solved: "X",
-        }))
+    getAllQuestionList(
+      token,
+      (res) => {
+        console.log("getAllQuestionList res.data: ", res.data);
+        setList(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    getLabels(
+      token,
+      (res) => {
+        console.log("getLabels res.data: ", res.data);
+        setLabels(res.data.split(", "));
+      },
+      (err) => {
+        console.log(err);
+      }
     );
   }, []);
   const [search, setSearch] = useState("");
   const onChange = (e) => {
-    console.log(e.target.value);
+    console.log("keyword changed..", e.target.value);
     setSearch(e.target.value);
   };
-  const ClickTitle = () => {
-    //redux에 세팅 or props
+  const ClickTitle = (questionId) => {
+    console.log("ClickTitle questionId: ", questionId);
+    dispatch(SET_QUESTION_ID(questionId));
     navigate("/questionsdetail");
   };
   const clickQuestionCreate = () => {
-    //redux에 세팅 or props
     navigate("/questionrequest");
   };
-
+  const clickQuestionConfirm = () => {
+    navigate("/requestquestionlist");
+  };
+  const ClickSearchBtn = () => {
+    console.log(selectedLabel, search);
+    if (search !== "") {
+      if (selectedLabel === "NONE") {
+        getQuestionListWithKeyword(
+          search,
+          token,
+          (res) => {
+            console.log("getQuestionListWithKeyword res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } else {
+        getQuestionListWithBoth(
+          selectedLabel,
+          search,
+          token,
+          (res) => {
+            console.log("getQuestionListWithBoth res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
+    } else {
+      if (selectedLabel === "NONE") {
+        getAllQuestionList(
+          token,
+          (res) => {
+            console.log("getAllQuestionList res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } else {
+        getQuestionListWithLabel(
+          selectedLabel,
+          token,
+          (res) => {
+            console.log("getQuestionListWithLabel res.data: ", res.data);
+            setList(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
+    }
+  };
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
         <Box sx={{ minWidth: 120, mb: 4 }}>
-          <FormControl sx={{ mr: 15, minWidth: 120 }} focused>
-            <InputLabel id="demo-simple-select-standard-label">
-              라벨 선택
-            </InputLabel>
+          <FormControl sx={{ mr: 10, width: "15%" }} focused>
+            <InputLabel>라벨 선택</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
               value={selectedLabel}
               onChange={handleLabelChange}
               defaultValue={"NONE"}
@@ -83,17 +190,18 @@ export default function QuestionsList() {
               <MenuItem value={"NONE"}>
                 <em>선택 안함</em>
               </MenuItem>
-              <MenuItem value={"OS"}>운영체제</MenuItem>
-              <MenuItem value={"JAVA"}>자바</MenuItem>
-              <MenuItem value={"DATASTRUCTURE"}>자료 구조</MenuItem>
+              {labels.map((label) => (
+                <MenuItem key={label} value={label}>
+                  {label}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField
-            sx={{ ml: 15 }}
+            sx={{ ml: 10, width: "50%" }}
             focused
             color="info"
             placeholder="문제 검색하기"
-            id="outlined-start-adornment"
             value={search}
             onChange={onChange}
             InputProps={{
@@ -103,6 +211,7 @@ export default function QuestionsList() {
                     type="button"
                     sx={{ p: "10px" }}
                     aria-label="search"
+                    onClick={ClickSearchBtn}
                   >
                     <SearchIcon />
                   </IconButton>
@@ -111,50 +220,110 @@ export default function QuestionsList() {
             }}
           />
         </Box>
-        {/* <input type="text" value={search} onChange={onChange} /> */}
       </div>
-      <TableContainer component={Paper} sx={{ mb: 4 }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell align="right">Id</TableCell>
-              <TableCell align="right">Label</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Solved</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users
-              .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(({ id, label, title, solved }, i) => (
-                <TableRow key={id}>
-                  <TableCell component="th" scope="row">
-                    {page * rowsPerPage + i + 1}
-                  </TableCell>
-                  <TableCell align="right">{id}</TableCell>
-                  <TableCell align="right">{label}</TableCell>
-                  <TableCell align="right" onClick={ClickTitle}>
-                    {title}
-                  </TableCell>
-                  <TableCell align="right">{solved}</TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={users.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-      <Button onClick={clickQuestionCreate}>문제 만들기</Button>
+      <div style={{ width: "90%", margin: "2vh auto" }}>
+        <TableContainer component={Paper} sx={{ mb: 4 }}>
+          <Table size="large">
+            <TableHead sx={{ backgroundColor: "#64b5f6" }}>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  No
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  문제
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {list
+                .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                .map(({ questionId, questionTitle }, i) => (
+                  <TableRow key={questionId}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{
+                        fontSize: "2vh",
+                        width: "10%",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      align="center"
+                    >
+                      {page * rowsPerPage + i + 1}
+                    </TableCell>
+
+                    {/* <TableCell align="right">
+                    {label.map((l) => ({ l }))}
+                  </TableCell> */}
+                    <TableCell
+                      sx={{
+                        fontSize: "2vh",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      align="center"
+                      onClick={() => ClickTitle(questionId)}
+                    >
+                      {questionTitle}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={list.length}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+
+        {accountRole === "USER" ? (
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: "#64b5f6",
+              float: "right",
+              margin: "0vh 4vh 4vh 0vh",
+            }}
+            onClick={clickQuestionCreate}
+          >
+            문제 만들기
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            variant="contained"
+            style={{
+              backgroundColor: "#64b5f6",
+              float: "right",
+              margin: "0vh 4vh 4vh 0vh",
+            }}
+            onClick={clickQuestionConfirm}
+          >
+            요청 문제 확인
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

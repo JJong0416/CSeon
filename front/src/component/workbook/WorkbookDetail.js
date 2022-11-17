@@ -1,73 +1,197 @@
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import MoodIcon from "@mui/icons-material/Mood";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import { getWorkbookQuestion } from "../..//api/workbook";
-import { getQuestion } from "../../api/question";
+import { getWorkbook } from "../..//api/workbook";
+import { getQuestion, registerLogs, getLogs } from "../../api/question";
 import Swal from "sweetalert2";
 
-// CommonJS
-
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  getListItemAvatarUtilityClass,
-  Grid,
-  Slide,
-  Typography,
-} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { forwardRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SideBar from "../SideBar";
 import { useDispatch, useSelector } from "react-redux";
-import BasicButton from "./BasicButton";
+import BasicButton from "../BasicButton";
 import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+
 export default function WorkbookDetail() {
   const Swal = require("sweetalert2");
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  const Token = useSelector((state) => state.AccountInfo.accessToken);
+  const [questionId, setQuestionId] = useState(1);
+  const [questionTitle, setQuestionTitle] = useState("");
+  const [questionExp, setQuestionExp] = useState("");
+  const [answerRes, setAnswerRes] = useState([[], 0]);
+  const questionIndex = useSelector(
+    (state) => state.QuestionInfo.questionIndex
+  );
+  const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
+  const [questionList, setQuestionList] = useState([]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
-
+  const [questionLog, setQuestionLog] = useState([
+    { time: "", isRight: false, selected: 1 },
+  ]);
   const handleClick = (idx) => {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
     setIsCategorySelect(newArr);
     console.log(newArr);
-    handleClickOpen();
 
     console.log("answerRes", answerRes[1], questionExp);
+    var data2 = [];
+
+    const answerRequestReq = {
+      questionId: questionId,
+      checkNumber: idx,
+      isAnswer: answerRes[1] !== idx ? false : true,
+    };
+
+    registerLogs(
+      answerRequestReq,
+      Token,
+      (res) => {
+        console.log(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
 
     if (answerRes[1] !== idx) {
       Swal.fire({
-        icon: "error",
         title: "틀렸습니다.",
-        text: questionExp,
+        icon: "error",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "해설 보기",
+        denyButtonText: `풀이 내역보기`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire(questionExp, "", "info");
+        } else if (result.isDenied) {
+          getLogs(
+            questionId,
+            Token,
+            (res) => {
+              console.log(res.data);
+              setQuestionLog(res.data);
+              var data2 = [];
+              for (var i = res.data.length - 1; i >= 0; i--) {
+                var isAnswer = "";
+                if (res.data[i].isAnswer) {
+                  isAnswer = "O";
+                } else {
+                  isAnswer = "X";
+                }
+                data2.push(
+                  "<tr>",
+                  '<td align="center">' +
+                    res.data[i].timestamp.split("T")[0] +
+                    " " +
+                    res.data[i].timestamp.split("T")[1].split(".")[0] +
+                    "</td>",
+
+                  '<td align="center">' + isAnswer + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
+                  "</tr>"
+                );
+
+                Swal.fire({
+                  html:
+                    `<table id="table" border=1>
+                  <thead>
+                      <tr>
+                          <th>푼 날짜</th>
+                          <th>정답 여부</th>
+                          <th>선택한 답</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+             ` +
+                    data2.join("") +
+                    `         
+          </tbody>
+          </table>`,
+                });
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
       });
     } else if (answerRes[1] === idx) {
       Swal.fire({
-        icon: "success",
         title: "맞았습니다.",
-        text: questionExp,
+        icon: "success",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "해설 보기",
+        denyButtonText: `풀이 내역보기`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire(questionExp, "", "info");
+        } else if (result.isDenied) {
+          getLogs(
+            questionId,
+            Token,
+            (res) => {
+              console.log(res.data);
+              setQuestionLog(res.data);
+              var data2 = [];
+              for (var i = res.data.length - 1; i >= 0; i--) {
+                var isAnswer = "";
+                if (res.data[i].isAnswer) {
+                  isAnswer = "O";
+                } else {
+                  isAnswer = "X";
+                }
+                data2.push(
+                  "<tr>",
+                  '<td align="center">' +
+                    res.data[i].timestamp.split("T")[0] +
+                    " " +
+                    res.data[i].timestamp.split("T")[1].split(".")[0] +
+                    "</td>",
+
+                  '<td align="center">' + isAnswer + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
+                  "</tr>"
+                );
+
+                Swal.fire({
+                  html:
+                    `<table id="table" border=1>
+                  <thead>
+                      <tr>
+                          <th>푼 날짜</th>
+                          <th>정답 여부</th>
+                          <th>선택한 답</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+             ` +
+                    data2.join("") +
+                    `         
+          </tbody>
+          </table>`,
+                });
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
       });
     }
     // 사용자 로그 찍는거
@@ -77,16 +201,6 @@ export default function WorkbookDetail() {
     console.log(data);
     dispatch(SET_QUESTION_INDEX(data));
   };
-  const Token = useSelector((state) => state.UserInfo.accessToken);
-  const [questionId, setQuestionId] = useState(1);
-  const [questionTitle, setQuestionTitle] = useState("");
-  const [questionExp, setQuestionExp] = useState("");
-  const [answerRes, setAnswerRes] = useState([[], 0]);
-  const questionIndex = useSelector(
-    (state) => state.QuestionInfo.questionIndex
-  ); // redux 상태관리
-  const [workbookId, setWorkbookId] = useState(1);
-  const [questionList, setQuestionList] = useState([]);
 
   const prevQuestion = () => {
     if (questionIndex > 0) {
@@ -94,7 +208,7 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(0));
     }
-    console.log("prev" + questionIndex);
+    console.log("prev move:", questionIndex);
   };
 
   const nextQuestion = () => {
@@ -103,23 +217,22 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(questionList.length - 1));
     }
-    console.log(questionIndex);
+    console.log("next move:", questionIndex);
   };
 
   useEffect(() => {
+    console.log("workbookdeatil rendering.... workbookId:", workbookId);
     dispatch(SET_QUESTION_INDEX(0));
-    getWorkbookQuestion(
+    getWorkbook(
       workbookId,
       Token,
       (res) => {
-        console.log(res.data.questionList.split(", ")[questionIndex]);
-        setQuestionList(res.data.questionList.split(", "));
-        setQuestionId(res.data.questionList.split(", ")[questionIndex]);
-        console.log(
-          res.data.questionList.split(", ")[0] + "----------------------"
-        );
+        console.log("res.data:", res.data);
+        setQuestionList(res.data.questionIdList);
+        setQuestionId(res.data.questionIdList[questionIndex]);
+        console.log(questionId, "----------------------");
         getQuestion(
-          questionId,
+          res.data.questionIdList[questionIndex],
           Token,
           (res) => {
             console.log(res.data);
@@ -145,7 +258,9 @@ export default function WorkbookDetail() {
   }, []);
 
   useEffect(() => {
-    console.log(questionList);
+    console.log("questionIndex changed...", questionIndex);
+    console.log("questionInfo:", questionList);
+    setQuestionId(questionList[questionIndex]);
     if (questionList.length !== 0) {
       getQuestion(
         questionList[questionIndex],
