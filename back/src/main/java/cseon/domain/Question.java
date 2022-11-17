@@ -19,10 +19,12 @@ public class Question {
     @Column(name = "question_id", unique = true)
     private Long questionId;
 
-    @Column(name = "question_title", length = 200, nullable = false)
+    @Lob
+    @Column(name = "question_title", nullable = false)
     private String questionTitle;
 
-    @Column(name = "question_exp", length = 200, nullable = false)
+    @Lob
+    @Column(name = "question_exp", nullable = false)
     private String questionExp;
 
     @OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
