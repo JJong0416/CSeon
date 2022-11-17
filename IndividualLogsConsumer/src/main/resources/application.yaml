@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+    listener:
+      type: batch
+      ack-mode: manual_immediate
+  data:
+    mongodb:
+      port: 27017
+      host: localhost
+      database: cseon

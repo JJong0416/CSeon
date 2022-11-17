@@ -1,18 +1,13 @@
 package cseon.api.service;
 
 import cseon.api.dto.response.AccountDetailsRes;
-import cseon.api.dto.response.BadgeResponseRes;
+import cseon.api.dto.response.AccountTypeRes;
+import cseon.api.dto.response.BadgeRes;
 import cseon.api.dto.response.WorkbookRes;
-import cseon.api.repository.AccountBadgeRepository;
-import cseon.api.repository.AccountRepository;
-import cseon.api.repository.BadgeRepository;
-import cseon.api.repository.WorkbookRepository;
+import cseon.api.repository.*;
 import cseon.common.exception.CustomException;
 import cseon.common.exception.ErrorCode;
-import cseon.domain.Account;
-import cseon.domain.AccountBadge;
-import cseon.domain.Badge;
-import cseon.domain.Workbook;
+import cseon.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +25,7 @@ public class AccountService {
     private final WorkbookRepository workbookRepository;
     private final AccountBadgeRepository accountBadgeRepository;
     private final BadgeRepository badgeRepository;
+    private final SolvedRepository solvedRepository;
 
 
     @Transactional(readOnly = true, rollbackFor = NullPointerException.class)
@@ -50,35 +46,56 @@ public class AccountService {
                 .collect(Collectors.toList());
 
         // 3. BadgeName을 가져오기 위해 DB를 찔러준다.
-        Badge badge = readBadge(account.getUsingBadgeId());
-        // 3. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
+        var badge = readBadge(account.getUsingBadgeId());
+
+        // 4. 맞은 문제 리스트, 틀린 문제 리스트를 가져온다.
+        SolvedQuestion lists = solvedRepository.findById(getAccountName())
+                .orElseGet(() -> new SolvedQuestion(getAccountName()));
+        lists.nullCheck();
+
+        // 5. 그 후, 필요로 하는 정보들을 Response에 담아 전송한다
         return AccountDetailsRes.builder()
-                .accountRole(account.getAccountRole())
                 .accountSuccessCount(account.getSuccessCount())
                 .badgeName(badge.getBadgeName())
                 .workbooks(workbookRes)
+                .correct(lists.getCorrectQuestion())
+                .wrong(lists.getWrongQuestion())
                 .build();
     }
 
 
     @Transactional(readOnly = true)
-    public List<BadgeResponseRes> getMyBadge() {
+    public List<BadgeRes> getMyBadge() {
         String accountName = getAccountName();
 
-        Account account = hasAccountWithAccountName(accountName);
+        var account = hasAccountWithAccountName(accountName);
 
         List<AccountBadge> accountBadges = accountBadgeRepository.findAccountBadgeByAccount(account);
 
-        List<BadgeResponseRes> badges = accountBadges.stream()
+        return accountBadges.stream()
                 .map(AccountBadge::getBadgeId)
                 .map(this::readBadge)
-                .map(badge -> BadgeResponseRes.builder()
+                .map(badge -> BadgeRes.builder()
                         .badgeId(badge.getBadgeId())
                         .badgeName(badge.getBadgeName())
                         .badgeExp(badge.getBadgeExp()).build())
                 .collect(Collectors.toList());
+    }
 
-        return badges;
+    @Transactional(readOnly = true)
+    public Account getAccountEntity() {
+        return accountRepository.findAccountByAccountName(getAccountName()).orElseThrow(() -> {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public AccountTypeRes getAccountInfo() {
+        Account account = hasAccountWithAccountName(getAccountName());
+        return AccountTypeRes.builder()
+                .accountRole(account.getAccountRole())
+                .accountName(account.getAccountName())
+                .build();
     }
 
     private Account hasAccountWithAccountName(String accountName) {

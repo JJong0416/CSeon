@@ -7,7 +7,6 @@ import cseon.common.jwt.JwtSecurityConfig;
 import cseon.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,7 +35,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -47,11 +45,14 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
+
                 .antMatchers("/api/login/**", "/api/contest/**").permitAll()
-                .antMatchers("/api/mypage/**",
+                .antMatchers(
+                        "/api/mypage/**",
+                        "/api/accountInfo/**",
                         "/api/request/question",
                         "/api/question/**",
-                        "/api/workbook/**").hasAnyRole("ADMIN","USER")
+                        "/api/workbook/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/api/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
 

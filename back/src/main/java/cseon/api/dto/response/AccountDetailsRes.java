@@ -1,6 +1,5 @@
 package cseon.api.dto.response;
 
-import cseon.domain.type.AccountRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,21 +8,25 @@ import java.util.List;
 @Getter
 public class AccountDetailsRes {
 
-    private final AccountRole accountRole;
-
     private final Integer accountSuccessCount;
 
     private final String badgeName;
 
     private final List<WorkbookRes> workbooks;
 
+    private final List<Long> correctQuestion;
+
+    private final List<Long> wrongQuestion;
+
     @Builder
-    public AccountDetailsRes(
-            AccountRole accountRole, Integer accountSuccessCount, String badgeName, List<WorkbookRes> workbooks
+    public AccountDetailsRes(Integer accountSuccessCount, String badgeName, List<WorkbookRes> workbooks,
+                             List<Long> correct, List<Long> wrong
     ) {
-        this.accountRole = accountRole;
+
         this.accountSuccessCount = accountSuccessCount;
         this.badgeName = badgeName;
         this.workbooks = workbooks;
+        this.correctQuestion = correct;
+        this.wrongQuestion = wrong;
     }
 }

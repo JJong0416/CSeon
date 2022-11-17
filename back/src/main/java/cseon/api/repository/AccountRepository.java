@@ -15,8 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Account account SET account.successCount = account.successCount+1 WHERE account.accountId = :accountId")
-    Boolean updateAccountSuccess(Long accountId);
-
+    Integer updateAccountSuccess(Long accountId);
 
     Optional<Account> findAccountByAccountName(String accountName);
 }

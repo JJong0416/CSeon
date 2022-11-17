@@ -1,7 +1,7 @@
 package cseon.api.controller;
 
-import cseon.api.dto.request.QuestionRequestReq;
-import cseon.api.service.QuestionService;
+import cseon.api.dto.request.QuestionReq;
+import cseon.api.service.QuestionOperationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,14 +19,14 @@ import javax.validation.Valid;
 @Tag(name = "RequestQuestion", description = "요청 문제 관련 API")
 public class AccountQuestionController {
 
-    private final QuestionService questionService;
+    private final QuestionOperationService questionOperationService;
 
     /**
      * 유저가 추가하고싶은 문제를 추가해서 요청한다.
      */
     @PostMapping
-    public ResponseEntity<HttpStatus> requestQuestionFromAccount(@Valid @RequestBody QuestionRequestReq questionRequestReq) {
-        questionService.requestQuestionAddBoard(questionRequestReq);
+    public ResponseEntity<HttpStatus> requestQuestionFromAccount(@Valid @RequestBody QuestionReq questionReq) {
+        questionOperationService.requestQuestionAddBoard(questionReq);
         return ResponseEntity.ok().build();
     }
 }

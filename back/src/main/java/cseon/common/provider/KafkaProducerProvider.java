@@ -16,7 +16,7 @@ public class KafkaProducerProvider {
     private KafkaProducer<String, String> kafkaProducer;
 
     @PostConstruct
-    protected void init(){
+    protected void init() {
         this.kafkaProducer = new KafkaProducer<String, String>(kafkaProducerConfig.kafkaProducerConfigs());
     }
 }

@@ -8,7 +8,7 @@ jwt:
 
 kakao:
   client-secret: Fq2yn3jnwEJur8eRyJH6yKD57fMSL92J
-  redirect-uri: http://localhost:3000/oauth/redirect
+  redirect-uri: http://k7a606.p.ssafy.io/oauth/redirect
   client-id: 237be15b2e18e8a188bff253550e714c
   token-uri: https://kauth.kakao.com/oauth/token
 
@@ -33,7 +33,7 @@ spring:
         registration:
           kakao:
             client-secret: Fq2yn3jnwEJur8eRyJH6yKD57fMSL92J
-            redirect-uri: http://localhost:3000/oauth/redirect
+            redirect-uri: http://k7a606.p.ssafy.io/oauth/redirect
             authorization-grant-type: authorization_code
             client-id: 237be15b2e18e8a188bff253550e714c
             scope: profile_nickname, profile_image, account_email

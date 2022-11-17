@@ -16,4 +16,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findQuestionsByLabelAndKeyword(@Param("keyword") String keyword);
 
     Optional<Question> findQuestionByQuestionId(Long questionId);
+
+    List<Question> findQuestionsByQuestionTitleContaining(String keyword);
+
+    @Query("SELECT DISTINCT q FROM Question q LEFT JOIN FETCH q.labels")
+    List<Question> findQuestionsByLabels();
 }

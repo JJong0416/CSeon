@@ -12,7 +12,7 @@ public class MessageResponse {
 
     String message;
 
-    public static MessageResponse of(HttpStatus httpStatus, String message){
+    public static MessageResponse of(HttpStatus httpStatus, String message) {
         return new MessageResponse(httpStatus, message);
     }
 }
