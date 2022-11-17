@@ -55,8 +55,8 @@ public class LogsService {
 
             logger.info("5");
             // 틀린 문제, 맞은 문제 저장
-            solvedRepository.save(accountSolved);
-            solvedRepository.flush();
+            solvedRepository.saveAndFlush(accountSolved);
+            
         }
 
         // Kafka offset commit
