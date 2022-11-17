@@ -17,6 +17,7 @@ export default function ContestResult() {
     (state) => state.AccountInfo.accountInfo.accountName
   );
   const goWorkbookDetail = () => {
+    console.log("워크북 가기 클릭", workbookId)
     dispatch(SET_WORKBOOK_INDEX(workbookId));
     navigate("/workbookdetail");
   };
