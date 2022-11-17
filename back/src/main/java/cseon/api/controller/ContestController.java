@@ -68,9 +68,4 @@ public class ContestController extends ControllerConstant {
         boolean res = contestRealTimeService.pushAccountContestAnswer(contestAnswerReq);
         return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.of(HttpStatus.OK, res ? SUCCESS : FAIL));
     }
-
-    @GetMapping("/test")
-    public void test1() {
-        contestRealTimeService.upstageUserIndex(1L,"jjong111111", 5);
-    }
 }

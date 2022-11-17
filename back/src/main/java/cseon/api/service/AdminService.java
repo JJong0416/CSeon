@@ -34,9 +34,12 @@ public class AdminService {
 
         // requestList 안의 내용을 questionDto로 변경
         return requestList.stream()
-                .map(accountRequestQuestion -> new QuestionDto(accountRequestQuestion.getRequestQuestionId(),
-                        accountRequestQuestion.getRequestQuestionTitle(),
-                        accountRequestQuestion.getAccount().getAccountId()))
+                .map(requestQuestion -> QuestionDto.builder()
+                        .questionId(requestQuestion.getRequestQuestionId())
+                        .questionTitle(requestQuestion.getRequestQuestionTitle())
+                        .accountId(requestQuestion.getAccount().getAccountId())
+                        .accountName(requestQuestion.getAccount().getAccountName())
+                        .build())
                 .collect(Collectors.toList());
     }
 
