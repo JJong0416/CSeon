@@ -22,7 +22,10 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import SearchIcon from "@mui/icons-material/Search";
 import { getAllWorkbookList, getWorkbookWithKeyWord } from "../../api/workbook";
 import { createContest } from "../../api/contest";
+import { useNavigate } from "react-router";
 export default function ContestCreate() {
+
+  const navigate = useNavigate();
   const dispatch = new useDispatch();
   const Token = useSelector((state) => state.AccountInfo.accessToken);
   const [value, setValue] = useState("");
@@ -126,7 +129,9 @@ export default function ContestCreate() {
         contestReq,
         Token,
         (res) => {
+          alert("요청 성공")
           console.log("createContest res.data: ", res.data);
+          navigate("/contestlist");
         },
         (err) => {
           console.log(err);

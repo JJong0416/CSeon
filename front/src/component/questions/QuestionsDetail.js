@@ -194,19 +194,18 @@ export default function QuestionsDetail() {
     // 사용자 로그 찍는거
   };
   useEffect(() => {
+    console.log("getQuestion API start..");
     getQuestion(
       questionId,
       Token,
       (res) => {
-        console.log(res.data);
+        console.log("getQuestion res.data:", res.data);
         setQuestionTitle(res.data.questionTitle);
         setQuestionExp(res.data.questionExp);
         setAnswerRes([
           res.data.answerRes.answers,
           res.data.answerRes.rightAnswer,
         ]);
-        console.log(res.data.answerRes);
-        console.log(answerRes[0]);
         setAnswerList(res.data.answerRes.answers);
       },
       (err) => {

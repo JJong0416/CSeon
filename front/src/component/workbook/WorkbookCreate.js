@@ -25,6 +25,7 @@ import {
   getQuestionListWithKeyword,
 } from "../../api/question";
 import { registerWorkbook } from "../../api/workbook";
+import { useNavigate } from "react-router";
 function not(a, b) {
   return a.filter((value) => b.indexOf(value) === -1);
 }
@@ -34,6 +35,7 @@ function intersection(a, b) {
 }
 
 export default function WorkbookCreate() {
+  const navigate = useNavigate();
   const accountName = useSelector(
     (state) => state.AccountInfo.accountInfo.accountName
   );
@@ -48,7 +50,7 @@ export default function WorkbookCreate() {
     getAllQuestionList(
       Token,
       (res) => {
-        console.log(res.data);
+        console.log("getAllQuestionList res.data: ", res.data);
         setLeft(res.data);
       },
       (err) => {
@@ -124,6 +126,7 @@ export default function WorkbookCreate() {
       Token,
       (res) => {
         console.log("registerWorkbook res.data: ", res.data);
+        navigate("/workbooklist");
       },
       (err) => {
         console.log(err);

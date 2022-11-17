@@ -12,6 +12,7 @@ import {
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import { getRequestQuestion, AdoptRequestQuestion } from "../../api/admin";
 import { getLabels } from "../../api/label";
 
@@ -42,6 +43,7 @@ const StyledTable = styled.table`
 `;
 
 export default function RequestQuestionDetail() {
+  const navigate = useNavigate();
   const requestquestionId = useSelector(
     (state) => state.QuestionInfo.requestquestionId
   );
@@ -82,7 +84,9 @@ export default function RequestQuestionDetail() {
       requestQuestionInfo,
       token,
       (res) => {
+        alert("등록 성공")
         console.log("AdoptRequestQuestion res.data: ", res.data);
+        navigate("/requestquestionlist");
       },
       (err) => {
         console.log(err);
