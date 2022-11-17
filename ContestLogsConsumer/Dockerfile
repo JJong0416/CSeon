@@ -9,7 +9,7 @@ EXPOSE 7072
 ARG JAR_FILE=build/libs/
 
 #war파일 복사
-COPY ${JAR_FILE} app.jar
+COPY ${JAR_FILE} contestapp.jar
 
 #ENTRYPOINT 명령을 지정, app.war 실행
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/contestapp.jar"]
