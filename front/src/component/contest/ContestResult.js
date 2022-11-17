@@ -25,21 +25,11 @@ export default function ContestResult() {
       contestId,
       Token,
       (res) => {
-        console.log("", res.data);
+        console.log("getContestResult res.data: ", res.data);
         setWorkbookId(res.data.workbookId);
-        console.log("getContestRanking res.data: ", res.data);
-        let arr = [...res.data.contestInfoRes.highRanking];
-        arr.push({ accountNickname: "경준", accountScore: 14.8734 });
-        arr.push(res.data.contestInfoRes.highRanking[0]);
-        arr.push(res.data.contestInfoRes.highRanking[0]);
-        arr.push(res.data.contestInfoRes.highRanking[0]);
-        arr.push(res.data.contestInfoRes.highRanking[0]);
-        arr.push(res.data.contestInfoRes.highRanking[0]);
-        setRanking(arr);
+        setRanking(res.data.contestInfoRes.highRanking);
 
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
-
-        console.log(arr);
       },
       (err) => {
         console.log(err);

@@ -162,17 +162,9 @@ export default function ContestDetail() {
       Token,
       (res) => {
         console.log("getContestRanking res.data: ", res.data);
-        let arr = [...res.data.highRanking];
-        arr.push({ accountNickname: "경준", accountScore: 14.8734 });
-        arr.push(res.data.highRanking[0]);
-        arr.push(res.data.highRanking[0]);
-        arr.push(res.data.highRanking[0]);
-        arr.push(res.data.highRanking[0]);
-        arr.push(res.data.highRanking[0]);
         setMyRank(res.data.contestMyRankingRes);
 
-        setRanking(arr);
-        console.log(arr);
+        setRanking(res.data.highRanking);
       },
       (err) => {
         console.log(err);
@@ -216,7 +208,14 @@ export default function ContestDetail() {
         {answerList != null && answerList.length > 0 ? (
           <div>
             {" "}
-            <Box sx={{ width: "90%", margin: "auto", display: "block", whiteSpace:"pre-line" }}>
+            <Box
+              sx={{
+                width: "90%",
+                margin: "auto",
+                display: "block",
+                whiteSpace: "pre-line",
+              }}
+            >
               <br />
               <br></br>
               <h1
