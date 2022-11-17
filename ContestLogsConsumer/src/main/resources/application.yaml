@@ -1,0 +1,12 @@
+spring:
+  redis:
+    port: 6379
+    host: localhost
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+    listener:
+      ack-mode: manual_immediate
+      type: batch
