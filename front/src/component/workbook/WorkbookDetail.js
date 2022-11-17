@@ -315,7 +315,7 @@ export default function WorkbookDetail() {
           <span>
             {" "}
             {answerRes[0] != null && answerRes[0].length > 0 ? (
-              <Box sx={{ width: "100%" }}>
+              <Box sx={{ width: "100%", whiteSpace:"pre-line" }}>
                 <h1 style={{ wordBreak: "break-all" }}>Q. {questionTitle}</h1>
                 <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
                   {/* <Grid item xs={6} sx={{ my: 5 }}>

@@ -236,10 +236,20 @@ export default function QuestionsDetail() {
             </Button>
             <br />
             <br></br>
-            <h1 style={{ wordBreak: "break-all", width: "100%" }}>
+            <h1
+              style={{
+                wordBreak: "break-all",
+                width: "100%",
+                whiteSpace: "pre-line",
+              }}
+            >
               Q. {questionTitle}
             </h1>
-            <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
+            <Grid
+              style={{ textAlign: "center", whiteSpace: "pre-line" }}
+              container
+              rowSpacing={1}
+            >
               {/* <Grid item xs={6} sx={{ my: 5 }}>
                   <Card sx={{ maxWidth: 345 }}>
                     <CardContent>

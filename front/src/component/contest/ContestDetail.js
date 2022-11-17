@@ -216,7 +216,7 @@ export default function ContestDetail() {
         {answerList != null && answerList.length > 0 ? (
           <div>
             {" "}
-            <Box sx={{ width: "90%", margin: "auto", display: "block" }}>
+            <Box sx={{ width: "90%", margin: "auto", display: "block", whiteSpace:"pre-line" }}>
               <br />
               <br></br>
               <h1
