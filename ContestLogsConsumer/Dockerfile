@@ -6,7 +6,7 @@ FROM openjdk:11-jdk
 EXPOSE 7072
 
 #가져올 파일 jar또는 war
-ARG JAR_FILE=build/libs/ContestLogsConsumer/
+ARG JAR_FILE=build/libs/ContestLogsConsumer-0.0.1-SNAPSHOT.jar
 
 #war파일 복사
 COPY ${JAR_FILE} app.jar
