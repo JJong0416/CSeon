@@ -93,7 +93,7 @@ public class ContestRealTimeService extends RedisConst {
         final String username = getAccountName();
         final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
 
-        this.InitUserIndex(contestId);
+        this.InitUserIndex(username, CONTEST_HASH_KEY);
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
         return Integer.parseInt(Objects.requireNonNull(
@@ -125,24 +125,17 @@ public class ContestRealTimeService extends RedisConst {
         }
     }
 
-    private void InitUserIndex(Long contestId) {
-        final String username = getAccountName();
-        final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
+    private void InitUserIndex(String username, String hashContestId) {
 
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 
-        hashOperations.putIfAbsent(CONTEST_HASH_KEY, username, INIT_VALUE);
+        hashOperations.putIfAbsent(hashContestId, username, INIT_VALUE);
     }
 
     private void upstageUserIndex(Long contestId, String username, Integer contestQuestionIdx) {
         final String CONTEST_HASH_KEY = HASH_PREFIX_ID + contestId;
-
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-        if (hashOperations.get(CONTEST_HASH_KEY, username) == null) {
-            hashOperations.putIfAbsent(CONTEST_HASH_KEY, username, INIT_VALUE);
-        } else {
-            hashOperations.put(CONTEST_HASH_KEY, username, String.valueOf(contestQuestionIdx));
-        }
+        hashOperations.put(CONTEST_HASH_KEY, username, String.valueOf(contestQuestionIdx));
     }
 
     private List<RankingRes> SearchTopRankingPlayer(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
