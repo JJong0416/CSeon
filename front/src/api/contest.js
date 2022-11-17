@@ -63,6 +63,15 @@ function getContestResult(contestId, token, success, error) {
     .catch(error);
 }
 
+function getQuestionIndex(contestId, token, success, error) {
+  instance
+    .get(`/contest/${contestId}/index`, {
+      headers: createHeaders(token),
+    })
+    .then(success)
+    .catch(error);
+}
+
 export {
   getAllContestList,
   checkValidation,
@@ -71,4 +80,5 @@ export {
   submitContestAnswer,
   getContestRanking,
   getContestResult,
+  getQuestionIndex,
 };

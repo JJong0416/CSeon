@@ -9,6 +9,7 @@ import {
   getContestQuestions,
   submitContestAnswer,
   getContestRanking,
+  getQuestionIndex,
 } from "../../api/contest";
 import { useNavigate } from "react-router";
 import useInterval from "./useInterval";
@@ -59,6 +60,7 @@ export default function ContestDetail() {
       problemIdx: index,
       endTime: contestEndTime,
     };
+    console.log("jfashdfuaselfajhef" + contestAnswerReq.problemIdx);
 
     if (index + 1 < contestQuestionList.length) {
       setIndex(index + 1);
@@ -103,10 +105,28 @@ export default function ContestDetail() {
       (res) => {
         console.log(res.data);
         setContestQuestionList(res.data);
-
         setQuestionTitle(res.data[index].questionTitle);
         setAnswerList(res.data[index].answerRes.answers);
         setRightAnswer(res.data[index].answerRes.rightAnswer);
+        const listSize = res.data.length;
+
+        getQuestionIndex(
+          contestId,
+          Token,
+          (res) => {
+            console.log("getQuestionIndex", res.data + 1);
+            console.log(listSize + "sdfasdf");
+            if (listSize > res.data + 1) {
+              setIndex(res.data + 1);
+            } else {
+              navigate("/mainpage");
+              alert("대회 참여가 종료되었습니다.");
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
         getContestRanking(
           contestId,
           Token,
@@ -247,7 +267,6 @@ export default function ContestDetail() {
             src="img/ranking.png"
             style={{ width: "25%", marginTop: "2vh" }}
           ></img>
-          <h1></h1>
           <Divider></Divider>
           <Divider></Divider>
           <Divider></Divider>
@@ -263,7 +282,8 @@ export default function ContestDetail() {
               index={i}
             ></RankComponent>
           ))}
-          {myRank.isExistMeInLeaderboard === true ? null : (
+          {myRank.isExistMeInLeaderboard === true ||
+          ranking.length <= 0 ? null : (
             <div>
               ...{" "}
               <RankComponent

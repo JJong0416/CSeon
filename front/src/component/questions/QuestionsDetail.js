@@ -86,21 +86,24 @@ export default function QuestionsDetail() {
                     res.data[i].timestamp.split("T")[1].split(".")[0] +
                     "</td>",
 
-                  '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' +
-                    (res.data[i].checkNumber + 1) +
-                    "</td>",
+                  "<td>" + isAnswer + "</td>",
+                  "<td>" + (res.data[i].checkNumber + 1) + "</td>",
                   "</tr>"
                 );
 
                 Swal.fire({
                   html:
-                    `<table id="table" style={{width : ''}}>
+                    `<table>
                   <thead>
                       <tr>
-                          <th>푼 날짜</th>
-                          <th>정답 여부</th>
-                          <th>선택한 답</th>
+                      <th
+                    >푼 날짜</th>
+                    <th
+                    
+                  >정답 여부</th>
+                  <th
+                
+                >선택한 답</th>
                           
                       </tr>
                   </thead>
