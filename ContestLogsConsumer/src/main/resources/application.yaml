@@ -1,10 +1,10 @@
 spring:
   redis:
     port: 6379
-    host: k7a606.p.ssafy.io
+    host: localhost
   kafka:
     consumer:
-      bootstrap-servers: k7a606.p.ssafy.io:9092
+      bootstrap-servers: localhost:9092
       enable-auto-commit: false
       auto-offset-reset: earliest
     listener:

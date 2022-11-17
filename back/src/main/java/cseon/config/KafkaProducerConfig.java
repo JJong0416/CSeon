@@ -10,7 +10,7 @@ import java.util.Properties;
 @Configuration
 public class KafkaProducerConfig {
 
-    private final static String BOOTSTRAP_SERVERS = "k7a606.p.ssafy.io:9092";
+    private final static String BOOTSTRAP_SERVERS = "172.26.2.174:9092";
 
     @Bean
     public Properties kafkaProducerConfigs() {

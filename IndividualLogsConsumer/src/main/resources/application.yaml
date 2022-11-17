@@ -1,7 +1,7 @@
 spring:
   kafka:
     consumer:
-      bootstrap-servers: k7a606.p.ssafy.io:9092
+      bootstrap-servers: localhost:9092
       enable-auto-commit: false
       auto-offset-reset: earliest
     listener:
@@ -10,5 +10,5 @@ spring:
   data:
     mongodb:
       port: 27017
-      host: k7a606.p.ssafy.io
+      host: localhost
       database: cseon
