@@ -95,18 +95,7 @@ export default function ContestCreate() {
     let day = pad(time.$D);
     let hour = pad(time.$H);
     let minute = pad(time.$m);
-    return (
-      year +
-      "-" +
-      month +
-      "-" +
-      day +
-      "T" +
-      hour +
-      ":" +
-      minute +
-      ":00+09:00[Asia/Seoul]"
-    );
+    return year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":00+09:00[Asia/Seoul]";
   };
   function timestamp() {
     var today = new Date();
@@ -124,8 +113,7 @@ export default function ContestCreate() {
     console.log("nowTime: ", nowtime);
     console.log("checkedworkbookId: ", checkedworkbook);
     // 시간 올바른지 체킹하기
-    if (nowtime >= stime)
-      alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)");
+    if (nowtime >= stime) alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)");
     else if (stime >= etime) alert("대회 시간 다시 세팅해주세요~");
     else {
       // API 보내기
@@ -265,13 +253,9 @@ export default function ContestCreate() {
                         <input
                           type="checkbox"
                           name={workbookName}
-                          onChange={(e) =>
-                            handleSingleCheck(e.target.checked, workbookId)
-                          }
+                          onChange={(e) => handleSingleCheck(e.target.checked, workbookId)}
                           // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
-                          checked={
-                            checkedworkbook === workbookId ? true : false
-                          }
+                          checked={checkedworkbook === workbookId ? true : false}
                         />
                       </TableCell>
                     </TableRow>
@@ -296,7 +280,7 @@ export default function ContestCreate() {
         variant="contained"
         size="large"
         onClick={ClickContestRegist}
-        color="#64b5f6"
+        sx={{ color: "#64b5f6" }}
       >
         만들기
       </Button>

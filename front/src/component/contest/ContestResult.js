@@ -29,7 +29,7 @@ export default function ContestResult() {
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
-        setContestName(res.data.contestInfoRes.contestName);
+        setContestName(res.data.contestName);
       },
       (err) => {
         console.log(err);
