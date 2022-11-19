@@ -72,7 +72,7 @@ export default function ContestResult() {
         {myRank.accountScore !== 0 ? (
           myRank.isExistMeInLeaderboard === true ? null : (
             <div>
-              ...
+              .<br></br>.<br></br>.<br></br>
               <RankComponent
                 key={Math.random()}
                 nickname={accountName}
@@ -80,7 +80,7 @@ export default function ContestResult() {
                 myrank={myRank.myRank}
                 index={myRank.myRank}
               ></RankComponent>
-              ...
+              <br></br>.<br></br>.<br></br>.
             </div>
           )
         ) : null}
