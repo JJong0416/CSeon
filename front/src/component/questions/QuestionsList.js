@@ -229,7 +229,7 @@ export default function QuestionsList() {
                   }}
                   align="center"
                 >
-                  문제 아이디
+                  문제 번호
                 </TableCell>
                 <TableCell
                   sx={{
