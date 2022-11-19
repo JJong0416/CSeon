@@ -13,6 +13,7 @@ export default function ContestResult() {
   const [workbookId, setWorkbookId] = useState(1);
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
+  const [contestName, setContestName] = useState("";)
   const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const goWorkbookDetail = () => {
     console.log("워크북 가기 클릭", workbookId);
@@ -28,6 +29,7 @@ export default function ContestResult() {
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
+        setContestName(res.data.contestInfoRes.contestName);
       },
       (err) => {
         console.log(err);
@@ -37,6 +39,7 @@ export default function ContestResult() {
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
+        <h1>{contestName}</h1>
         <h1>대회 결과</h1>
       </div>
       <div style={{ display: "flex" }}>
