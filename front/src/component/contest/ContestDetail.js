@@ -17,12 +17,8 @@ import "animate.css";
 export default function ContestDetail() {
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const contestName = useSelector((state) => state.ContestInfo.contestName);
-  const contestEndTime = useSelector(
-    (state) => state.ContestInfo.contestEndTime
-  );
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const contestEndTime = useSelector((state) => state.ContestInfo.contestEndTime);
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
@@ -60,7 +56,7 @@ export default function ContestDetail() {
       problemIdx: index,
       endTime: contestEndTime,
     };
-    console.log("jfashdfuaselfajhef" + contestAnswerReq.problemIdx);
+    console.log("notestAnswerReq.problemIdx: ", contestAnswerReq.problemIdx);
 
     if (index + 1 < contestQuestionList.length) {
       setIndex(index + 1);
@@ -84,7 +80,6 @@ export default function ContestDetail() {
           contestAnswerReq,
           Token,
           (res) => {
-            console.log(res.data);
             navigate("/mainpage");
           },
           (err) => {
@@ -115,7 +110,7 @@ export default function ContestDetail() {
           Token,
           (res) => {
             console.log("getQuestionIndex", res.data + 1);
-            console.log(listSize + "sdfasdf");
+            console.log("listSize: ", listSize);
             if (listSize > res.data + 1) {
               setIndex(res.data + 1);
             } else {
@@ -132,18 +127,7 @@ export default function ContestDetail() {
           Token,
           (res) => {
             console.log("getContestRanking res.data: ", res.data);
-            let arr = [...res.data.highRanking];
-            arr.push({ accountNickname: "경준", accountScore: 14.8734 });
-            arr.push(res.data.highRanking[0]);
-            arr.push(res.data.highRanking[0]);
-            arr.push(res.data.highRanking[0]);
-            arr.push(res.data.highRanking[0]);
-            arr.push(res.data.highRanking[0]);
-
             setMyRank(res.data.contestMyRankingRes);
-
-            setRanking(arr);
-            console.log(arr);
           },
           (err) => {
             console.log(err);
@@ -163,7 +147,6 @@ export default function ContestDetail() {
       (res) => {
         console.log("getContestRanking res.data: ", res.data);
         setMyRank(res.data.contestMyRankingRes);
-
         setRanking(res.data.highRanking);
       },
       (err) => {
@@ -193,17 +176,9 @@ export default function ContestDetail() {
             marginBottom: "0px",
           }}
         >
-          <img
-            alt=""
-            src="img/trophy.png"
-            style={{ width: "5%", marginRight: "3vh" }}
-          ></img>
+          <img alt="" src="img/trophy.png" style={{ width: "5%", marginRight: "3vh" }}></img>
           {contestName}
-          <img
-            alt=""
-            src="img/trophy.png"
-            style={{ width: "5%", marginLeft: "3vh" }}
-          ></img>
+          <img alt="" src="img/trophy.png" style={{ width: "5%", marginLeft: "3vh" }}></img>
         </h1>
         {answerList != null && answerList.length > 0 ? (
           <div>
@@ -261,11 +236,7 @@ export default function ContestDetail() {
       >
         <div>
           {" "}
-          <img
-            alt=""
-            src="img/ranking.png"
-            style={{ width: "25%", marginTop: "2vh" }}
-          ></img>
+          <img alt="" src="img/ranking.png" style={{ width: "25%", marginTop: "2vh" }}></img>
           <h3>
             순위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점수
           </h3>
@@ -284,8 +255,7 @@ export default function ContestDetail() {
               index={i}
             ></RankComponent>
           ))}
-          {myRank.isExistMeInLeaderboard === true ||
-          ranking.length <= 0 ? null : (
+          {myRank.isExistMeInLeaderboard === true || ranking.length <= 0 ? null : (
             <div>
               ...{" "}
               <RankComponent

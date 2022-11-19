@@ -2,16 +2,12 @@ import * as React from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_LOGOUT } from "../redux/AccountInfo";
-import { Button, styled } from "@mui/material";
+import { Button } from "@mui/material";
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const accountRole = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountRole
-  );
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountRole = useSelector((state) => state.AccountInfo.accountInfo.accountRole);
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const ClickQuestions = () => {
     navigate("/questionslist");
   };
@@ -29,7 +25,6 @@ export default function Header() {
   };
 
   const Logout = () => {
-    // session 비우기
     sessionStorage.clear();
     dispatch(SET_LOGOUT());
     navigate("/");
@@ -96,40 +91,5 @@ export default function Header() {
         </nav>
       </header>
     </div>
-
-    // <Box sx={{ flexGrow: 1 }}>
-    //   <Grid container spacing={2}>
-    //     <Grid item xs={3}>
-    //       <Item onClick={ClickHome}>
-    //         <img
-    //           src={require("../assets/메인로고2.png")}
-    //           width="70%"
-    //           height="70%"
-    //         />
-    //       </Item>
-    //     </Grid>
-    //     <Grid item xs={2}>
-    //       <Item onClick={ClickQuestions}>문제 풀기</Item>
-    //     </Grid>
-    //     <Grid item xs={2}>
-    //       <Item onClick={ClickWorkbook}>문제집</Item>
-    //     </Grid>
-    //     <Grid item xs={2}>
-    //       <Item onClick={ClickContest}>실시간 대회</Item>
-    //     </Grid>
-    //     <Grid item xs={3}>
-    //       <Item>
-    //         <button>로그아웃</button>
-    //         <button onClick={ClickMypage}>마이페이지</button>
-    //       </Item>
-    //     </Grid>
-    //     {/* <Grid item xs={4}>
-    //       <Item>xs=4</Item>
-    //     </Grid>
-    //     <Grid item xs={8}>
-    //       <Item>xs=8</Item>
-    //     </Grid> */}
-    //   </Grid>
-    // </Box>
   );
 }

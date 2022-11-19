@@ -16,7 +16,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Box } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
@@ -50,7 +50,6 @@ export default function WorkbookCreate() {
     getAllQuestionList(
       Token,
       (res) => {
-        console.log("getAllQuestionList res.data: ", res.data);
         setLeft(res.data);
       },
       (err) => {
@@ -67,9 +66,6 @@ export default function WorkbookCreate() {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    console.log(value);
-    console.log(left);
-    console.log("dd" + right);
     setChecked(newChecked);
   };
 
@@ -96,7 +92,6 @@ export default function WorkbookCreate() {
   };
   const [search, setSearch] = useState("");
   const onChange = (e) => {
-    console.log("keyword changed..", e.target.value);
     setSearch(e.target.value);
   };
 
@@ -106,7 +101,6 @@ export default function WorkbookCreate() {
         search,
         Token,
         (res) => {
-          console.log("getQuestionListWithKeyword res.data: ", res.data);
           setLeft(res.data);
         },
         (err) => {
@@ -161,6 +155,7 @@ export default function WorkbookCreate() {
                   }}
                 />
               </ListItemIcon>
+
               <ListItemText id={labelId} primary={` ${value.questionTitle}`} />
             </ListItem>
           );

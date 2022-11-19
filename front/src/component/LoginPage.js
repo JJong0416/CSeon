@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import "../App.css";
 export default function LoginPage() {
-  // const navigate = useNavigate();
-  // const token = useSelector((state) => state.AccountInfo.accessToken); // redux 상태관리
   const ClickLoginBtn = () => {
     window.location.replace(
       "https://kauth.kakao.com/oauth/authorize?client_id=237be15b2e18e8a188bff253550e714c&redirect_uri=https://k7a606.p.ssafy.io/oauth/redirect&response_type=code"
     );
   };
 
-  useEffect(() => {
-    console.log("rendering start..");
-    // if (token !== null){
-    //   navigate("/mainpage");
-    // }
-  }, []);
   return (
     <div className="main-container">
       <div className="left">
@@ -39,9 +29,6 @@ export default function LoginPage() {
           ></img>
         </div>
       </div>
-
-      {/* <button onClick={ClickLoginBtn}>Login Btn</button>
-      <button onClick={ClickPlus}>{value}</button> */}
     </div>
   );
 }

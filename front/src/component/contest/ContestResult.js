@@ -26,10 +26,8 @@ export default function ContestResult() {
       contestId,
       Token,
       (res) => {
-        console.log("getContestResult res.data: ", res.data);
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
-
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
       },
       (err) => {

@@ -21,7 +21,6 @@ export default function QuestionsDetail() {
   ]);
   const navigate = useNavigate();
   const clickQuestionList = () => {
-    //redux에 세팅 or props
     navigate("/questionslist");
   };
   const handleClick = (idx) => {
@@ -32,8 +31,6 @@ export default function QuestionsDetail() {
 
     console.log("answerRes", answerRes[1], questionExp);
 
-    var data2 = [];
-
     const answerRequestReq = {
       questionId: questionId,
       checkNumber: idx,
@@ -43,9 +40,7 @@ export default function QuestionsDetail() {
     registerLogs(
       answerRequestReq,
       Token,
-      (res) => {
-        console.log(res.data);
-      },
+      (res) => {},
       (err) => {
         console.log(err);
       }
@@ -60,7 +55,6 @@ export default function QuestionsDetail() {
         confirmButtonText: "해설 보기",
         denyButtonText: `풀이 내역보기`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
@@ -68,7 +62,6 @@ export default function QuestionsDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
@@ -128,7 +121,6 @@ export default function QuestionsDetail() {
         confirmButtonText: "해설 보기",
         denyButtonText: `풀이 내역보기`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
@@ -136,7 +128,6 @@ export default function QuestionsDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
@@ -188,15 +179,12 @@ export default function QuestionsDetail() {
         }
       });
     }
-    // 사용자 로그 찍는거
   };
   useEffect(() => {
-    console.log("getQuestion API start..");
     getQuestion(
       questionId,
       Token,
       (res) => {
-        console.log("getQuestion res.data:", res.data);
         setQuestionTitle(res.data.questionTitle);
         setQuestionExp(res.data.questionExp);
         setAnswerRes([
@@ -209,8 +197,6 @@ export default function QuestionsDetail() {
         console.log(err);
       }
     );
-
-    // getProfile();
   }, []);
 
   return (
@@ -242,6 +228,7 @@ export default function QuestionsDetail() {
             >
               Q. {questionTitle}
             </h1>
+
             <Grid
               style={{ textAlign: "center", whiteSpace: "pre-line" }}
               container
