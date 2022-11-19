@@ -34,27 +34,22 @@ export default function WorkbookList() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    // console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
   const onChange = (e) => {
-    console.log(e.target.value);
     setSearch(e.target.value);
   };
   const ClickTitle = (id) => {
-    console.log("WorkbookTitle Click, id:", id);
     dispatch(SET_WORKBOOK_INDEX(id));
     navigate("/workbookdetail");
   };
   const ClickSearchBtn = () => {
-    console.log("search keywork: ", search);
     if (search !== "") {
       getWorkbookWithKeyWord(
         search,
         Token,
         (res) => {
-          console.log("getWorkbookWithKeyWord res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -65,7 +60,6 @@ export default function WorkbookList() {
       getAllWorkbookList(
         Token,
         (res) => {
-          console.log("getAllWorkbookList res.data:", res.data);
           setList(res.data);
         },
         (err) => {
@@ -79,11 +73,9 @@ export default function WorkbookList() {
   };
 
   useEffect(() => {
-    console.log("workbooklist rendering...");
     getAllWorkbookList(
       Token,
       (res) => {
-        console.log("getAllWorkbookList res.data:", res.data);
         setList(res.data);
       },
       (err) => {
@@ -94,9 +86,6 @@ export default function WorkbookList() {
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
-        {/* <input type="text" value={search} onChange={onChange} /> */}
-        {/* <h1>문제집</h1> */}
-
         <TextField
           focused
           color="info"
@@ -162,9 +151,6 @@ export default function WorkbookList() {
                 .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                 .map(({ workbookId, workbookCreatedBy, workbookName }, i) => (
                   <TableRow key={workbookId}>
-                    {/* <TableCell component="th" scope="row">
-                    {page * rowsPerPage + i + 1}
-                  </TableCell> */}
                     <TableCell
                       sx={{
                         fontSize: "2vh",
@@ -189,7 +175,6 @@ export default function WorkbookList() {
                       align="center"
                       sx={{
                         fontSize: "2vh",
-
                         fontFamily: "GangwonEdu_OTFBoldA",
                       }}
                       onClick={() => ClickTitle(workbookId)}

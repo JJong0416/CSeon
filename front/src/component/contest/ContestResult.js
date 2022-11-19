@@ -13,11 +13,8 @@ export default function ContestResult() {
   const [workbookId, setWorkbookId] = useState(1);
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const goWorkbookDetail = () => {
-    console.log("워크북 가기 클릭", workbookId)
     dispatch(SET_WORKBOOK_INDEX(workbookId));
     navigate("/workbookdetail");
   };
@@ -26,10 +23,8 @@ export default function ContestResult() {
       contestId,
       Token,
       (res) => {
-        console.log("getContestResult res.data: ", res.data);
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
-
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
       },
       (err) => {

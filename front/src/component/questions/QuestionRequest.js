@@ -19,7 +19,7 @@ export default function QuestionRequest() {
   const [rightAnswer, setRightAnswer] = useState(-1);
   const [explain, setExplain] = useState("");
   const [labels, setLables] = useState([]);
-  const [selectedlabels, setSelectedlabels] = useState([]);
+  // const [selectedlabels, setSelectedlabels] = useState([]);
 
   useEffect(() => {
     getLabels(
@@ -46,7 +46,7 @@ export default function QuestionRequest() {
       answers: [answer0, answer1, answer2, answer3],
       rightAnswer: rightAnswer,
       // accountId: ,
-      labels: selectedlabels,
+      // labels: ,
     };
     if (rightAnswer === -1) {
       alert("정답 체크해주세요");
@@ -113,29 +113,6 @@ export default function QuestionRequest() {
       );
     }
     return result;
-  };
-  // 체크박스 단일 선택
-  const handleSingleCheck = (checked, label) => {
-    if (checked) {
-      // 단일 선택 시 체크된 아이템을 배열에 추가
-      setSelectedlabels((prev) => [...prev, label]);
-    } else {
-      // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
-      setSelectedlabels(selectedlabels.filter((el) => el !== label));
-    }
-  };
-
-  // 체크박스 전체 선택
-  const handleAllCheck = (checked) => {
-    if (checked) {
-      // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 selectedlabels 상태 업데이트
-      const idArray = [];
-      labels.forEach((label) => idArray.push(label));
-      setSelectedlabels(idArray);
-    } else {
-      // 전체 선택 해제 시 selectedlabels 를 빈 배열로 상태 업데이트
-      setSelectedlabels([]);
-    }
   };
 
   return (
