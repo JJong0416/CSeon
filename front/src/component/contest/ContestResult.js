@@ -50,13 +50,13 @@ export default function ContestResult() {
           <img
             alt=""
             src="img/trophy.png"
-            style={{ width: "5%", marginRight: "3vh" }}
+            style={{ width: "3%", marginRight: "3vh" }}
           ></img>
           {contestName}
           <img
             alt=""
             src="img/trophy.png"
-            style={{ width: "5%", marginLeft: "3vh" }}
+            style={{ width: "3%", marginLeft: "3vh" }}
           ></img>
         </h1>
         <h1>대회 결과</h1>
