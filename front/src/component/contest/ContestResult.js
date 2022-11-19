@@ -17,7 +17,7 @@ export default function ContestResult() {
     (state) => state.AccountInfo.accountInfo.accountName
   );
   const goWorkbookDetail = () => {
-    console.log("워크북 가기 클릭", workbookId)
+    console.log("워크북 가기 클릭", workbookId);
     dispatch(SET_WORKBOOK_INDEX(workbookId));
     navigate("/workbookdetail");
   };
@@ -60,7 +60,7 @@ export default function ContestResult() {
           </h4>
         </div>
       </div>
-      <div style={{ width: "60%", margin: "auto" }}>
+      <div style={{ width: "30%", margin: "auto" }}>
         {ranking.map((rank, i) => (
           // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
           <RankComponent

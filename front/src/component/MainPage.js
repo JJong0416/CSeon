@@ -29,9 +29,8 @@ export default function MainPage() {
         data-aos="fade-right"
         data-aos-offset="300"
         data-aos-easing="ease-in-sine"
-        style={{ height: "50vh" }}
       >
-        <img src={require("../assets/메인이미지.jpg")}></img>
+        <img src={require("../assets/메인이미지.jpg")} width="100%"></img>
       </div>
       <div
         data-aos="fade-right"
@@ -79,8 +78,32 @@ export default function MainPage() {
         data-aos-easing="ease-in-sine"
       >
         {" "}
-        <img src={require("../assets/재쏙.png")}></img>
-      </div>
+        <div
+          data-aos="fade-right"
+          data-aos-offset="300"
+          data-aos-easing="ease-in-sine"
+        >
+          {" "}
+          <img src={require("../assets/문제풀이화면.PNG")}></img>
+        </div>{" "}
+        <div
+          data-aos="fade-right"
+          data-aos-offset="300"
+          data-aos-easing="ease-in-sine"
+        >
+          {" "}
+          <img src={require("../assets/실시간대횡ㅇ.png")}></img>
+        </div>{" "}
+        <div
+          style={{ marginBottom: "8vh" }}
+          data-aos="fade-right"
+          data-aos-offset="300"
+          data-aos-easing="ease-in-sine"
+        >
+          {" "}
+          <img src={require("../assets/실시간대회.png")} width="70%"></img>
+        </div>{" "}
+      </div>{" "}
     </div>
   );
 }

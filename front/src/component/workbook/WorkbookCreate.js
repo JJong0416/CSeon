@@ -161,10 +161,7 @@ export default function WorkbookCreate() {
                   }}
                 />
               </ListItemIcon>
-              <ListItemText
-                id={labelId}
-                primary={` ${value.questionTitle + 1}`}
-              />
+              <ListItemText id={labelId} primary={` ${value.questionTitle}`} />
             </ListItem>
           );
         })}

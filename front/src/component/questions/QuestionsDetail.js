@@ -247,55 +247,6 @@ export default function QuestionsDetail() {
               container
               rowSpacing={1}
             >
-              {/* <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        1번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        2번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        3번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        4번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid> */}
-
               {answerList.map((elm, index) => {
                 return (
                   <BasicButton

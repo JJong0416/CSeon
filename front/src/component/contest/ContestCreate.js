@@ -24,7 +24,6 @@ import { getAllWorkbookList, getWorkbookWithKeyWord } from "../../api/workbook";
 import { createContest } from "../../api/contest";
 import { useNavigate } from "react-router";
 export default function ContestCreate() {
-
   const navigate = useNavigate();
   const dispatch = new useDispatch();
   const Token = useSelector((state) => state.AccountInfo.accessToken);
@@ -96,7 +95,18 @@ export default function ContestCreate() {
     let day = pad(time.$D);
     let hour = pad(time.$H);
     let minute = pad(time.$m);
-    return year + "-" + month + "-" + day + "T" + hour + ":" + minute+":00+09:00[Asia/Seoul]";
+    return (
+      year +
+      "-" +
+      month +
+      "-" +
+      day +
+      "T" +
+      hour +
+      ":" +
+      minute +
+      ":00+09:00[Asia/Seoul]"
+    );
   };
   function timestamp() {
     var today = new Date();
@@ -129,7 +139,7 @@ export default function ContestCreate() {
         contestReq,
         Token,
         (res) => {
-          alert("요청 성공")
+          alert("요청 성공");
           console.log("createContest res.data: ", res.data);
           navigate("/contestlist");
         },
@@ -282,7 +292,12 @@ export default function ContestCreate() {
           </TableContainer>
         </div>{" "}
       </h1>
-      <Button variant="contained" size="large" onClick={ClickContestRegist}>
+      <Button
+        variant="contained"
+        size="large"
+        onClick={ClickContestRegist}
+        color="#64b5f6"
+      >
         만들기
       </Button>
     </Box>

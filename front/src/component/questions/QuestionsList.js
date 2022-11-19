@@ -236,7 +236,16 @@ export default function QuestionsList() {
                 >
                   No
                 </TableCell>
-
+                <TableCell
+                  sx={{
+                    fontSize: "2.5vh",
+                    width: "10%",
+                    fontFamily: "GangwonEdu_OTFBoldA",
+                  }}
+                  align="center"
+                >
+                  문제 아이디
+                </TableCell>
                 <TableCell
                   sx={{
                     fontSize: "2.5vh",
@@ -265,7 +274,16 @@ export default function QuestionsList() {
                     >
                       {page * rowsPerPage + i + 1}
                     </TableCell>
-
+                    <TableCell
+                      sx={{
+                        fontSize: "2vh",
+                        fontFamily: "GangwonEdu_OTFBoldA",
+                      }}
+                      align="center"
+                      onClick={() => ClickTitle(questionId)}
+                    >
+                      {questionId}
+                    </TableCell>
                     {/* <TableCell align="right">
                     {label.map((l) => ({ l }))}
                   </TableCell> */}
