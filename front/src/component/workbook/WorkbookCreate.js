@@ -103,7 +103,7 @@ export default function WorkbookCreate() {
         }
       );
     } else {
-      getAllWorkbookList(
+      getAllQuestionList(
         Token,
         (res) => {
           setLeft(res.data);
