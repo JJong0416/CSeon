@@ -20,17 +20,13 @@ export default function WorkbookDetail() {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
-  const questionIndex = useSelector(
-    (state) => state.QuestionInfo.questionIndex
-  );
+  const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
   const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
   const [questionList, setQuestionList] = useState([]);
 
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
-  const [questionLog, setQuestionLog] = useState([
-    { time: "", isRight: false, selected: 1 },
-  ]);
+  const [questionLog, setQuestionLog] = useState([{ time: "", isRight: false, selected: 1 }]);
   const handleClick = (idx) => {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
@@ -93,9 +89,7 @@ export default function WorkbookDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' +
-                    (res.data[i].checkNumber + 1) +
-                    "</td>",
+                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
                   "</tr>"
                 );
 
@@ -161,9 +155,7 @@ export default function WorkbookDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' +
-                    (res.data[i].checkNumber + 1) +
-                    "</td>",
+                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
                   "</tr>"
                 );
 
@@ -229,19 +221,16 @@ export default function WorkbookDetail() {
       (res) => {
         console.log("res.data:", res.data);
         setQuestionList(res.data.questionIdList);
-        setQuestionId(res.data.questionIdList[questionIndex]);
+        setQuestionId(res.data.questionIdList[0]);
         console.log(questionId, "----------------------");
         getQuestion(
-          res.data.questionIdList[questionIndex],
+          res.data.questionIdList[0],
           Token,
           (res) => {
             console.log(res.data);
             setQuestionTitle(res.data.questionTitle);
             setQuestionExp(res.data.questionExp);
-            setAnswerRes([
-              res.data.answerRes.answers,
-              res.data.answerRes.rightAnswer,
-            ]);
+            setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
             console.log(res.data.answerRes);
             console.log(answerRes[0]);
             setAnswerList(res.data.answerRes.answers);
@@ -269,10 +258,7 @@ export default function WorkbookDetail() {
           console.log(res.data);
           setQuestionTitle(res.data.questionTitle);
           setQuestionExp(res.data.questionExp);
-          setAnswerRes([
-            res.data.answerRes.answers,
-            res.data.answerRes.rightAnswer,
-          ]);
+          setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
           setAnswerList(res.data.answerRes.answers);
         },
         (err) => {
@@ -294,10 +280,7 @@ export default function WorkbookDetail() {
             width: "25%",
           }}
         >
-          <SideBar
-            handleQuestionIndex={handleQuestionIndex}
-            questionList={questionList}
-          ></SideBar>
+          <SideBar handleQuestionIndex={handleQuestionIndex} questionList={questionList}></SideBar>
         </div>
 
         {/* 버튼을 누르면 전에 있는 문제를 불러와야함 */}
@@ -315,58 +298,9 @@ export default function WorkbookDetail() {
           <span>
             {" "}
             {answerRes[0] != null && answerRes[0].length > 0 ? (
-              <Box sx={{ width: "100%", whiteSpace:"pre-line" }}>
+              <Box sx={{ width: "100%", whiteSpace: "pre-line" }}>
                 <h1 style={{ wordBreak: "break-all" }}>Q. {questionTitle}</h1>
                 <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
-                  {/* <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        1번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        2번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        3번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        4번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid> */}
-
                   {answerList.map((elm, index) => {
                     return (
                       <BasicButton

@@ -5,26 +5,16 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { FixedSizeList } from "react-window";
 import { useEffect, useState } from "react";
-import { getWorkbookQuestion } from "../api/workbook";
 import { useDispatch, useSelector } from "react-redux";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { SET_QUESTION_INDEX } from "../redux/QuestionInfo";
-
-// function selectQuestion(questionInfo) {
-//   // questionId로 문제 가져와서 문제 바꿔주는 함수
-//   console.log("문제 선택" + questionInfo);
-
-// }
 
 export default function SideBar(props) {
   function renderRow(props) {
     const { data, index } = props;
     const current = index === questionIndex;
-    console.log(current);
 
     const Clicklistitem = () => {
-      //
-      console.log("click", index);
       dispatch(SET_QUESTION_INDEX(index));
     };
 
@@ -50,22 +40,13 @@ export default function SideBar(props) {
         }
       >
         <ListItemButton onClick={Clicklistitem}>
-          <ListItemText primary={data[index] + `번문제`} />
+          <ListItemText primary={index + 1 + `번문제`} />
         </ListItemButton>
       </ListItem>
     );
   }
   const dispatch = useDispatch();
-  const questionIndex = useSelector(
-    (state) => state.QuestionInfo.questionIndex
-  ); // redux 상태관리
-  console.log(props);
-  const Token = useSelector((state) => state.AccountInfo.accessToken);
-  const [workbookId, setWorkbookId] = useState(1);
-
-  useEffect(() => {
-    console.log(props.questionList);
-  }, []);
+  const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
 
   return (
     <Box
@@ -81,17 +62,6 @@ export default function SideBar(props) {
         borderStyle: "solid",
       }}
     >
-      {/* <FixedSizeList
-        height={200}
-        width={100}
-        itemSize={46}
-        itemCount={props.questionList.length}
-        overscanCount={5}
-        itemData={props.questionList}
-      >
-        {renderRow}
-      </FixedSizeList> */}
-
       <AutoSizer>
         {({ height, width }) => (
           <FixedSizeList

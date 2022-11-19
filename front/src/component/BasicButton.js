@@ -12,8 +12,7 @@ export default function BasicButton(props) {
     backgroundColor: "white",
     margin: "0vh 5vh 5vh 5vh",
   };
-  const { icon, content, isSelected, handleClick, elementIndex } = props;
-  const Token = useSelector((state) => state.AccountInfo.accessToken);
+  const { content, isSelected, handleClick, elementIndex } = props;
 
   return (
     <Grid xs={6} sx={{ my: 5 }} style={{ textAlign: "center" }}>
