@@ -102,6 +102,16 @@ export default function WorkbookCreate() {
           console.log(err);
         }
       );
+    } else {
+      getAllWorkbookList(
+        Token,
+        (res) => {
+          setLeft(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   };
   const ClickRegisterRequest = () => {
@@ -145,7 +155,7 @@ export default function WorkbookCreate() {
                   }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={` ${value.questionTitle + 1}`} />
+              <ListItemText id={labelId} primary={value.questionTitle} />
             </ListItem>
           );
         })}
