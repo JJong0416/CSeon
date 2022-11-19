@@ -29,7 +29,7 @@ export default function MainPage() {
         data-aos-easing="ease-in-sine"
         style={{ height: "50vh" }}
       >
-        <img src={require("../assets/아저씨.png")}></img>
+        <img src={require("../assets/메인이미지.jpg")}></img>
       </div>
       <div
         data-aos="fade-right"

@@ -40,7 +40,7 @@ export default function SideBar(props) {
         }
       >
         <ListItemButton onClick={Clicklistitem}>
-          <ListItemText primary={data[index] + `번문제`} />
+          <ListItemText primary={index + 1 + `번문제`} />
         </ListItemButton>
       </ListItem>
     );

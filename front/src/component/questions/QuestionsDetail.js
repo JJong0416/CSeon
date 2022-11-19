@@ -65,7 +65,7 @@ export default function QuestionsDetail() {
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
                 var isAnswer = "";
-                if (res.data.isAnswer) {
+                if (res.data[i].isAnswer) {
                   isAnswer = "O";
                 } else {
                   isAnswer = "X";
@@ -78,24 +78,21 @@ export default function QuestionsDetail() {
                     res.data[i].timestamp.split("T")[1].split(".")[0] +
                     "</td>",
 
-                  "<td>" + isAnswer + "</td>",
-                  "<td>" + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' + isAnswer + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
                 Swal.fire({
                   html:
-                    `<table>
+                    `<table id="table" border=1>
                   <thead>
                       <tr>
-                      <th
-                    >푼 날짜</th>
-                    <th
-                    
-                  >정답 여부</th>
-                  <th
-                
-                >선택한 답</th>
+                          <th>푼 날짜</th>
+                          <th>정답 여부</th>
+                          <th>선택한 답</th>
                           
                       </tr>
                   </thead>
