@@ -38,7 +38,6 @@ export default function ContestCreate() {
   const [endTime, setEndTime] = useState("");
 
   const onChange = (e) => {
-    // console.log(e.target.value);
     setSearch(e.target.value);
   };
 
@@ -47,18 +46,15 @@ export default function ContestCreate() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    // console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
   const ClickSearchBtn = () => {
-    console.log("search keywork: ", search);
     if (search !== "") {
       getWorkbookWithKeyWord(
         search,
         Token,
         (res) => {
-          console.log("getWorkbookWithKeyWord res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -69,7 +65,6 @@ export default function ContestCreate() {
       getAllWorkbookList(
         Token,
         (res) => {
-          console.log("getAllWorkbookList res.data:", res.data);
           setList(res.data);
         },
         (err) => {
@@ -104,19 +99,13 @@ export default function ContestCreate() {
   }
 
   const ClickContestRegist = () => {
-    console.log("contestTitle: ", contestTitle);
     let stime = timesetting(startTime);
     let etime = timesetting(endTime);
     let nowtime = timestamp();
-    console.log("startTime: ", stime);
-    console.log("endTime: ", etime);
-    console.log("nowTime: ", nowtime);
-    console.log("checkedworkbookId: ", checkedworkbook);
     // 시간 올바른지 체킹하기
     if (nowtime >= stime) alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)");
     else if (stime >= etime) alert("대회 시간 다시 세팅해주세요~");
     else {
-      // API 보내기
       const contestReq = {
         workbookId: checkedworkbook,
         contestName: contestTitle,
@@ -128,7 +117,6 @@ export default function ContestCreate() {
         Token,
         (res) => {
           alert("요청 성공");
-          console.log("createContest res.data: ", res.data);
           navigate("/contestlist");
         },
         (err) => {
@@ -139,11 +127,9 @@ export default function ContestCreate() {
   };
 
   useEffect(() => {
-    console.log("workbooklist rendering...");
     getAllWorkbookList(
       Token,
       (res) => {
-        console.log("res.data:", res.data);
         setList(res.data);
       },
       (err) => {

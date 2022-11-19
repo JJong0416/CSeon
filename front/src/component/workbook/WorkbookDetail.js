@@ -39,9 +39,7 @@ export default function WorkbookDetail() {
     registerLogs(
       answerRequestReq,
       Token,
-      (res) => {
-        console.log(res.data);
-      },
+      (res) => {},
       (err) => {
         console.log(err);
       }
@@ -128,7 +126,6 @@ export default function WorkbookDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
@@ -182,7 +179,6 @@ export default function WorkbookDetail() {
   };
 
   const handleQuestionIndex = (data) => {
-    console.log(data);
     dispatch(SET_QUESTION_INDEX(data));
   };
 
@@ -192,7 +188,6 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(0));
     }
-    console.log("prev move:", questionIndex);
   };
 
   const nextQuestion = () => {
@@ -201,30 +196,23 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(questionList.length - 1));
     }
-    console.log("next move:", questionIndex);
   };
 
   useEffect(() => {
-    console.log("workbookdeatil rendering.... workbookId:", workbookId);
     dispatch(SET_QUESTION_INDEX(0));
     getWorkbook(
       workbookId,
       Token,
       (res) => {
-        console.log("res.data:", res.data);
         setQuestionList(res.data.questionIdList);
         setQuestionId(res.data.questionIdList[0]);
-        console.log(questionId, "----------------------");
         getQuestion(
           res.data.questionIdList[0],
           Token,
           (res) => {
-            console.log(res.data);
             setQuestionTitle(res.data.questionTitle);
             setQuestionExp(res.data.questionExp);
             setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
-            console.log(res.data.answerRes);
-            console.log(answerRes[0]);
             setAnswerList(res.data.answerRes.answers);
           },
           (err) => {
@@ -239,15 +227,12 @@ export default function WorkbookDetail() {
   }, []);
 
   useEffect(() => {
-    console.log("questionIndex changed...", questionIndex);
-    console.log("questionInfo:", questionList);
     setQuestionId(questionList[questionIndex]);
     if (questionList.length !== 0) {
       getQuestion(
         questionList[questionIndex],
         Token,
         (res) => {
-          console.log(res.data);
           setQuestionTitle(res.data.questionTitle);
           setQuestionExp(res.data.questionExp);
           setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
@@ -259,7 +244,6 @@ export default function WorkbookDetail() {
       );
       const newArr = Array(answerList.length).fill(false);
       setIsCategorySelect(newArr);
-      console.log(newArr);
     }
   }, [questionIndex]);
 

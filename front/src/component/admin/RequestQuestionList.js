@@ -26,7 +26,6 @@ export default function RequestQuestionList() {
     setPage(newPage);
   };
   const handleChangeRowsPerPage = (event) => {
-    console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -34,7 +33,6 @@ export default function RequestQuestionList() {
     getRequestQuestionList(
       token,
       (res) => {
-        console.log("getRequestQuestionList res.data: ", res.data);
         setList(res.data.responseDto);
       },
       (err) => {
@@ -43,7 +41,6 @@ export default function RequestQuestionList() {
     );
   }, []);
   const ClickTitle = (requestquestionId) => {
-    console.log("ClickTitle requestquestionId: ", requestquestionId);
     dispatch(SET_REQUEST_QUESTION_ID(requestquestionId));
     navigate("/requestquestiondetail");
   };
@@ -93,45 +90,43 @@ export default function RequestQuestionList() {
           <TableBody>
             {list
               .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-              .map(
-                ({ questionId, accountId, accountName, questionTitle }, i) => (
-                  <TableRow key={questionId}>
-                    <TableCell
-                      align="center"
-                      component="th"
-                      scope="row"
-                      sx={{
-                        fontSize: "2vh",
-                        width: "10%",
-                        fontFamily: "GangwonEdu_OTFBoldA",
-                      }}
-                    >
-                      {page * rowsPerPage + i + 1}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      onClick={() => ClickTitle(questionId)}
-                      sx={{
-                        fontSize: "2vh",
+              .map(({ questionId, accountId, accountName, questionTitle }, i) => (
+                <TableRow key={questionId}>
+                  <TableCell
+                    align="center"
+                    component="th"
+                    scope="row"
+                    sx={{
+                      fontSize: "2vh",
+                      width: "10%",
+                      fontFamily: "GangwonEdu_OTFBoldA",
+                    }}
+                  >
+                    {page * rowsPerPage + i + 1}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    onClick={() => ClickTitle(questionId)}
+                    sx={{
+                      fontSize: "2vh",
 
-                        fontFamily: "GangwonEdu_OTFBoldA",
-                      }}
-                    >
-                      {questionTitle}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        fontSize: "2vh",
-                        width: "10%",
-                        fontFamily: "GangwonEdu_OTFBoldA",
-                      }}
-                    >
-                      {accountName}
-                    </TableCell>
-                  </TableRow>
-                )
-              )}
+                      fontFamily: "GangwonEdu_OTFBoldA",
+                    }}
+                  >
+                    {questionTitle}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      fontSize: "2vh",
+                      width: "10%",
+                      fontFamily: "GangwonEdu_OTFBoldA",
+                    }}
+                  >
+                    {accountName}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
           <TableFooter>
             <TableRow>

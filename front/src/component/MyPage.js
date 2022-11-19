@@ -14,18 +14,14 @@ export default function MyPage() {
   const [workbooks, setWorkbooks] = useState(null);
   const goWorkbookDetail = (workbookId) => {
     dispatch(SET_WORKBOOK_INDEX(workbookId));
-    console.log(workbookId);
   };
   const goQuestionDetail = (questionId) => {
     dispatch(SET_QUESTION_ID(questionId));
-    console.log(questionId);
   };
   useEffect(() => {
-    console.log("Mypage render..");
     getUserProfile(
       token,
       (res) => {
-        console.log(res);
         setWorkbooks(res.data.workbooks);
         setCorrectList(res.data.correctQuestion);
         setUncorrectList(res.data.wrongQuestion);
