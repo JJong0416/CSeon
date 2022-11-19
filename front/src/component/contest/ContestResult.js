@@ -62,15 +62,17 @@ export default function ContestResult() {
       <div style={{ width: "30%", margin: "auto" }}>
         {ranking.map((rank, i) => (
           // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
-          <RankComponent
-            key={Math.random()}
-            nickname={rank.accountNickname}
-            score={rank.accountScore}
-            myrank={myRank.myRank}
-            index={i}
-          ></RankComponent>
-        ))}
-        {myRank !== null ? (
+          rank.accountScore !== 0 ? (
+            <RankComponent
+              key={Math.random()}
+              nickname={rank.accountNickname}
+              score={rank.accountScore}
+              myrank={myRank.myRank}
+              index={i}
+            ></RankComponent>
+          ) : null
+        )}
+        {myRankaccountScore !== 0 ? (
           myRank.isExistMeInLeaderboard === true ? null : (
             <div>
               ...
