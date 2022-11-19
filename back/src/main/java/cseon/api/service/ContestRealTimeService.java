@@ -127,11 +127,11 @@ public class ContestRealTimeService extends RedisConst {
 
 
     private void InitMyRankingInRedis(
-            String redisId, String username, ZSetOperations<String, String> ZSetOperations) {
+            String redisId, String username, ZSetOperations<String, String> zSetOperations) {
 
         if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
-                || ZSetOperations.rank(redisId, username) == null)
-            ZSetOperations.add(redisId, username, 0);
+                || zSetOperations.rank(redisId, username) == null)
+            zSetOperations.add(redisId, username, 0);
     }
 
     private void checkRedisCondition(Set<ZSetOperations.TypedTuple<String>> typedTuples) {
