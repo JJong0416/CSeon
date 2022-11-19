@@ -2,7 +2,6 @@ import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { getWorkbook } from "../..//api/workbook";
 import { getQuestion, registerLogs, getLogs } from "../../api/question";
-import Swal from "sweetalert2";
 
 import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
@@ -31,11 +30,6 @@ export default function WorkbookDetail() {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
     setIsCategorySelect(newArr);
-    console.log(newArr);
-
-    console.log("answerRes", answerRes[1], questionExp);
-    var data2 = [];
-
     const answerRequestReq = {
       questionId: questionId,
       checkNumber: idx,
@@ -62,7 +56,6 @@ export default function WorkbookDetail() {
         confirmButtonText: "해설 보기",
         denyButtonText: `풀이 내역보기`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
@@ -70,7 +63,6 @@ export default function WorkbookDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {

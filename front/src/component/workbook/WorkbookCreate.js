@@ -16,14 +16,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Box } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import {
-  getAllQuestionList,
-  getQuestionListWithKeyword,
-} from "../../api/question";
+import { getAllQuestionList, getQuestionListWithKeyword } from "../../api/question";
 import { registerWorkbook } from "../../api/workbook";
 import { useNavigate } from "react-router";
 function not(a, b) {
@@ -36,9 +33,7 @@ function intersection(a, b) {
 
 export default function WorkbookCreate() {
   const navigate = useNavigate();
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const [checked, setChecked] = useState([]);
   const [left, setLeft] = useState([]);
   const [right, setRight] = useState([]);
@@ -50,7 +45,6 @@ export default function WorkbookCreate() {
     getAllQuestionList(
       Token,
       (res) => {
-        console.log("getAllQuestionList res.data: ", res.data);
         setLeft(res.data);
       },
       (err) => {
@@ -67,9 +61,6 @@ export default function WorkbookCreate() {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    console.log(value);
-    console.log(left);
-    console.log("dd" + right);
     setChecked(newChecked);
   };
 
@@ -96,7 +87,6 @@ export default function WorkbookCreate() {
   };
   const [search, setSearch] = useState("");
   const onChange = (e) => {
-    console.log("keyword changed..", e.target.value);
     setSearch(e.target.value);
   };
 
@@ -106,7 +96,6 @@ export default function WorkbookCreate() {
         search,
         Token,
         (res) => {
-          console.log("getQuestionListWithKeyword res.data: ", res.data);
           setLeft(res.data);
         },
         (err) => {
@@ -145,12 +134,7 @@ export default function WorkbookCreate() {
           const labelId = `transfer-list-item-${value}-label`;
 
           return (
-            <ListItem
-              key={value.questionId}
-              role="listitem"
-              button
-              onClick={handleToggle(value)}
-            >
+            <ListItem key={value.questionId} role="listitem" button onClick={handleToggle(value)}>
               <ListItemIcon>
                 <Checkbox
                   checked={checked.indexOf(value) !== -1}
@@ -161,10 +145,7 @@ export default function WorkbookCreate() {
                   }}
                 />
               </ListItemIcon>
-              <ListItemText
-                id={labelId}
-                primary={` ${value.questionTitle + 1}`}
-              />
+              <ListItemText id={labelId} primary={` ${value.questionTitle + 1}`} />
             </ListItem>
           );
         })}

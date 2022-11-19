@@ -44,9 +44,7 @@ const StyledTable = styled.table`
 
 export default function RequestQuestionDetail() {
   const navigate = useNavigate();
-  const requestquestionId = useSelector(
-    (state) => state.QuestionInfo.requestquestionId
-  );
+  const requestquestionId = useSelector((state) => state.QuestionInfo.requestquestionId);
   const token = useSelector((state) => state.AccountInfo.accessToken);
   const [questionId, setQuestionId] = useState("");
   const [title, setTitle] = useState("");
@@ -84,7 +82,7 @@ export default function RequestQuestionDetail() {
       requestQuestionInfo,
       token,
       (res) => {
-        alert("등록 성공")
+        alert("등록 성공");
         console.log("AdoptRequestQuestion res.data: ", res.data);
         navigate("/requestquestionlist");
       },
@@ -95,7 +93,6 @@ export default function RequestQuestionDetail() {
   };
 
   const AnswerForm = () => {
-    console.log("AnswerForm");
     const clickedButtonStyle = {
       textColor: "white",
       backgroundColor: "#64b5f6",
@@ -133,15 +130,7 @@ export default function RequestQuestionDetail() {
                   id="outlined-multiline-static"
                   placeholder="보기를 작성해주세요."
                   multiline
-                  value={
-                    i === 0
-                      ? answer0
-                      : i === 1
-                      ? answer1
-                      : i === 2
-                      ? answer2
-                      : answer3
-                  }
+                  value={i === 0 ? answer0 : i === 1 ? answer1 : i === 2 ? answer2 : answer3}
                   onChange={(e) => OnChangeAnswer(e, i)}
                 />
               </Typography>
@@ -237,9 +226,7 @@ export default function RequestQuestionDetail() {
         value={explain}
         onChange={(e) => setExplain(e.target.value)}
       />
-      <StyledTable
-        style={{ width: "60%", margin: "auto", border: "1px solid #64b5f6" }}
-      >
+      <StyledTable style={{ width: "60%", margin: "auto", border: "1px solid #64b5f6" }}>
         <thead>
           <tr>
             <th
@@ -257,9 +244,7 @@ export default function RequestQuestionDetail() {
                 checked={selectedlabels.length === labels.length ? true : false}
               />
             </th>
-            <th style={{ fontSize: "2.5vh", backgroundColor: "#64b5f6" }}>
-              라벨 목록
-            </th>
+            <th style={{ fontSize: "2.5vh", backgroundColor: "#64b5f6" }}>라벨 목록</th>
           </tr>
         </thead>
         <tbody>
@@ -274,10 +259,7 @@ export default function RequestQuestionDetail() {
                   checked={selectedlabels.includes(label) ? true : false}
                 />
               </td>
-              <td
-                className="second-row"
-                style={{ fontSize: "2vh", border: "1px solid #64b5f6" }}
-              >
+              <td className="second-row" style={{ fontSize: "2vh", border: "1px solid #64b5f6" }}>
                 {" "}
                 {label}
               </td>

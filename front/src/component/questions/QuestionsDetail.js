@@ -60,7 +60,6 @@ export default function QuestionsDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
@@ -79,9 +78,7 @@ export default function QuestionsDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' +
-                    (res.data[i].checkNumber + 1) +
-                    "</td>",
+                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
                   "</tr>"
                 );
 
@@ -127,7 +124,6 @@ export default function QuestionsDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
@@ -183,7 +179,6 @@ export default function QuestionsDetail() {
       questionId,
       Token,
       (res) => {
-        console.log("getQuestion res.data:", res.data);
         setQuestionTitle(res.data.questionTitle);
         setQuestionExp(res.data.questionExp);
         setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
