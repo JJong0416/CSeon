@@ -13,9 +13,7 @@ export default function ContestResult() {
   const [workbookId, setWorkbookId] = useState(1);
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const goWorkbookDetail = () => {
     console.log("워크북 가기 클릭", workbookId);
     dispatch(SET_WORKBOOK_INDEX(workbookId));
@@ -59,7 +57,7 @@ export default function ContestResult() {
         </div>
       </div>
       <div style={{ width: "30%", margin: "auto" }}>
-        {ranking.map((rank, i) => (
+        {ranking.map((rank, i) =>
           rank.accountScore !== 0 ? (
             <RankComponent
               key={Math.random()}
@@ -70,6 +68,7 @@ export default function ContestResult() {
             ></RankComponent>
           ) : null
         )}
+
         {myRank.accountScore !== 0 ? (
           myRank.isExistMeInLeaderboard === true ? null : (
             <div>
