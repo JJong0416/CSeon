@@ -16,12 +16,9 @@ export default function QuestionsDetail() {
   const [answerRes, setAnswerRes] = useState([[], 0]);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
 
-  const [questionLog, setQuestionLog] = useState([
-    { time: "", isRight: false, selected: 1 },
-  ]);
+  const [questionLog, setQuestionLog] = useState([{ time: "", isRight: false, selected: 1 }]);
   const navigate = useNavigate();
   const clickQuestionList = () => {
-    //redux에 세팅 or props
     navigate("/questionslist");
   };
   const handleClick = (idx) => {
@@ -32,8 +29,6 @@ export default function QuestionsDetail() {
 
     console.log("answerRes", answerRes[1], questionExp);
 
-    var data2 = [];
-
     const answerRequestReq = {
       questionId: questionId,
       checkNumber: idx,
@@ -43,9 +38,7 @@ export default function QuestionsDetail() {
     registerLogs(
       answerRequestReq,
       Token,
-      (res) => {
-        console.log(res.data);
-      },
+      (res) => {},
       (err) => {
         console.log(err);
       }
@@ -60,7 +53,6 @@ export default function QuestionsDetail() {
         confirmButtonText: "해설 보기",
         denyButtonText: `풀이 내역보기`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
@@ -131,7 +123,6 @@ export default function QuestionsDetail() {
         confirmButtonText: "해설 보기",
         denyButtonText: `풀이 내역보기`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire(questionExp, "", "info");
         } else if (result.isDenied) {
@@ -158,9 +149,7 @@ export default function QuestionsDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' +
-                    (res.data[i].checkNumber + 1) +
-                    "</td>",
+                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
                   "</tr>"
                 );
 
@@ -191,10 +180,8 @@ export default function QuestionsDetail() {
         }
       });
     }
-    // 사용자 로그 찍는거
   };
   useEffect(() => {
-    console.log("getQuestion API start..");
     getQuestion(
       questionId,
       Token,
@@ -202,18 +189,13 @@ export default function QuestionsDetail() {
         console.log("getQuestion res.data:", res.data);
         setQuestionTitle(res.data.questionTitle);
         setQuestionExp(res.data.questionExp);
-        setAnswerRes([
-          res.data.answerRes.answers,
-          res.data.answerRes.rightAnswer,
-        ]);
+        setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
         setAnswerList(res.data.answerRes.answers);
       },
       (err) => {
         console.log(err);
       }
     );
-
-    // getProfile();
   }, []);
 
   return (
@@ -245,60 +227,7 @@ export default function QuestionsDetail() {
             >
               Q. {questionTitle}
             </h1>
-            <Grid
-              style={{ textAlign: "center", whiteSpace: "pre-line" }}
-              container
-              rowSpacing={1}
-            >
-              {/* <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        1번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        2번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        3번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={6} sx={{ my: 5 }}>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        4번
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {answerRes[0][0]}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid> */}
-
+            <Grid style={{ textAlign: "center", whiteSpace: "pre-line" }} container rowSpacing={1}>
               {answerList.map((elm, index) => {
                 return (
                   <BasicButton

@@ -35,9 +35,7 @@ export default function QuestionsList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.AccountInfo.accessToken);
-  const accountRole = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountRole
-  );
+  const accountRole = useSelector((state) => state.AccountInfo.accountInfo.accountRole);
   const [selectedLabel, setSelectedLabel] = useState("NONE");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -47,13 +45,10 @@ export default function QuestionsList() {
     setPage(newPage);
   };
   const handleLabelChange = (e) => {
-    console.log(e.target.value);
     if (e.target.value === "NONE") {
-      console.log("allquestion api 호출");
       getAllQuestionList(
         token,
         (res) => {
-          console.log("getAllQuestionList res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -61,12 +56,10 @@ export default function QuestionsList() {
         }
       );
     } else {
-      console.log("label api 호출");
       getQuestionListWithLabel(
         e.target.value,
         token,
         (res) => {
-          console.log("getQuestionListWithLabel res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -77,7 +70,6 @@ export default function QuestionsList() {
     setSelectedLabel(e.target.value);
   };
   const handleChangeRowsPerPage = (event) => {
-    console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -85,7 +77,6 @@ export default function QuestionsList() {
     getAllQuestionList(
       token,
       (res) => {
-        console.log("getAllQuestionList res.data: ", res.data);
         setList(res.data);
       },
       (err) => {
@@ -95,7 +86,6 @@ export default function QuestionsList() {
     getLabels(
       token,
       (res) => {
-        console.log("getLabels res.data: ", res.data);
         setLabels(res.data.split(", "));
       },
       (err) => {
@@ -105,11 +95,9 @@ export default function QuestionsList() {
   }, []);
   const [search, setSearch] = useState("");
   const onChange = (e) => {
-    console.log("keyword changed..", e.target.value);
     setSearch(e.target.value);
   };
   const ClickTitle = (questionId) => {
-    console.log("ClickTitle questionId: ", questionId);
     dispatch(SET_QUESTION_ID(questionId));
     navigate("/questionsdetail");
   };
@@ -120,14 +108,12 @@ export default function QuestionsList() {
     navigate("/requestquestionlist");
   };
   const ClickSearchBtn = () => {
-    console.log(selectedLabel, search);
     if (search !== "") {
       if (selectedLabel === "NONE") {
         getQuestionListWithKeyword(
           search,
           token,
           (res) => {
-            console.log("getQuestionListWithKeyword res.data: ", res.data);
             setList(res.data);
           },
           (err) => {
@@ -140,7 +126,6 @@ export default function QuestionsList() {
           search,
           token,
           (res) => {
-            console.log("getQuestionListWithBoth res.data: ", res.data);
             setList(res.data);
           },
           (err) => {
@@ -153,7 +138,6 @@ export default function QuestionsList() {
         getAllQuestionList(
           token,
           (res) => {
-            console.log("getAllQuestionList res.data: ", res.data);
             setList(res.data);
           },
           (err) => {
@@ -165,7 +149,6 @@ export default function QuestionsList() {
           selectedLabel,
           token,
           (res) => {
-            console.log("getQuestionListWithLabel res.data: ", res.data);
             setList(res.data);
           },
           (err) => {
@@ -265,10 +248,6 @@ export default function QuestionsList() {
                     >
                       {page * rowsPerPage + i + 1}
                     </TableCell>
-
-                    {/* <TableCell align="right">
-                    {label.map((l) => ({ l }))}
-                  </TableCell> */}
                     <TableCell
                       sx={{
                         fontSize: "2vh",
