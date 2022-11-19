@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class ContestOperationService {
     private final ContestRepository contestRepository;
     private final WorkbookQuestionRepository workbookQuestionRepository;
-
     private final WorkbookRepository workbookRepository;
     private final QuestionSearchService questionSearchService;
 
@@ -36,7 +35,8 @@ public class ContestOperationService {
 
         Contest findContest = takeDetailsContest(contestId);
 
-        return checkContestStatus(findContest.getContestStart(), findContest.getContestEnd());
+        return checkContestStatus(ZonedDateTime.parse(findContest.getContestStart()),
+                ZonedDateTime.parse(findContest.getContestEnd()));
     }
 
     @Transactional(readOnly = true)
@@ -64,9 +64,10 @@ public class ContestOperationService {
                 .map(contest -> ContestRes.builder()
                         .contestId(contest.getContestId())
                         .contestName(contest.getContestName())
-                        .isExpired(checkContestStatus(contest.getContestStart(), contest.getContestEnd()))
-                        .startTime(contest.getContestStart())
-                        .endTime(contest.getContestEnd())
+                        .isExpired(checkContestStatus(ZonedDateTime.parse(contest.getContestStart()),
+                                ZonedDateTime.parse(contest.getContestEnd())))
+                        .startTime(ZonedDateTime.parse(contest.getContestStart()))
+                        .endTime(ZonedDateTime.parse(contest.getContestEnd()))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -93,14 +94,14 @@ public class ContestOperationService {
 
         Workbook workbook = takeWorkbookWithWorkbookId(contestReq.getWorkbookId());
 
-        ZonedDateTime startTime = ZonedDateTime.parse(contestReq.getContestStart());
-        ZonedDateTime endTime = ZonedDateTime.parse(contestReq.getContestEnd());
+//        ZonedDateTime startTime = ZonedDateTime.parse(contestReq.getContestStart());
+//        ZonedDateTime endTime = ZonedDateTime.parse(contestReq.getContestEnd());
 
         Contest contest = Contest.builder()
                 .workbook(workbook)
                 .contestName(contestReq.getContestName())
-                .contestStart(startTime)
-                .contestEnd(endTime)
+                .contestStart(contestReq.getContestStart())
+                .contestEnd(contestReq.getContestEnd())
                 .build();
 
         contestRepository.save(contest);
