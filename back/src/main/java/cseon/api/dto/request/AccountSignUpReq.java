@@ -21,14 +21,10 @@ public class AccountSignUpReq {
     @NotNull
     private final Integer accountSuccessCount;
 
-    @NotNull
-    private final Long usingBadgeId;
-
     @Builder
     public AccountSignUpReq(String accountName) {
         this.accountName = accountName;
         this.accountRole = AccountRole.USER;
         this.accountSuccessCount = 0;
-        this.usingBadgeId = 0L;
     }
 }

@@ -25,14 +25,14 @@ public class Contest {
     private String contestName;
 
     @Column(name = "contest_start", nullable = false)
-    private ZonedDateTime contestStart;
+    private String contestStart;
 
     @Column(name = "contest_end", nullable = false)
-    private ZonedDateTime contestEnd;
+    private String contestEnd;
 
     @Builder
     public Contest(
-            Workbook workbook, String contestName, ZonedDateTime contestStart, ZonedDateTime contestEnd){
+            Workbook workbook, String contestName, String contestStart, String contestEnd){
         this.workbookId = workbook;
         this.contestName = contestName;
         this.contestStart = contestStart;

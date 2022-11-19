@@ -10,8 +10,6 @@ public class AccountDetailsRes {
 
     private final Integer accountSuccessCount;
 
-    private final String badgeName;
-
     private final List<WorkbookRes> workbooks;
 
     private final List<Long> correctQuestion;
@@ -19,12 +17,11 @@ public class AccountDetailsRes {
     private final List<Long> wrongQuestion;
 
     @Builder
-    public AccountDetailsRes(Integer accountSuccessCount, String badgeName, List<WorkbookRes> workbooks,
+    public AccountDetailsRes(Integer accountSuccessCount, List<WorkbookRes> workbooks,
                              List<Long> correct, List<Long> wrong
     ) {
 
         this.accountSuccessCount = accountSuccessCount;
-        this.badgeName = badgeName;
         this.workbooks = workbooks;
         this.correctQuestion = correct;
         this.wrongQuestion = wrong;

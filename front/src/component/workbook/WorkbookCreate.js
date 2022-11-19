@@ -60,7 +60,7 @@ export default function WorkbookCreate() {
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-
+    console.log("handleToggle: ", checked, value, currentIndex);
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
@@ -99,6 +99,16 @@ export default function WorkbookCreate() {
     if (search !== "") {
       getQuestionListWithKeyword(
         search,
+        Token,
+        (res) => {
+          setLeft(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      getAllQuestionList(
         Token,
         (res) => {
           setLeft(res.data);
@@ -155,8 +165,7 @@ export default function WorkbookCreate() {
                   }}
                 />
               </ListItemIcon>
-
-              <ListItemText id={labelId} primary={` ${value.questionTitle}`} />
+              <ListItemText id={labelId} primary={value.questionTitle} />
             </ListItem>
           );
         })}

@@ -17,8 +17,12 @@ import "animate.css";
 export default function ContestDetail() {
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const contestName = useSelector((state) => state.ContestInfo.contestName);
-  const contestEndTime = useSelector((state) => state.ContestInfo.contestEndTime);
-  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
+  const contestEndTime = useSelector(
+    (state) => state.ContestInfo.contestEndTime
+  );
+  const accountName = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountName
+  );
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
@@ -176,9 +180,17 @@ export default function ContestDetail() {
             marginBottom: "0px",
           }}
         >
-          <img alt="" src="img/trophy.png" style={{ width: "5%", marginRight: "3vh" }}></img>
+          <img
+            alt=""
+            src="img/trophy.png"
+            style={{ width: "5%", marginRight: "3vh" }}
+          ></img>
           {contestName}
-          <img alt="" src="img/trophy.png" style={{ width: "5%", marginLeft: "3vh" }}></img>
+          <img
+            alt=""
+            src="img/trophy.png"
+            style={{ width: "5%", marginLeft: "3vh" }}
+          ></img>
         </h1>
         {answerList != null && answerList.length > 0 ? (
           <div>
@@ -236,7 +248,11 @@ export default function ContestDetail() {
       >
         <div>
           {" "}
-          <img alt="" src="img/ranking.png" style={{ width: "25%", marginTop: "2vh" }}></img>
+          <img
+            alt=""
+            src="img/ranking.png"
+            style={{ width: "25%", marginTop: "2vh" }}
+          ></img>
           <h3>
             순위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점수
           </h3>
@@ -255,7 +271,8 @@ export default function ContestDetail() {
               index={i}
             ></RankComponent>
           ))}
-          {myRank.isExistMeInLeaderboard === true || ranking.length <= 0 ? null : (
+          {myRank.isExistMeInLeaderboard === true ||
+          ranking.length <= 0 ? null : (
             <div>
               ...{" "}
               <RankComponent

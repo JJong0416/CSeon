@@ -20,7 +20,6 @@ public class AccountDetailsService {
                 .accountName(accountSignUpReq.getAccountName())
                 .accountRole(accountSignUpReq.getAccountRole())
                 .successCount(accountSignUpReq.getAccountSuccessCount())
-                .usingBadgeId(accountSignUpReq.getUsingBadgeId())
                 .build();
 
         accountRepository.save(account);

@@ -24,6 +24,7 @@ public class AccountRequestQuestion {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @Lob
     @Column(name = "request_question_title", nullable = false)
     private String requestQuestionTitle;
 
