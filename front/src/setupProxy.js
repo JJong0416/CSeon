@@ -3,7 +3,8 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 module.exports = (app) => {
   app.use(
     createProxyMiddleware("/api", {
-      target: "https://k7a606.p.ssafy.io",
+      // target: "https://k7a606.p.ssafy.io",
+      target: "http://localhost:7070",
       changeOrigin: true,
     })
   );

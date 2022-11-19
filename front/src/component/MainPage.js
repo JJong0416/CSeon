@@ -24,9 +24,22 @@ export default function MainPage() {
   }, []);
   return (
     <div>
-      <div style={{ backgroundColor: "#64b5f6" }}>
-        {" "}
-        <img src={require("../assets/메인로고2.png")}></img>
+      {" "}
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+        style={{ height: "50vh" }}
+      >
+        <img src={require("../assets/아저씨.png")}></img>
+      </div>
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+        style={{ height: "25vh" }}
+      >
+        <img src={require("../assets/시선이답.png")}></img>
       </div>
       <div
         data-aos="fade-right"
@@ -34,7 +47,7 @@ export default function MainPage() {
         data-aos-easing="ease-in-sine"
       >
         {" "}
-        <img src={require("../assets/메인로고2.png")}></img>
+        <img src={require("../assets/만나보세요.png")}></img>
       </div>
       <div
         data-aos="fade-right"
@@ -42,7 +55,7 @@ export default function MainPage() {
         data-aos-easing="ease-in-sine"
       >
         {" "}
-        <img src={require("../assets/메인로고2.png")}></img>
+        <img src={require("../assets/문제리스트피피티.png")}></img>
       </div>{" "}
       <div
         data-aos="fade-right"
@@ -50,7 +63,7 @@ export default function MainPage() {
         data-aos-easing="ease-in-sine"
       >
         {" "}
-        <img src={require("../assets/메인로고2.png")}></img>
+        <img src={require("../assets/원쏙.png")}></img>
       </div>{" "}
       <div
         data-aos="fade-right"
@@ -58,7 +71,15 @@ export default function MainPage() {
         data-aos-easing="ease-in-sine"
       >
         {" "}
-        <img src={require("../assets/메인로고2.png")}></img>
+        <img src={require("../assets/재쏙.png")}></img>
+      </div>{" "}
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
+        {" "}
+        <img src={require("../assets/재쏙.png")}></img>
       </div>
     </div>
   );
