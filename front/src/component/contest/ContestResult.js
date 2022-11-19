@@ -13,7 +13,7 @@ export default function ContestResult() {
   const [workbookId, setWorkbookId] = useState(1);
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
-  const [contestName, setContestName] = useState("";)
+  const [contestName, setContestName] = useState("");
   const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const goWorkbookDetail = () => {
     console.log("워크북 가기 클릭", workbookId);
