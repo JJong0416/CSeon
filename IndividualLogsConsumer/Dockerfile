@@ -6,7 +6,7 @@ FROM openjdk:11-jdk
 EXPOSE 7071
 
 #가져올 파일 jar
-ARG JAR_FILE=build/libs/
+ARG JAR_FILE=build/libs/IndividualLogsConsumer-0.0.1-SNAPSHOT.jar
 
 #jar파일 복사
 COPY ${JAR_FILE} app.jar
