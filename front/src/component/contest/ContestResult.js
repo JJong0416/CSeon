@@ -39,7 +39,6 @@ export default function ContestResult() {
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
-        {/* <input type="text" value={search} onChange={onChange} /> */}
         <h1>대회 결과</h1>
       </div>
       <div style={{ display: "flex" }}>
@@ -61,7 +60,6 @@ export default function ContestResult() {
       </div>
       <div style={{ width: "30%", margin: "auto" }}>
         {ranking.map((rank, i) => (
-          // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
           rank.accountScore !== 0 ? (
             <RankComponent
               key={Math.random()}
