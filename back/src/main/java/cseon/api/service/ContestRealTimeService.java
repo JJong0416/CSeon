@@ -72,6 +72,7 @@ public class ContestRealTimeService extends RedisConst {
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
         logger.info("connect to redis");
         InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
+        logger.info("redis connect success");
 
         logger.info("contestId : {}",contestAnswerReq.getContestId());
         logger.info("isAnswer : {}",contestAnswerReq.getIsAnswer());
