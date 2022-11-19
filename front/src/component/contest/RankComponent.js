@@ -16,15 +16,38 @@ export default function RankComponent(props) {
       className="animate__animated animate__flipInX"
     >
       {props.index === 0 ? (
-        <img alt="" src="img/first.png" style={{ width: "10%" }}></img>
+        <h3>
+          <img alt="" src="img/first.png" style={{ width: "10%" }}></img>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {props.nickname}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+          {parseInt(props.score)}
+        </h3>
       ) : props.index === 1 ? (
-        <img alt="" src="img/second.png" style={{ width: "10%" }}></img>
+        <h3>
+          <img alt="" src="img/second.png" style={{ width: "10%" }}></img>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {props.nickname}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+          {parseInt(props.score)}
+        </h3>
       ) : props.index === 2 ? (
-        <img alt="" src="img/third.png" style={{ width: "10%" }}></img>
+        <h3>
+          <img alt="" src="img/third.png" style={{ width: "10%" }}></img>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {props.nickname}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+          {parseInt(props.score)}
+        </h3>
       ) : (
-        <p>{props.index + 1}</p>
+        <h3>
+          {props.index + 1}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {props.nickname}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{" "}
+          {parseInt(props.score)}
+        </h3>
       )}
-      {props.nickname} : {parseInt(props.score)} {props.index}
       <Divider></Divider>
     </div>
   );

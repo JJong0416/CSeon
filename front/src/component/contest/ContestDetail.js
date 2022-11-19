@@ -266,6 +266,9 @@ export default function ContestDetail() {
             src="img/ranking.png"
             style={{ width: "25%", marginTop: "2vh" }}
           ></img>
+          <h3>
+            순위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점수
+          </h3>
           <Divider></Divider>
           <Divider></Divider>
           <Divider></Divider>
