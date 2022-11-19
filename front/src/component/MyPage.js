@@ -2,26 +2,15 @@ import { useSelector } from "react-redux";
 import { getUserProfile } from "../api/accountinfo";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { Box } from "@mui/system";
 import { SET_WORKBOOK_INDEX } from "../redux/WorkbookInfo";
 import { SET_QUESTION_ID } from "../redux/QuestionInfo";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 export default function MyPage() {
   const token = useSelector((state) => state.AccountInfo.accessToken);
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const dispatch = new useDispatch();
   const [correctList, setCorrectList] = useState([]);
   const [unCorrectList, setUncorrectList] = useState([]);
-  const badges = ["현중배 1등", "요청 문제 정식 등록 10회"];
   const [workbooks, setWorkbooks] = useState(null);
   const goWorkbookDetail = (workbookId) => {
     dispatch(SET_WORKBOOK_INDEX(workbookId));

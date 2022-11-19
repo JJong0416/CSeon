@@ -55,7 +55,7 @@ export default function WorkbookCreate() {
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-
+    console.log("handleToggle: ", checked, value, currentIndex);
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
