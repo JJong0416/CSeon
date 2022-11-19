@@ -32,14 +32,10 @@ public class Account {
     @Column(name = "success_count", nullable = false)
     private Integer successCount;
 
-    @Column(name = "using_badge_id")
-    private Long usingBadgeId;
-
     @Builder
-    public Account(String accountName, AccountRole accountRole, Integer successCount, Long usingBadgeId) {
+    public Account(String accountName, AccountRole accountRole, Integer successCount) {
         this.accountName = accountName;
         this.accountRole = accountRole;
         this.successCount = successCount;
-        this.usingBadgeId = usingBadgeId;
     }
 }
