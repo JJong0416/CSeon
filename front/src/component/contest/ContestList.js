@@ -141,6 +141,7 @@ export default function ContestList() {
             </TableHead>
             <TableBody>
               {contestList
+                .reverse()
                 .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                 .map(({ contestId, contestName, endTime, isExpired, startTime }, i) => (
                   <TableRow key={contestId}>
