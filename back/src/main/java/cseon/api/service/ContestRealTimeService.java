@@ -103,7 +103,7 @@ public class ContestRealTimeService extends RedisConst {
     private ContestMyRankingRes SearchMyRankingInfo(
             String redisId, String username, List<RankingRes> topRankingPlayer, ZSetOperations<String, String> ZSetOperations) {
         return ContestMyRankingRes.builder()
-                .myRank(ZSetOperations.rank(redisId, username))
+                .myRank(ZSetOperations.reverseRank(redisId, username))
                 .myScore(ZSetOperations.score(redisId, username))
                 .isExistMeInLeaderboard(topRankingPlayer.stream()
                         .anyMatch(rankingRes -> rankingRes.getAccountNickname().equals(username)))
