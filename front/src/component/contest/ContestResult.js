@@ -23,6 +23,7 @@ export default function ContestResult() {
       contestId,
       Token,
       (res) => {
+        console.log("getContestResult res.data: ", res.data);
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
@@ -66,19 +67,21 @@ export default function ContestResult() {
             index={i}
           ></RankComponent>
         ))}
-        {myRank.isExistMeInLeaderboard === true ? null : (
-          <div>
-            ...
-            <RankComponent
-              key={Math.random()}
-              nickname={accountName}
-              score={myRank.myScore}
-              myrank={myRank.myRank}
-              index={myRank.myRank}
-            ></RankComponent>
-            ...
-          </div>
-        )}
+        {myRank !== null ? (
+          myRank.isExistMeInLeaderboard === true ? null : (
+            <div>
+              ...
+              <RankComponent
+                key={Math.random()}
+                nickname={accountName}
+                score={myRank.myScore}
+                myrank={myRank.myRank}
+                index={myRank.myRank}
+              ></RankComponent>
+              ...
+            </div>
+          )
+        ) : null}
       </div>
     </div>
   );
