@@ -93,7 +93,7 @@ export default function ContestList() {
         <h1>실시간 대회</h1>
       </div>
       <div style={{ width: "90%", margin: "2vh auto" }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ mb: 4 }}>
           <Table size="large">
             <TableHead sx={{ backgroundColor: "#64b5f6" }}>
               <TableRow>
@@ -212,6 +212,7 @@ export default function ContestList() {
             </TableFooter>
           </Table>
         </TableContainer>
+
         {accountRole === "ADMIN" ? (
           <Button
             size="small"

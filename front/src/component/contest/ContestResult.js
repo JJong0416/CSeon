@@ -13,8 +13,11 @@ export default function ContestResult() {
   const [workbookId, setWorkbookId] = useState(1);
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
-  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
+  const accountName = useSelector(
+    (state) => state.AccountInfo.accountInfo.accountName
+  );
   const goWorkbookDetail = () => {
+    console.log("워크북 가기 클릭", workbookId);
     dispatch(SET_WORKBOOK_INDEX(workbookId));
     navigate("/workbookdetail");
   };
@@ -56,8 +59,8 @@ export default function ContestResult() {
           </h4>
         </div>
       </div>
-      <div style={{ width: "60%", margin: "auto" }}>
-        {ranking.map((rank, i) =>
+      <div style={{ width: "30%", margin: "auto" }}>
+        {ranking.map((rank, i) => (
           // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
           rank.accountScore !== 0 ? (
             <RankComponent

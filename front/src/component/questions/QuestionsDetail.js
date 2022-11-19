@@ -16,7 +16,9 @@ export default function QuestionsDetail() {
   const [answerRes, setAnswerRes] = useState([[], 0]);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
 
-  const [questionLog, setQuestionLog] = useState([{ time: "", isRight: false, selected: 1 }]);
+  const [questionLog, setQuestionLog] = useState([
+    { time: "", isRight: false, selected: 1 },
+  ]);
   const navigate = useNavigate();
   const clickQuestionList = () => {
     navigate("/questionslist");
@@ -78,7 +80,9 @@ export default function QuestionsDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
@@ -142,7 +146,9 @@ export default function QuestionsDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
@@ -181,7 +187,10 @@ export default function QuestionsDetail() {
       (res) => {
         setQuestionTitle(res.data.questionTitle);
         setQuestionExp(res.data.questionExp);
-        setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
+        setAnswerRes([
+          res.data.answerRes.answers,
+          res.data.answerRes.rightAnswer,
+        ]);
         setAnswerList(res.data.answerRes.answers);
       },
       (err) => {
@@ -219,7 +228,12 @@ export default function QuestionsDetail() {
             >
               Q. {questionTitle}
             </h1>
-            <Grid style={{ textAlign: "center", whiteSpace: "pre-line" }} container rowSpacing={1}>
+
+            <Grid
+              style={{ textAlign: "center", whiteSpace: "pre-line" }}
+              container
+              rowSpacing={1}
+            >
               {answerList.map((elm, index) => {
                 return (
                   <BasicButton
