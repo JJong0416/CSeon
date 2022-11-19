@@ -16,9 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -31,7 +28,6 @@ import static cseon.common.utils.SecurityUtils.getAccountName;
 @Service
 @RequiredArgsConstructor
 public class ContestRealTimeService extends RedisConst {
-    private static final Logger logger = LoggerFactory.getLogger(ContestRealTimeService.class);
     private final RedisTemplate<String, String> redisTemplate;
     private final KafkaProducerProvider kafkaProducerProvider;
 
@@ -67,22 +63,12 @@ public class ContestRealTimeService extends RedisConst {
 
     public boolean pushAccountContestAnswer(ContestAnswerReq contestAnswerReq) {
         final String accountName = getAccountName();
-        logger.info("accountName : {}", accountName);
 
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
-        logger.info("connect to redis");
-//        InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
-        logger.info("redis connect success");
-
-        logger.info("contestId : {}",contestAnswerReq.getContestId());
-        logger.info("isAnswer : {}",contestAnswerReq.getIsAnswer());
-        logger.info("problemIdx : {}",contestAnswerReq.getProblemIdx());
-        logger.info("endTime : {}",contestAnswerReq.getEndTime());
+        InitMyRankingInRedis(String.valueOf(contestAnswerReq.getContestId()), getAccountName(), zSetOperations);
 
         Integer cor =
                 floor(zSetOperations.score(String.valueOf(contestAnswerReq.getContestId()), getAccountName()) / 5);
-
-        logger.info("cor : {}", cor);
 
         // 정답이면 score 증가
         if (contestAnswerReq.getIsAnswer())
@@ -95,7 +81,6 @@ public class ContestRealTimeService extends RedisConst {
         AccountContestAnswerDto accountContestAnswerDto =
                 new AccountContestAnswerDto(contestAnswerReq.getContestId(), accountName, score);
 
-        logger.info("start kafka producer");
         kafkaProducerProvider.getKafkaProducer().send(
                 new ProducerRecord<>("cseon.logs.contest", accountContestAnswerDto.toString()));
 
@@ -129,7 +114,7 @@ public class ContestRealTimeService extends RedisConst {
     private void InitMyRankingInRedis(
             String redisId, String username, ZSetOperations<String, String> zSetOperations) {
 
-        if (Objects.requireNonNull(redisTemplate.hasKey(redisId)) == false
+        if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
                 || zSetOperations.rank(redisId, username) == null)
             zSetOperations.add(redisId, username, 0);
     }

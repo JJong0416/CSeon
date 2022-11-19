@@ -157,7 +157,7 @@ export default function ContestDetail() {
         console.log(err);
       }
     );
-  }, 30000); // 컴파일 위해 30초로 변경해둠 추후 5초로 rollback 필요
+  }, 5000);
 
   useEffect(() => {
     setQuestionTitle(contestQuestionList[index].questionTitle);
