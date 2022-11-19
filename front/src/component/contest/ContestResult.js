@@ -69,7 +69,7 @@ export default function ContestResult() {
             ></RankComponent>
           ) : null
         )}
-        {myRankaccountScore !== 0 ? (
+        {myRank.accountScore !== 0 ? (
           myRank.isExistMeInLeaderboard === true ? null : (
             <div>
               ...
