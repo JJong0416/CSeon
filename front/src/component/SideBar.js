@@ -65,16 +65,19 @@ export default function SideBar(props) {
         overflow: "scroll",
       }}
     >
-      <FixedSizeList
-        className="List"
-        height={700}
-        itemCount={props.questionList.length}
-        itemData={props.questionList}
-        itemSize={35}
-        width="100%"
-      >
-        {renderRow}
-      </FixedSizeList>
+      <AutoSizer>
+        {({ width }) => (
+          <FixedSizeList
+            height={700}
+            itemCount={props.questionList.length}
+            itemData={props.questionList}
+            itemSize={35}
+            width={width}
+          >
+            {renderRow}
+          </FixedSizeList>
+        )}
+      </AutoSizer>
     </Box>
   );
 }
