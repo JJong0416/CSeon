@@ -248,7 +248,6 @@ export default function WorkbookDetail() {
   }, [questionIndex]);
 
   const Clicklistitem = (index) => {
-    console.log("click ", index);
     dispatch(SET_QUESTION_INDEX(index));
   };
   return (
@@ -260,7 +259,6 @@ export default function WorkbookDetail() {
             width: "25%",
           }}
         >
-          {/* <SideBar handleQuestionIndex={handleQuestionIndex} questionList={questionList}></SideBar> */}
           <List
             sx={{
               width: "100%",
@@ -272,8 +270,6 @@ export default function WorkbookDetail() {
           >
             {questionList.map((data, index) => {
               const current = index === questionIndex;
-              console.log(data, index, current);
-
               return (
                 <ListItem
                   key={data}
