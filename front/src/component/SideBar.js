@@ -50,22 +50,22 @@ export default function SideBar(props) {
   useEffect(() => {
     console.log("sidebar: ", props);
   }, []);
+  const Clicklistitem = (index) => {
+    console.log("click ", index);
+    dispatch(SET_QUESTION_INDEX(index));
+  };
   console.log("props:", props);
   return (
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       {props.questionList.map((data, index) => {
-        console.log(data, index);
         const current = index === questionIndex;
+        console.log(data, index, current);
 
-        const Clicklistitem = () => {
-          console.log("click ", index);
-          dispatch(SET_QUESTION_INDEX(index));
-        };
         return (
           <ListItem
             key={data}
             // component="div"
-            // disablePadding
+            disablePadding
             style={
               current
                 ? {
@@ -82,7 +82,7 @@ export default function SideBar(props) {
                   }
             }
           >
-            <ListItemButton onClick={Clicklistitem}>
+            <ListItemButton onClick={Clicklistitem(index)}>
               <ListItemText primary={index + 1 + `번문제`} />
             </ListItemButton>
           </ListItem>
