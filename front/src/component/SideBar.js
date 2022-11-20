@@ -65,9 +65,9 @@ export default function SideBar(props) {
           // </FixedSizeList>
           <List
             // ref="List"
-            // ref={(el) => {
-            //   this.List = el;
-            // }}
+            ref={(el) => {
+              this.List = el;
+            }}
             // className={"List"}
             height={height}
             width={width}
