@@ -20,6 +20,7 @@ export default function WorkbookDetail() {
   const [answerRes, setAnswerRes] = useState([[], 0]);
   const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
   const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
+  const workbookTitle = useSelector((state) => state.WorkbookInfo.workbookTitle);
   const [questionList, setQuestionList] = useState([]);
 
   const [isCategorySelect, setIsCategorySelect] = useState(false);
@@ -251,6 +252,7 @@ export default function WorkbookDetail() {
   };
   return (
     <div style={{ margin: "0vh 4vh" }}>
+      <h1>{workbookTitle}</h1>
       <div style={{ display: "flex" }}>
         <div
           style={{
@@ -315,7 +317,9 @@ export default function WorkbookDetail() {
             {" "}
             {answerRes[0] != null && answerRes[0].length > 0 ? (
               <Box sx={{ width: "100%", whiteSpace: "pre-line" }}>
-                <h1 style={{ wordBreak: "break-all" }}>Q. {questionTitle}</h1>
+                <h1 style={{ wordBreak: "break-all" }}>
+                  Q{questionIndex}. {questionTitle}
+                </h1>
                 <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
                   {answerList.map((elm, index) => {
                     return (
