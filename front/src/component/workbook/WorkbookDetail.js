@@ -267,7 +267,7 @@ export default function WorkbookDetail() {
               maxWidth: 360,
               bgcolor: "background.paper",
               overflow: "auto",
-              maxHeight: 300,
+              maxHeight: 1000,
             }}
           >
             {questionList.map((data, index) => {
