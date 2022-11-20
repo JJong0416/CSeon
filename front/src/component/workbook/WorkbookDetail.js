@@ -3,7 +3,14 @@ import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { getWorkbook } from "../..//api/workbook";
 import { getQuestion, registerLogs, getLogs } from "../../api/question";
 
-import { Button, Grid, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import {
+  Button,
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,14 +25,20 @@ export default function WorkbookDetail() {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
-  const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
+  const questionIndex = useSelector(
+    (state) => state.QuestionInfo.questionIndex
+  );
   const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
-  const workbookTitle = useSelector((state) => state.WorkbookInfo.workbookTitle);
+  const workbookTitle = useSelector(
+    (state) => state.WorkbookInfo.workbookTitle
+  );
   const [questionList, setQuestionList] = useState([]);
 
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
-  const [questionLog, setQuestionLog] = useState([{ time: "", isRight: false, selected: 1 }]);
+  const [questionLog, setQuestionLog] = useState([
+    { time: "", isRight: false, selected: 1 },
+  ]);
   const handleClick = (idx) => {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
@@ -79,7 +92,9 @@ export default function WorkbookDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
@@ -144,7 +159,9 @@ export default function WorkbookDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
@@ -212,7 +229,10 @@ export default function WorkbookDetail() {
           (res) => {
             setQuestionTitle(res.data.questionTitle);
             setQuestionExp(res.data.questionExp);
-            setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
+            setAnswerRes([
+              res.data.answerRes.answers,
+              res.data.answerRes.rightAnswer,
+            ]);
             setAnswerList(res.data.answerRes.answers);
           },
           (err) => {
@@ -235,7 +255,10 @@ export default function WorkbookDetail() {
         (res) => {
           setQuestionTitle(res.data.questionTitle);
           setQuestionExp(res.data.questionExp);
-          setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
+          setAnswerRes([
+            res.data.answerRes.answers,
+            res.data.answerRes.rightAnswer,
+          ]);
           setAnswerList(res.data.answerRes.answers);
         },
         (err) => {
@@ -252,7 +275,25 @@ export default function WorkbookDetail() {
   };
   return (
     <div style={{ margin: "0vh 4vh" }}>
-      <h1>{workbookTitle}</h1>
+      <h1
+        style={{
+          wordBreak: "break-all",
+          marginBottom: "0px",
+        }}
+      >
+        <img
+          alt=""
+          src="img/book.png"
+          style={{ width: "5%", marginRight: "3vh" }}
+        ></img>
+        {workbookTitle}
+        <img
+          alt=""
+          src="img/book.png"
+          style={{ width: "5%", marginLeft: "3vh" }}
+        ></img>
+      </h1>
+
       <div style={{ display: "flex" }}>
         <div
           style={{
