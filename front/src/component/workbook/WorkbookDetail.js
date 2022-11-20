@@ -6,7 +6,6 @@ import { getQuestion, registerLogs, getLogs } from "../../api/question";
 import { Button, Grid, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import SideBar from "../SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import BasicButton from "../BasicButton";
 import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
