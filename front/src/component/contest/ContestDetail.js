@@ -135,7 +135,6 @@ export default function ContestDetail() {
   }
   useInterval(() => {
     let nowtime = timestamp();
-    console.log(nowtime, contestEndTime);
     if (nowtime >= contestEndTime) {
       alert("대회 시간이 종료되었습니다.");
       navigate("/contestlist");
