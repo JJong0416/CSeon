@@ -68,14 +68,31 @@ export default function SideBar(props) {
     >
       <AutoSizer>
         {({ height, width }) => (
-          <FixedSizeList
+          // <FixedSizeList
+          //   height={height}
+          //   itemCount={props.questionList.length}
+          //   itemSize={35}
+          //   width={width}
+          // >
+          //   {renderRow}
+          // </FixedSizeList>
+          <List
+            // ref="List"
+            ref={(el) => {
+              this.List = el;
+            }}
+            // className={"List"}
             height={height}
-            itemCount={props.questionList.length}
-            itemSize={35}
             width={width}
-          >
-            {renderRow}
-          </FixedSizeList>
+            //   overscanRowCount={overscanRowCount}
+            // noRowsRenderer={this._noRowsRenderer}
+            rowCount={props.questionList.length}
+            rowHeight={
+              50
+              // useDynamicRowHeight ? this._getRowHeight : listRowHeight
+            }
+            rowRenderer={renderRow}
+          />
         )}
       </AutoSizer>
     </Box>
