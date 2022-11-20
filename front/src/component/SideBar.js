@@ -82,7 +82,7 @@ export default function SideBar(props) {
                   }
             }
           >
-            <ListItemButton onClick={Clicklistitem(index)}>
+            <ListItemButton onClick={() => Clicklistitem(index)}>
               <ListItemText primary={index + 1 + `번문제`} />
             </ListItemButton>
           </ListItem>
