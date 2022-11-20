@@ -20,10 +20,7 @@ import { useSelector } from "react-redux";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import {
-  getAllQuestionList,
-  getQuestionListWithKeyword,
-} from "../../api/question";
+import { getAllQuestionList, getQuestionListWithKeyword } from "../../api/question";
 import { registerWorkbook } from "../../api/workbook";
 import { useNavigate } from "react-router";
 function not(a, b) {
@@ -36,9 +33,7 @@ function intersection(a, b) {
 
 export default function WorkbookCreate() {
   const navigate = useNavigate();
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const [checked, setChecked] = useState([]);
   const [left, setLeft] = useState([]);
   const [right, setRight] = useState([]);
@@ -60,7 +55,6 @@ export default function WorkbookCreate() {
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-    console.log("handleToggle: ", checked, value, currentIndex);
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
@@ -133,7 +127,6 @@ export default function WorkbookCreate() {
         Token,
         (res) => {
           alert("워크북 생성완료!");
-          console.log("registerWorkbook res.data: ", res.data);
           navigate("/workbooklist");
         },
         (err) => {
@@ -149,12 +142,7 @@ export default function WorkbookCreate() {
           const labelId = `transfer-list-item-${value}-label`;
 
           return (
-            <ListItem
-              key={value.questionId}
-              role="listitem"
-              button
-              onClick={handleToggle(value)}
-            >
+            <ListItem key={value.questionId} role="listitem" button onClick={handleToggle(value)}>
               <ListItemIcon>
                 <Checkbox
                   checked={checked.indexOf(value) !== -1}

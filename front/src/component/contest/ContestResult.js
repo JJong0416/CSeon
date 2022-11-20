@@ -14,11 +14,8 @@ export default function ContestResult() {
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
   const [contestName, setContestName] = useState("");
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const goWorkbookDetail = () => {
-    console.log("워크북 가기 클릭", workbookId);
     dispatch(SET_WORKBOOK_INDEX(workbookId));
     navigate("/workbookdetail");
   };
@@ -27,7 +24,6 @@ export default function ContestResult() {
       contestId,
       Token,
       (res) => {
-        console.log("getContestResult res.data: ", res.data);
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
@@ -47,17 +43,9 @@ export default function ContestResult() {
             marginBottom: "0px",
           }}
         >
-          <img
-            alt=""
-            src="img/trophy.png"
-            style={{ width: "3%", marginRight: "3vh" }}
-          ></img>
+          <img alt="" src="img/trophy.png" style={{ width: "3%", marginRight: "3vh" }}></img>
           {contestName}
-          <img
-            alt=""
-            src="img/trophy.png"
-            style={{ width: "3%", marginLeft: "3vh" }}
-          ></img>
+          <img alt="" src="img/trophy.png" style={{ width: "3%", marginLeft: "3vh" }}></img>
         </h1>
         <h1>대회 결과</h1>
       </div>
