@@ -38,7 +38,6 @@ export default function ContestCreate() {
   const [endTime, setEndTime] = useState("");
 
   const onChange = (e) => {
-    // console.log(e.target.value);
     setSearch(e.target.value);
   };
 
@@ -47,18 +46,15 @@ export default function ContestCreate() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    // console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
   const ClickSearchBtn = () => {
-    console.log("search keywork: ", search);
     if (search !== "") {
       getWorkbookWithKeyWord(
         search,
         Token,
         (res) => {
-          console.log("getWorkbookWithKeyWord res.data: ", res.data);
           setList(res.data);
         },
         (err) => {
@@ -69,7 +65,6 @@ export default function ContestCreate() {
       getAllWorkbookList(
         Token,
         (res) => {
-          console.log("getAllWorkbookList res.data:", res.data);
           setList(res.data);
         },
         (err) => {
@@ -95,40 +90,22 @@ export default function ContestCreate() {
     let day = pad(time.$D);
     let hour = pad(time.$H);
     let minute = pad(time.$m);
-    return (
-      year +
-      "-" +
-      month +
-      "-" +
-      day +
-      "T" +
-      hour +
-      ":" +
-      minute +
-      ":00+09:00[Asia/Seoul]"
-    );
+    return year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":00+09:00[Asia/Seoul]";
   };
   function timestamp() {
     var today = new Date();
     today.setHours(today.getHours() + 9);
-    return today.toISOString().substring(0, 16);
+    return today.toISOString().substring(0, 18) + "+09:00[Asia/Seoul]";
   }
 
   const ClickContestRegist = () => {
-    console.log("contestTitle: ", contestTitle);
     let stime = timesetting(startTime);
     let etime = timesetting(endTime);
     let nowtime = timestamp();
-    console.log("startTime: ", stime);
-    console.log("endTime: ", etime);
-    console.log("nowTime: ", nowtime);
-    console.log("checkedworkbookId: ", checkedworkbook);
     // 시간 올바른지 체킹하기
-    if (nowtime >= stime)
-      alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)");
+    if (nowtime >= stime) alert("시작시간 다시 세팅해주세요~ (현재 시간보다 빠름)");
     else if (stime >= etime) alert("대회 시간 다시 세팅해주세요~");
     else {
-      // API 보내기
       const contestReq = {
         workbookId: checkedworkbook,
         contestName: contestTitle,
@@ -140,7 +117,6 @@ export default function ContestCreate() {
         Token,
         (res) => {
           alert("요청 성공");
-          console.log("createContest res.data: ", res.data);
           navigate("/contestlist");
         },
         (err) => {
@@ -151,11 +127,9 @@ export default function ContestCreate() {
   };
 
   useEffect(() => {
-    console.log("workbooklist rendering...");
     getAllWorkbookList(
       Token,
       (res) => {
-        console.log("res.data:", res.data);
         setList(res.data);
       },
       (err) => {
@@ -265,13 +239,9 @@ export default function ContestCreate() {
                         <input
                           type="checkbox"
                           name={workbookName}
-                          onChange={(e) =>
-                            handleSingleCheck(e.target.checked, workbookId)
-                          }
+                          onChange={(e) => handleSingleCheck(e.target.checked, workbookId)}
                           // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
-                          checked={
-                            checkedworkbook === workbookId ? true : false
-                          }
+                          checked={checkedworkbook === workbookId ? true : false}
                         />
                       </TableCell>
                     </TableRow>
@@ -296,7 +266,7 @@ export default function ContestCreate() {
         variant="contained"
         size="large"
         onClick={ClickContestRegist}
-        color="#64b5f6"
+        sx={{ color: "#64b5f6" }}
       >
         만들기
       </Button>

@@ -24,7 +24,6 @@ export default function ContestList() {
   const [contestList, setContestList] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  //const contestId = useSelector((state) => state.ContestInfo.contestId);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -38,12 +37,10 @@ export default function ContestList() {
     dispatch(SET_CONTEST_ID(contestId));
     dispatch(SET_CONTEST_NAME(contestName));
     dispatch(SET_CONTEST_ENDTIME(contestEndTime));
-    console.log(contestEndTime);
     checkValidation(
       contestId,
       Token,
       (res) => {
-        console.log(res.data);
         if (res.data === "대회 진행") {
           navigate("/contestdetail");
         } else {
@@ -56,7 +53,6 @@ export default function ContestList() {
     );
   };
   const handleChangeRowsPerPage = (event) => {
-    console.log("handle", event.target);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -64,7 +60,6 @@ export default function ContestList() {
     getAllContestList(
       Token,
       (res) => {
-        console.log("getAllContestList res.data: ", res.data);
         setContestList(res.data);
       },
       (err) => {
@@ -72,15 +67,6 @@ export default function ContestList() {
       }
     );
   }, []);
-  const [search, setSearch] = useState("");
-  const onChange = (e) => {
-    console.log(e.target.value);
-    setSearch(e.target.value);
-  };
-  const ClickTitle = () => {
-    //redux에 세팅 or props
-    navigate("/contestdetail");
-  };
 
   const ClickContetCreate = () => {
     navigate("/contestcreate");
@@ -141,6 +127,7 @@ export default function ContestList() {
             </TableHead>
             <TableBody>
               {contestList
+                .reverse()
                 .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                 .map(({ contestId, contestName, endTime, isExpired, startTime }, i) => (
                   <TableRow key={contestId}>

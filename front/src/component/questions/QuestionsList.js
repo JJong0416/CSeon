@@ -219,17 +219,7 @@ export default function QuestionsList() {
                   }}
                   align="center"
                 >
-                  No
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontSize: "2.5vh",
-                    width: "10%",
-                    fontFamily: "GangwonEdu_OTFBoldA",
-                  }}
-                  align="center"
-                >
-                  문제 아이디
+                  문제 번호
                 </TableCell>
                 <TableCell
                   sx={{
@@ -247,18 +237,6 @@ export default function QuestionsList() {
                 .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
                 .map(({ questionId, questionTitle }, i) => (
                   <TableRow key={questionId}>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      sx={{
-                        fontSize: "2vh",
-                        width: "10%",
-                        fontFamily: "GangwonEdu_OTFBoldA",
-                      }}
-                      align="center"
-                    >
-                      {page * rowsPerPage + i + 1}
-                    </TableCell>
                     <TableCell
                       sx={{
                         fontSize: "2vh",

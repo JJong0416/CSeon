@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,8 +31,12 @@ public class SolvedQuestion {
     public void nullCheck(){
         if(correctQuestion == null)
             correctQuestion = new LinkedList<>();
+        else
+            Collections.sort(correctQuestion);
 
         if(wrongQuestion == null)
             wrongQuestion = new LinkedList<>();
+        else
+            Collections.sort(wrongQuestion);
     }
 }

@@ -3,10 +3,16 @@ import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { getWorkbook } from "../..//api/workbook";
 import { getQuestion, registerLogs, getLogs } from "../../api/question";
 
-import { Button, Grid } from "@mui/material";
+import {
+  Button,
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import SideBar from "../SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import BasicButton from "../BasicButton";
 import { SET_QUESTION_INDEX } from "../../redux/QuestionInfo";
@@ -19,13 +25,20 @@ export default function WorkbookDetail() {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionExp, setQuestionExp] = useState("");
   const [answerRes, setAnswerRes] = useState([[], 0]);
-  const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
+  const questionIndex = useSelector(
+    (state) => state.QuestionInfo.questionIndex
+  );
   const workbookId = useSelector((state) => state.WorkbookInfo.workbookIndex);
+  const workbookTitle = useSelector(
+    (state) => state.WorkbookInfo.workbookTitle
+  );
   const [questionList, setQuestionList] = useState([]);
 
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [answerList, setAnswerList] = useState(["", "", "", ""]);
-  const [questionLog, setQuestionLog] = useState([{ time: "", isRight: false, selected: 1 }]);
+  const [questionLog, setQuestionLog] = useState([
+    { time: "", isRight: false, selected: 1 },
+  ]);
   const handleClick = (idx) => {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
@@ -39,9 +52,7 @@ export default function WorkbookDetail() {
     registerLogs(
       answerRequestReq,
       Token,
-      (res) => {
-        console.log(res.data);
-      },
+      (res) => {},
       (err) => {
         console.log(err);
       }
@@ -81,7 +92,9 @@ export default function WorkbookDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
@@ -128,7 +141,6 @@ export default function WorkbookDetail() {
             questionId,
             Token,
             (res) => {
-              console.log(res.data);
               setQuestionLog(res.data);
               var data2 = [];
               for (var i = res.data.length - 1; i >= 0; i--) {
@@ -147,7 +159,9 @@ export default function WorkbookDetail() {
                     "</td>",
 
                   '<td align="center">' + isAnswer + "</td>",
-                  '<td align="center">' + (res.data[i].checkNumber + 1) + "</td>",
+                  '<td align="center">' +
+                    (res.data[i].checkNumber + 1) +
+                    "</td>",
                   "</tr>"
                 );
 
@@ -182,7 +196,6 @@ export default function WorkbookDetail() {
   };
 
   const handleQuestionIndex = (data) => {
-    console.log(data);
     dispatch(SET_QUESTION_INDEX(data));
   };
 
@@ -192,7 +205,6 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(0));
     }
-    console.log("prev move:", questionIndex);
   };
 
   const nextQuestion = () => {
@@ -201,30 +213,26 @@ export default function WorkbookDetail() {
     } else {
       dispatch(SET_QUESTION_INDEX(questionList.length - 1));
     }
-    console.log("next move:", questionIndex);
   };
 
   useEffect(() => {
-    console.log("workbookdeatil rendering.... workbookId:", workbookId);
     dispatch(SET_QUESTION_INDEX(0));
     getWorkbook(
       workbookId,
       Token,
       (res) => {
-        console.log("res.data:", res.data);
         setQuestionList(res.data.questionIdList);
         setQuestionId(res.data.questionIdList[0]);
-        console.log(questionId, "----------------------");
         getQuestion(
           res.data.questionIdList[0],
           Token,
           (res) => {
-            console.log(res.data);
             setQuestionTitle(res.data.questionTitle);
             setQuestionExp(res.data.questionExp);
-            setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
-            console.log(res.data.answerRes);
-            console.log(answerRes[0]);
+            setAnswerRes([
+              res.data.answerRes.answers,
+              res.data.answerRes.rightAnswer,
+            ]);
             setAnswerList(res.data.answerRes.answers);
           },
           (err) => {
@@ -239,18 +247,18 @@ export default function WorkbookDetail() {
   }, []);
 
   useEffect(() => {
-    console.log("questionIndex changed...", questionIndex);
-    console.log("questionInfo:", questionList);
     setQuestionId(questionList[questionIndex]);
     if (questionList.length !== 0) {
       getQuestion(
         questionList[questionIndex],
         Token,
         (res) => {
-          console.log(res.data);
           setQuestionTitle(res.data.questionTitle);
           setQuestionExp(res.data.questionExp);
-          setAnswerRes([res.data.answerRes.answers, res.data.answerRes.rightAnswer]);
+          setAnswerRes([
+            res.data.answerRes.answers,
+            res.data.answerRes.rightAnswer,
+          ]);
           setAnswerList(res.data.answerRes.answers);
         },
         (err) => {
@@ -259,12 +267,33 @@ export default function WorkbookDetail() {
       );
       const newArr = Array(answerList.length).fill(false);
       setIsCategorySelect(newArr);
-      console.log(newArr);
     }
   }, [questionIndex]);
 
+  const Clicklistitem = (index) => {
+    dispatch(SET_QUESTION_INDEX(index));
+  };
   return (
     <div style={{ margin: "0vh 4vh" }}>
+      <h1
+        style={{
+          wordBreak: "break-all",
+          marginBottom: "0px",
+        }}
+      >
+        <img
+          alt=""
+          src="img/book.png"
+          style={{ width: "5%", marginRight: "3vh" }}
+        ></img>
+        {workbookTitle}
+        <img
+          alt=""
+          src="img/book.png"
+          style={{ width: "5%", marginLeft: "3vh" }}
+        ></img>
+      </h1>
+
       <div style={{ display: "flex" }}>
         <div
           style={{
@@ -272,7 +301,45 @@ export default function WorkbookDetail() {
             width: "25%",
           }}
         >
-          <SideBar handleQuestionIndex={handleQuestionIndex} questionList={questionList}></SideBar>
+          <List
+            sx={{
+              width: "100%",
+              maxWidth: 360,
+              bgcolor: "background.paper",
+              overflow: "auto",
+              maxHeight: 500,
+            }}
+          >
+            {questionList.map((data, index) => {
+              const current = index === questionIndex;
+              return (
+                <ListItem
+                  key={data}
+                  // component="div"
+                  disablePadding
+                  style={
+                    current
+                      ? {
+                          borderBottom: "solid #9DCFFF 1px",
+                          width: "90%",
+                          margin: "auto",
+                          backgroundColor: "#9DCFFF",
+                        }
+                      : {
+                          borderBottom: "solid #9DCFFF 1px",
+                          width: "90%",
+                          margin: "auto",
+                          backgroundColor: "white",
+                        }
+                  }
+                >
+                  <ListItemButton onClick={() => Clicklistitem(index)}>
+                    <ListItemText primary={index + 1 + `번문제`} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
         </div>
 
         {/* 버튼을 누르면 전에 있는 문제를 불러와야함 */}
@@ -291,7 +358,9 @@ export default function WorkbookDetail() {
             {" "}
             {answerRes[0] != null && answerRes[0].length > 0 ? (
               <Box sx={{ width: "100%", whiteSpace: "pre-line" }}>
-                <h1 style={{ wordBreak: "break-all" }}>Q. {questionTitle}</h1>
+                <h1 style={{ wordBreak: "break-all" }}>
+                  Q{questionIndex + 1}. {questionTitle}
+                </h1>
                 <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
                   {answerList.map((elm, index) => {
                     return (

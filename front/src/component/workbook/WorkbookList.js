@@ -17,7 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_WORKBOOK_INDEX } from "../../redux/WorkbookInfo";
+import { SET_WORKBOOK_INDEX, SET_WORKBOOK_TITLE } from "../../redux/WorkbookInfo";
 import { getAllWorkbookList, getWorkbookWithKeyWord } from "../../api/workbook";
 
 export default function WorkbookList() {
@@ -40,7 +40,8 @@ export default function WorkbookList() {
   const onChange = (e) => {
     setSearch(e.target.value);
   };
-  const ClickTitle = (id) => {
+  const ClickTitle = (title, id) => {
+    dispatch(SET_WORKBOOK_TITLE(title));
     dispatch(SET_WORKBOOK_INDEX(id));
     navigate("/workbookdetail");
   };
@@ -177,7 +178,7 @@ export default function WorkbookList() {
                         fontSize: "2vh",
                         fontFamily: "GangwonEdu_OTFBoldA",
                       }}
-                      onClick={() => ClickTitle(workbookId)}
+                      onClick={() => ClickTitle(workbookName, workbookId)}
                     >
                       {workbookName}
                     </TableCell>

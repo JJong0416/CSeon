@@ -13,11 +13,9 @@ export default function ContestResult() {
   const [workbookId, setWorkbookId] = useState(1);
   const [ranking, setRanking] = useState([]);
   const [myRank, setMyRank] = useState({});
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const [contestName, setContestName] = useState("");
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const goWorkbookDetail = () => {
-    console.log("워크북 가기 클릭", workbookId);
     dispatch(SET_WORKBOOK_INDEX(workbookId));
     navigate("/workbookdetail");
   };
@@ -26,10 +24,10 @@ export default function ContestResult() {
       contestId,
       Token,
       (res) => {
-        console.log("getContestResult res.data: ", res.data);
         setWorkbookId(res.data.workbookId);
         setRanking(res.data.contestInfoRes.highRanking);
         setMyRank(res.data.contestInfoRes.contestMyRankingRes);
+        setContestName(res.data.contestName);
       },
       (err) => {
         console.log(err);
@@ -39,7 +37,16 @@ export default function ContestResult() {
   return (
     <div>
       <div style={{ marginTop: "3vh" }}>
-        {/* <input type="text" value={search} onChange={onChange} /> */}
+        <h1
+          style={{
+            wordBreak: "break-all",
+            marginBottom: "0px",
+          }}
+        >
+          <img alt="" src="img/trophy.png" style={{ width: "3%", marginRight: "3vh" }}></img>
+          {contestName}
+          <img alt="" src="img/trophy.png" style={{ width: "3%", marginLeft: "3vh" }}></img>
+        </h1>
         <h1>대회 결과</h1>
       </div>
       <div style={{ display: "flex" }}>
@@ -60,8 +67,7 @@ export default function ContestResult() {
         </div>
       </div>
       <div style={{ width: "30%", margin: "auto" }}>
-        {ranking.map((rank, i) => (
-          // <h1 className="animate__animated animate__flipInX">{user.rank}</h1>
+        {ranking.map((rank, i) =>
           rank.accountScore !== 0 ? (
             <RankComponent
               key={Math.random()}
@@ -72,10 +78,11 @@ export default function ContestResult() {
             ></RankComponent>
           ) : null
         )}
-        {myRankaccountScore !== 0 ? (
+
+        {myRank.accountScore !== 0 ? (
           myRank.isExistMeInLeaderboard === true ? null : (
             <div>
-              ...
+              .<br></br>.<br></br>.<br></br>
               <RankComponent
                 key={Math.random()}
                 nickname={accountName}
@@ -83,7 +90,7 @@ export default function ContestResult() {
                 myrank={myRank.myRank}
                 index={myRank.myRank}
               ></RankComponent>
-              ...
+              <br></br>.<br></br>.<br></br>.
             </div>
           )
         ) : null}

@@ -78,7 +78,6 @@ export default function QuestionRequest() {
       margin: "0vh 5vh 5vh 5vh",
     };
     const OnChangeAnswer = (e, i) => {
-      console.log(e.target.value, i);
       if (i === 0) setAnswer0(e.target.value);
       else if (i === 1) setAnswer1(e.target.value);
       else if (i === 2) setAnswer2(e.target.value);

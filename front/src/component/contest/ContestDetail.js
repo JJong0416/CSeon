@@ -17,12 +17,8 @@ import "animate.css";
 export default function ContestDetail() {
   const contestId = useSelector((state) => state.ContestInfo.contestId);
   const contestName = useSelector((state) => state.ContestInfo.contestName);
-  const contestEndTime = useSelector(
-    (state) => state.ContestInfo.contestEndTime
-  );
-  const accountName = useSelector(
-    (state) => state.AccountInfo.accountInfo.accountName
-  );
+  const contestEndTime = useSelector((state) => state.ContestInfo.contestEndTime);
+  const accountName = useSelector((state) => state.AccountInfo.accountInfo.accountName);
   const navigate = useNavigate();
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const Token = useSelector((state) => state.AccountInfo.accessToken);
@@ -46,21 +42,16 @@ export default function ContestDetail() {
     const newArr = Array(answerList.length).fill(false);
     newArr[idx] = true;
     setIsCategorySelect(newArr);
-    console.log(newArr);
-    // 사용자 로그 찍는거
     setSelectedAnswer(idx);
   };
 
   const submitAnswer = () => {
-    console.log(selectedAnswer);
-    console.log(contestName + "-----");
     const contestAnswerReq = {
       contestId: contestId,
       isAnswer: rightAnswer === selectedAnswer ? true : false,
       problemIdx: index,
       endTime: contestEndTime,
     };
-    console.log("notestAnswerReq.problemIdx: ", contestAnswerReq.problemIdx);
 
     if (index + 1 < contestQuestionList.length) {
       setIndex(index + 1);
@@ -68,9 +59,7 @@ export default function ContestDetail() {
       submitContestAnswer(
         contestAnswerReq,
         Token,
-        (res) => {
-          console.log(res.data);
-        },
+        (res) => {},
         (err) => {
           console.log(err);
         }
@@ -102,7 +91,6 @@ export default function ContestDetail() {
       contestId,
       Token,
       (res) => {
-        console.log(res.data);
         setContestQuestionList(res.data);
         setQuestionTitle(res.data[index].questionTitle);
         setAnswerList(res.data[index].answerRes.answers);
@@ -113,8 +101,6 @@ export default function ContestDetail() {
           contestId,
           Token,
           (res) => {
-            console.log("getQuestionIndex", res.data + 1);
-            console.log("listSize: ", listSize);
             if (listSize > res.data + 1) {
               setIndex(res.data + 1);
             } else {
@@ -130,7 +116,6 @@ export default function ContestDetail() {
           contestId,
           Token,
           (res) => {
-            console.log("getContestRanking res.data: ", res.data);
             setMyRank(res.data.contestMyRankingRes);
           },
           (err) => {
@@ -143,13 +128,21 @@ export default function ContestDetail() {
       }
     );
   }, []);
-
+  function timestamp() {
+    var today = new Date();
+    today.setHours(today.getHours() + 9);
+    return today.toISOString().substring(0, 16) + ":00+09:00";
+  }
   useInterval(() => {
+    let nowtime = timestamp();
+    if (nowtime >= contestEndTime) {
+      alert("대회 시간이 종료되었습니다.");
+      navigate("/contestlist");
+    }
     getContestRanking(
       contestId,
       Token,
       (res) => {
-        console.log("getContestRanking res.data: ", res.data);
         setMyRank(res.data.contestMyRankingRes);
         setRanking(res.data.highRanking);
       },
@@ -180,17 +173,9 @@ export default function ContestDetail() {
             marginBottom: "0px",
           }}
         >
-          <img
-            alt=""
-            src="img/trophy.png"
-            style={{ width: "5%", marginRight: "3vh" }}
-          ></img>
+          <img alt="" src="img/trophy.png" style={{ width: "5%", marginRight: "3vh" }}></img>
           {contestName}
-          <img
-            alt=""
-            src="img/trophy.png"
-            style={{ width: "5%", marginLeft: "3vh" }}
-          ></img>
+          <img alt="" src="img/trophy.png" style={{ width: "5%", marginLeft: "3vh" }}></img>
         </h1>
         {answerList != null && answerList.length > 0 ? (
           <div>
@@ -212,7 +197,8 @@ export default function ContestDetail() {
                   marginTop: "0px",
                 }}
               >
-                Q. {questionTitle}
+                {index + 1} / {contestQuestionList.length}
+                <br></br>Q{index + 1}. {questionTitle}
               </h1>
               <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
                 {answerList.map((elm, index) => {
@@ -248,11 +234,7 @@ export default function ContestDetail() {
       >
         <div>
           {" "}
-          <img
-            alt=""
-            src="img/ranking.png"
-            style={{ width: "25%", marginTop: "2vh" }}
-          ></img>
+          <img alt="" src="img/ranking.png" style={{ width: "25%", marginTop: "2vh" }}></img>
           <h3>
             순위&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;닉네임&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;점수
           </h3>
@@ -271,8 +253,7 @@ export default function ContestDetail() {
               index={i}
             ></RankComponent>
           ))}
-          {myRank.isExistMeInLeaderboard === true ||
-          ranking.length <= 0 ? null : (
+          {myRank.isExistMeInLeaderboard === true || ranking.length <= 0 ? null : (
             <div>
               ...{" "}
               <RankComponent
