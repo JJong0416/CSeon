@@ -6,8 +6,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { FixedSizeList } from "react-window";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { SET_QUESTION_INDEX } from "../redux/QuestionInfo";
+import { AutoSizer, List } from "react-virtualized";
 
 export default function SideBar(props) {
   function renderRow(props) {
