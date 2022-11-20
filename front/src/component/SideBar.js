@@ -66,33 +66,41 @@ export default function SideBar(props) {
         // overflow: "scroll",
       }}
     >
-      <AutoSizer>
-        {({ height, width }) => (
-          // <FixedSizeList
-          //   height={height}
-          //   itemCount={props.questionList.length}
-          //   itemSize={35}
-          //   width={width}
-          // >
-          //   {renderRow}
-          // </FixedSizeList>
-          <List
-            // ref="List"
-            // ref={(el) => {
-            //   this.List = el;
-            // }}
-            // className={"List"}
-            height={height}
-            width={width}
-            //   overscanRowCount={overscanRowCount}
-            // noRowsRenderer={this._noRowsRenderer}
-            rowCount={props.questionList.length}
-            list={props.questionList}
-            rowHeight={50}
-            rowRenderer={renderRow}
-          />
-        )}
-      </AutoSizer>
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        {props.questionList.map((data, index) => {
+          const current = index === questionIndex;
+
+          const Clicklistitem = () => {
+            dispatch(SET_QUESTION_INDEX(index));
+          };
+          return (
+            <ListItem
+              key={index}
+              component="div"
+              disablePadding
+              style={
+                current
+                  ? {
+                      borderBottom: "solid #9DCFFF 1px",
+                      width: "90%",
+                      margin: "auto",
+                      backgroundColor: "#9DCFFF",
+                    }
+                  : {
+                      borderBottom: "solid #9DCFFF 1px",
+                      width: "90%",
+                      margin: "auto",
+                      backgroundColor: "white",
+                    }
+              }
+            >
+              <ListItemButton onClick={Clicklistitem}>
+                <ListItemText primary={index + 1 + `번문제`} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
     </Box>
   );
 }
