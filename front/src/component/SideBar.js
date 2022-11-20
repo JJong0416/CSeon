@@ -17,7 +17,7 @@ export default function SideBar(props) {
     const Clicklistitem = () => {
       dispatch(SET_QUESTION_INDEX(index));
     };
-
+    console.log(index);
     return (
       <ListItem
         key={index}
@@ -52,20 +52,7 @@ export default function SideBar(props) {
   }, []);
 
   return (
-    <Box
-      sx={{
-        mt: 3,
-        mr: 2,
-        ml: 1,
-        width: "70%",
-        height: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
-        borderColor: "#0099FF",
-        borderStyle: "solid",
-        overflow: "scroll",
-      }}
-    >
+    <div>
       <AutoSizer>
         {({ height, width }) => (
           // <FixedSizeList
@@ -78,9 +65,9 @@ export default function SideBar(props) {
           // </FixedSizeList>
           <List
             // ref="List"
-            ref={(el) => {
-              this.List = el;
-            }}
+            // ref={(el) => {
+            //   this.List = el;
+            // }}
             // className={"List"}
             height={height}
             width={width}
@@ -95,6 +82,6 @@ export default function SideBar(props) {
           />
         )}
       </AutoSizer>
-    </Box>
+    </div>
   );
 }
