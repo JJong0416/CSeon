@@ -46,7 +46,9 @@ export default function SideBar(props) {
     );
   }
   const dispatch = useDispatch();
-  const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
+  const questionIndex = useSelector(
+    (state) => state.QuestionInfo.questionIndex
+  );
 
   return (
     <Box
@@ -62,20 +64,16 @@ export default function SideBar(props) {
         borderStyle: "solid",
       }}
     >
-      <AutoSizer>
-        {({ height, width }) => (
-          <FixedSizeList
-            className="List"
-            height={height}
-            itemCount={props.questionList.length}
-            itemData={props.questionList}
-            itemSize={35}
-            width={width}
-          >
-            {renderRow}
-          </FixedSizeList>
-        )}
-      </AutoSizer>
+      <FixedSizeList
+        className="List"
+        height={800}
+        itemCount={props.questionList.length}
+        itemData={props.questionList}
+        itemSize={35}
+        width={300}
+      >
+        {renderRow}
+      </FixedSizeList>
     </Box>
   );
 }
