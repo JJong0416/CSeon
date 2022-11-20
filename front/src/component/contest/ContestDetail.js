@@ -188,7 +188,8 @@ export default function ContestDetail() {
                   marginTop: "0px",
                 }}
               >
-                Q. {questionTitle}
+                {index + 1} / {setContestQuestionList.length}
+                <br></br>Q{index + 1}. {questionTitle}
               </h1>
               <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
                 {answerList.map((elm, index) => {
