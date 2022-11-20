@@ -318,7 +318,7 @@ export default function WorkbookDetail() {
             {answerRes[0] != null && answerRes[0].length > 0 ? (
               <Box sx={{ width: "100%", whiteSpace: "pre-line" }}>
                 <h1 style={{ wordBreak: "break-all" }}>
-                  Q{questionIndex}. {questionTitle}
+                  Q{questionIndex + 1}. {questionTitle}
                 </h1>
                 <Grid style={{ textAlign: "center" }} container rowSpacing={1}>
                   {answerList.map((elm, index) => {
