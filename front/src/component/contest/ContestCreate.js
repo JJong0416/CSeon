@@ -95,7 +95,7 @@ export default function ContestCreate() {
   function timestamp() {
     var today = new Date();
     today.setHours(today.getHours() + 9);
-    return today.toISOString().substring(0, 16);
+    return today.toISOString().substring(0, 18) + "+09:00[Asia/Seoul]";
   }
 
   const ClickContestRegist = () => {
