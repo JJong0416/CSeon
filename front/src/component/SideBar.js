@@ -56,7 +56,7 @@ export default function SideBar(props) {
   };
   console.log("props:", props);
   return (
-    <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+    <List sx={{ heigth: "100%", width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       {props.questionList.map((data, index) => {
         const current = index === questionIndex;
         console.log(data, index, current);
