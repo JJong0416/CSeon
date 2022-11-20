@@ -46,9 +46,10 @@ export default function SideBar(props) {
     );
   }
   const dispatch = useDispatch();
-  const questionIndex = useSelector(
-    (state) => state.QuestionInfo.questionIndex
-  );
+  const questionIndex = useSelector((state) => state.QuestionInfo.questionIndex);
+  useEffect(() => {
+    console.log("sidebar: ", props);
+  }, []);
 
   return (
     <Box
