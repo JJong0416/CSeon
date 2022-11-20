@@ -247,6 +247,10 @@ export default function WorkbookDetail() {
     }
   }, [questionIndex]);
 
+  const Clicklistitem = (index) => {
+    console.log("click ", index);
+    dispatch(SET_QUESTION_INDEX(index));
+  };
   return (
     <div style={{ margin: "0vh 4vh" }}>
       <div style={{ display: "flex" }}>
@@ -256,7 +260,48 @@ export default function WorkbookDetail() {
             width: "25%",
           }}
         >
-          <SideBar handleQuestionIndex={handleQuestionIndex} questionList={questionList}></SideBar>
+          {/* <SideBar handleQuestionIndex={handleQuestionIndex} questionList={questionList}></SideBar> */}
+          <List
+            sx={{
+              width: "100%",
+              maxWidth: 360,
+              bgcolor: "background.paper",
+              overflow: "auto",
+              maxHeight: 300,
+            }}
+          >
+            {questionList.map((data, index) => {
+              const current = index === questionIndex;
+              console.log(data, index, current);
+
+              return (
+                <ListItem
+                  key={data}
+                  // component="div"
+                  disablePadding
+                  style={
+                    current
+                      ? {
+                          borderBottom: "solid #9DCFFF 1px",
+                          width: "90%",
+                          margin: "auto",
+                          backgroundColor: "#9DCFFF",
+                        }
+                      : {
+                          borderBottom: "solid #9DCFFF 1px",
+                          width: "90%",
+                          margin: "auto",
+                          backgroundColor: "white",
+                        }
+                  }
+                >
+                  <ListItemButton onClick={() => Clicklistitem(index)}>
+                    <ListItemText primary={index + 1 + `번문제`} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
         </div>
 
         {/* 버튼을 누르면 전에 있는 문제를 불러와야함 */}
