@@ -68,6 +68,8 @@ spring:
       host: k7a606.p.ssafy.io
       port: 27017
       database: cseon
+      username: a606
+      password: ssafya606
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: a606
