@@ -62,12 +62,12 @@ export default function SideBar(props) {
         bgcolor: "background.paper",
         borderColor: "#0099FF",
         borderStyle: "solid",
-        overflow: "scroll",
       }}
     >
       <AutoSizer>
         {({ width }) => (
           <FixedSizeList
+            style={{ overflow: "scroll" }}
             height={700}
             itemCount={props.questionList.length}
             itemData={props.questionList}
