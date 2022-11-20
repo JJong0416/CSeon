@@ -131,7 +131,7 @@ export default function ContestDetail() {
   function timestamp() {
     var today = new Date();
     today.setHours(today.getHours() + 9);
-    return today.toISOString().substring(0, 18) + "+09:00";
+    return today.toISOString().substring(0, 16) + ":00+09:00";
   }
   useInterval(() => {
     let nowtime = timestamp();
