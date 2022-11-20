@@ -76,9 +76,9 @@ export default function SideBar(props) {
           };
           return (
             <ListItem
-              key={index}
-              component="div"
-              disablePadding
+              key={data}
+              // component="div"
+              // disablePadding
               style={
                 current
                   ? {
