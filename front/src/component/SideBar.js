@@ -10,14 +10,14 @@ import { SET_QUESTION_INDEX } from "../redux/QuestionInfo";
 import { AutoSizer, List } from "react-virtualized";
 
 export default function SideBar(props) {
-  function renderRow(props) {
-    const { data, index } = props;
+  function renderRow(p) {
+    const { data, index } = p;
     const current = index === questionIndex;
 
     const Clicklistitem = () => {
       dispatch(SET_QUESTION_INDEX(index));
     };
-
+    console.log("index: ", index);
     return (
       <ListItem
         key={index}
@@ -50,7 +50,7 @@ export default function SideBar(props) {
   useEffect(() => {
     console.log("sidebar: ", props);
   }, []);
-
+  console.log("props:", props);
   return (
     <Box
       sx={{
