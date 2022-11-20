@@ -63,7 +63,7 @@ export default function SideBar(props) {
         bgcolor: "background.paper",
         borderColor: "#0099FF",
         borderStyle: "solid",
-        overflow: "scroll",
+        // overflow: "scroll",
       }}
     >
       <AutoSizer>
@@ -87,10 +87,8 @@ export default function SideBar(props) {
             //   overscanRowCount={overscanRowCount}
             // noRowsRenderer={this._noRowsRenderer}
             rowCount={props.questionList.length}
-            rowHeight={
-              50
-              // useDynamicRowHeight ? this._getRowHeight : listRowHeight
-            }
+            list={props.questionList}
+            rowHeight={50}
             rowRenderer={renderRow}
           />
         )}
