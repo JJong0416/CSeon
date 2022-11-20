@@ -66,9 +66,9 @@ export default function SideBar(props) {
           <List
             // ref="List"
             ref={(el) => {
-              this.List = el;
+              List = el;
             }}
-            // className={"List"}
+            className={"List"}
             height={height}
             width={width}
             //   overscanRowCount={overscanRowCount}
