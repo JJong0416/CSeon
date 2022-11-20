@@ -114,8 +114,7 @@ public class ContestRealTimeService extends RedisConst {
     private void InitMyRankingInRedis(
             String redisId, String username, ZSetOperations<String, String> zSetOperations) {
 
-        if (Objects.requireNonNull(redisTemplate.hasKey(redisId)).equals(false)
-                || zSetOperations.rank(redisId, username) == null)
+        if (zSetOperations.rank(redisId, username) == null || zSetOperations.score(redisId, username) == null)
             zSetOperations.add(redisId, username, 0);
     }
 
