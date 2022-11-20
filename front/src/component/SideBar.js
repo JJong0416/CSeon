@@ -66,8 +66,9 @@ export default function SideBar(props) {
         // overflow: "scroll",
       }}
     >
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <List sx={{ width: "100%", maxWidth: 360 }}>
         {props.questionList.map((data, index) => {
+          console.log(data, index);
           const current = index === questionIndex;
 
           const Clicklistitem = () => {
