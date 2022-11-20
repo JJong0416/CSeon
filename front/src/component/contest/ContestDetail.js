@@ -128,8 +128,18 @@ export default function ContestDetail() {
       }
     );
   }, []);
-
+  function timestamp() {
+    var today = new Date();
+    today.setHours(today.getHours() + 9);
+    return today.toISOString().substring(0, 16);
+  }
   useInterval(() => {
+    let nowtime = timestamp();
+    console.log(nowtime, contestEndTime);
+    if (nowtime >= contestEndTime) {
+      alert("대회 시간이 종료되었습니다.");
+      navigate("/contestlist");
+    }
     getContestRanking(
       contestId,
       Token,
