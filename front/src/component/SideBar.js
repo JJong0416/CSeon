@@ -62,18 +62,23 @@ export default function SideBar(props) {
         bgcolor: "background.paper",
         borderColor: "#0099FF",
         borderStyle: "solid",
+        overflow: "scroll",
       }}
     >
-      <FixedSizeList
-        className="List"
-        height={800}
-        itemCount={props.questionList.length}
-        itemData={props.questionList}
-        itemSize={35}
-        width={300}
-      >
-        {renderRow}
-      </FixedSizeList>
+      <AutoSizer>
+        {({ width }) => (
+          <FixedSizeList
+            className="List"
+            height={700}
+            itemCount={props.questionList.length}
+            itemData={props.questionList}
+            itemSize={35}
+            width={width}
+          >
+            {renderRow}
+          </FixedSizeList>
+        )}
+      </AutoSizer>
     </Box>
   );
 }
