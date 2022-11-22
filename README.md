@@ -63,7 +63,7 @@
 ## :six: ERD
 ![ERD](../image/C;seon ERD.png)
 ## :seven: REST API
-![REST API]()
+![REST API](../image/A606 rest api.png)
 ## :eight: 기술 스택
 ![image](/uploads/62869e7fba826e6f826bc53030ac8935/image.png)
 ## :nine: 시연 시나리오
