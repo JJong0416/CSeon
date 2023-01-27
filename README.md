@@ -35,11 +35,11 @@
 # `설계와 기술 적용에 있어서 고민을 한 부분🤔`
 
 ### 1. In-Memory Database 중 어떤 기술을 적용할 것인가에 대한 고민
-![image](https://user-images.githubusercontent.com/73544708/214033464-f74d7183-71a2-4ba2-8962-e57ebedf9e30.png)
+![image](https://user-images.githubusercontent.com/73544708/215025659-3b996b79-e10a-4414-9ed6-e056638b4d01.png)
 
 - 랭킹에 대한 정보를 RDBMS로 하게 된다면는 상대적으로 더 많은 리소스가 소비되기 때문에, 메모리 영역에서의 미들웨어인 **In-memory Database를 사용**하기로 결정했습니다.
 - 대표적으로 Redis와 Memcached가 있는데, **각각의 기술에 대한 특징과 Development Side**를 중점적으로 비교했으며, 결과적으로 **Redis를 적용**하기로 했습니다.
-- Redis는 Memcached보다 **성능적으로 우수**할 뿐더러, **다양한 자료구조를 지원**해주고 있기 때문에, **개발자가 구현 난이도를 낮출 수 있다는 장점**이 있습니다.
+- Redis는 **다양한 자료구조를 지원**해주고 있기 때문에, **개발자가 구현 난이도를 낮출 수 있다는 장점**이 있습니다.
 
 ### 2. 실시간 랭킹과 문제 진행도를 위한 Redis Data Structure
 ![image](https://user-images.githubusercontent.com/73544708/214033685-0bed5012-5af7-4dd8-8353-f5047694a8b1.png)
